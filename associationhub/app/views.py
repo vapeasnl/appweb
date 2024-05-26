@@ -1,12 +1,8 @@
 from functools import wraps
 from flask import Blueprint, render_template, request, session, redirect, url_for
-
+from .models import Association  # Importer le modèle Association depuis models.p
 auth = Blueprint('auth', __name__)
 main = Blueprint('main', __name__)
-
-@main.route('/')
-def index():
-    return render_template('index.html')
 
 @main.route('/associations')
 def associations():
@@ -49,4 +45,8 @@ def profile():
 def logout():
     session.clear()  # Effacer les données de session
     return redirect(url_for('auth.login'))  # Rediriger vers la page de connexion
-
+@main.route('/associations')
+def associations():
+    # Récupérer toutes les associations depuis la base de données
+    all_associations = Association.query.all()
+    return render_template('associations.html', associations=all_associations)
