@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Associations</title>
+</head>
+<body>
+    <h1>Liste des associations</h1>
+    <ul>
+        {% for association in associations %}
+        <li>
+            <h2>{{ association.nom }}</h2>
+            <p>Description: {{ association.description }}</p>
+            <p>Adresse: {{ association.adresse }}</p>
+            <p>Président: {{ association.president }}</p>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+
