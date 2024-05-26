@@ -1,0 +1,5 @@
+Flask
+SQLAlchemy
+PyMySQL  # Pour se connecter à MySQL
+Flask-Migrate  # Pour gérer les migrations de la base de données
+
