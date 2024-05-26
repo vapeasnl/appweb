@@ -46,7 +46,9 @@ def logout():
     session.clear()  # Effacer les données de session
     return redirect(url_for('auth.login'))  # Rediriger vers la page de connexion
 @main.route('/associations')
-def associations():
-    # Récupérer toutes les associations depuis la base de données
-    all_associations = Association.query.all()
-    return render_template('associations.html', associations=all_associations)
+def show_associations():
+    return render_template('associations.html')
+
+
+
+
