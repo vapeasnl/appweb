@@ -3,6 +3,11 @@ from . import db
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
+attendance = db.Table('attendance',
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('event_id', db.Integer, db.ForeignKey('event.id'))
+)
+
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), unique=True, nullable=False)
@@ -24,5 +29,13 @@ class Association(db.Model):
 class Event(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
+    attendees = db.relationship('User', secondary=attendance, backref='events')
+    # Ajoutez d'autres champs selon vos besoins
+
+class Report(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    date = db.Column(db.DateTime, nullable=False)
+    content = db.Column(db.Text, nullable=False)
     # Ajoutez d'autres champs selon vos besoins
 

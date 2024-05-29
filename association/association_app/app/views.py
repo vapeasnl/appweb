@@ -1,7 +1,7 @@
 # app/views.py
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from flask_login import login_user, logout_user, login_required, current_user
-from .models import User, Association, Event
+from .models import User, Association, Event, Report
 from . import db
 
 bp = Blueprint('main', __name__)
@@ -44,11 +44,7 @@ def signup():
 @login_required
 def dashboard():
     if current_user.is_admin:
-        # Logique pour l'admin
-        pass
-    else:
-        # Logique pour l'utilisateur normal
-        pass
+        return redirect(url_for('main.admin_dashboard'))
     return render_template('dashboard.html')
 
 @bp.route('/logout')
@@ -85,4 +81,52 @@ def admin_dashboard():
         return redirect(url_for('main.dashboard'))
 
     return render_template('admin_dashboard.html')
+
+@bp.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    if request.method == 'POST':
+        current_user.username = request.form['username']
+        current_user.email = request.form['email']
+        db.session.commit()
+        flash('Profile updated successfully')
+        return redirect(url_for('main.profile'))
+    return render_template('profile.html', user=current_user)
+
+@bp.route('/change_password', methods=['GET', 'POST'])
+@login_required
+def change_password():
+    if request.method == 'POST':
+        old_password = request.form['old_password']
+        new_password = request.form['new_password']
+        if current_user.check_password(old_password):
+            current_user.set_password(new_password)
+            db.session.commit()
+            flash('Password changed successfully')
+            return redirect(url_for('main.profile'))
+        else:
+            flash('Old password is incorrect')
+    return render_template('change_password.html')
+
+@bp.route('/events')
+@login_required
+def events():
+    events = Event.query.all()
+    return render_template('events.html', events=events)
+
+@bp.route('/mark_attendance/<int:event_id>', methods=['POST'])
+@login_required
+def mark_attendance(event_id):
+    event = Event.query.get(event_id)
+    if event:
+        event.attendees.append(current_user)
+        db.session.commit()
+        flash('Attendance marked successfully')
+    return redirect(url_for('main.events'))
+
+@bp.route('/reports')
+@login_required
+def reports():
+    reports = Report.query.all()
+    return render_template('reports.html', reports=reports)
 

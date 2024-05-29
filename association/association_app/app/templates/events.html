@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Events</title>
+</head>
+<body>
+    <h1>Events</h1>
+    <ul>
+        {% for event in events %}
+        <li>
+            {{ event.name }} - {{ event.date }}
+            <form method="POST" action="{{ url_for('mark_attendance', event_id=event.id) }}">
+                <input type="submit" value="Mark Attendance">
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+

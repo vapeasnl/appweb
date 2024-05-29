@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reports</title>
+</head>
+<body>
+    <h1>Reports</h1>
+    <ul>
+        {% for report in reports %}
+        <li>
+            {{ report.title }} - {{ report.date }}
+            <p>{{ report.content }}</p>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+
