@@ -10,7 +10,7 @@
         {% for event in events %}
         <li>
             {{ event.name }} - {{ event.date }}
-            <form method="POST" action="{{ url_for('mark_attendance', event_id=event.id) }}">
+            <form method="POST" action="{{ url_for('main.mark_attendance', event_id=event.id) }}">
                 <input type="submit" value="Mark Attendance">
             </form>
         </li>
