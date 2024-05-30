@@ -17,7 +17,7 @@ def login():
         username = request.form['username']
         password = request.form['password']
         user = User.query.filter_by(username=username).first()
-        if user and user.check_password(password):
+        if user and user.password == password:  # Vérification sans hashage
             login_user(user)
             if user.is_admin:
                 return redirect(url_for('main.admin_dashboard'))
@@ -32,8 +32,7 @@ def signup():
         username = request.form['username']
         email = request.form['email']
         password = request.form['password']
-        user = User(username=username, email=email)
-        user.set_password(password)
+        user = User(username=username, email=email, password=password)  # Stockage du mot de passe non hashé
         db.session.add(user)
         db.session.commit()
         flash('Registration successful, please log in.')
@@ -64,8 +63,7 @@ def add_user():
         username = request.form['username']
         email = request.form['email']
         password = request.form['password']
-        user = User(username=username, email=email)
-        user.set_password(password)
+        user = User(username=username, email=email, password=password)  # Stockage du mot de passe non hashé
         db.session.add(user)
         db.session.commit()
         flash('User added successfully.')
@@ -99,8 +97,8 @@ def change_password():
     if request.method == 'POST':
         old_password = request.form['old_password']
         new_password = request.form['new_password']
-        if current_user.check_password(old_password):
-            current_user.set_password(new_password)
+        if current_user.password == old_password:  # Vérification sans hashage
+            current_user.password = new_password  # Mise à jour du mot de passe
             db.session.commit()
             flash('Password changed successfully')
             return redirect(url_for('main.profile'))
