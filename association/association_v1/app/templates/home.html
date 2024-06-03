@@ -1,15 +1,38 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('main.home') }}">Home</a></li>
+                <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+                <li><a href="{{ url_for('admin.dashboard') }}">Dashboard</a></li>
+                <!-- Add profile link -->
+                <li><a href="{{ url_for('profile.profile') }}">Profile</a></li>
+            </ul>
+        </nav>
+    </header>
 
-{% block content %}
-    <h1>Upcoming Events</h1>
-    <ul>
-        {% for event in events %}
+    <main>
+        <h1>Upcoming Events</h1>
+        <ul>
+            {% for event in events %}
             <li>{{ event.name }} - {{ event.date }}</li>
-        {% endfor %}
-    </ul>
+            {% endfor %}
+        </ul>
 
-    <h2>Welcome, {{ current_user.username }}</h2>
-    <p>This is the homepage of our application.</p>
-    <p>Here, you can find upcoming events and other important information.</p>
-{% endblock %}
+        {% if current_user.is_authenticated %}
+        <p>Welcome, {{ current_user.username }}</p>
+        <p>This is the homepage of our application.</p>
+        <p>Here, you can find upcoming events and other important information.</p>
+        {% endif %}
+    </main>
+</body>
+</html>
 
