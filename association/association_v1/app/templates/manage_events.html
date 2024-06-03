@@ -1,7 +1,19 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Manage Events</h1>
+<h1>Dashboard</h1>
+
+<h2>Reports</h2>
+<ul>
+    {% for report in reports %}
+    <li>
+        <strong>{{ report.title }}</strong> - {{ report.date }}<br>
+        {{ report.content }}
+    </li>
+    {% endfor %}
+</ul>
+
+<h2>Events</h2>
 <form method="post" action="{{ url_for('admin.manage_events') }}">
     <div>
         <label for="name">Name</label>

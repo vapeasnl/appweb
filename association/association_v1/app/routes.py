@@ -8,7 +8,9 @@ admin_bp = Blueprint('admin', __name__)
 
 @main_bp.route('/')
 def home():
-    return render_template('home.html')
+    events = Event.query.all()
+    return render_template('home.html', events=events)
+
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
@@ -59,6 +61,29 @@ def update_report(report_id):
         report.title = request.form['title']
         report.date = request.form['date']
         report.content = request.form['content']
+        db.session.commit()
+    return redirect(url_for('admin.dashboard'))
+
+@admin_bp.route('/events/<int:event_id>/update', methods=['POST'])
+@login_required
+def update_event(event_id):
+    if not current_user.is_admin:
+        return redirect(url_for('main.home'))
+    event = Event.query.get(event_id)
+    if event:
+        event.name = request.form['name']
+        event.date = request.form['date']
+        db.session.commit()
+    return redirect(url_for('admin.dashboard'))
+
+@admin_bp.route('/events/<int:event_id>/delete', methods=['POST'])
+@login_required
+def delete_event(event_id):
+    if not current_user.is_admin:
+        return redirect(url_for('main.home'))
+    event = Event.query.get(event_id)
+    if event:
+        db.session.delete(event)
         db.session.commit()
     return redirect(url_for('admin.dashboard'))
 

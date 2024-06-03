@@ -1,41 +1,101 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Admin Dashboard</h1>
-<h2>Create Report</h2>
-<form method="post" action="{{ url_for('admin.create_report') }}">
-    <div>
-        <label for="title">Title</label>
-        <input type="text" id="title" name="title">
-    </div>
-    <div>
-        <label for="date">Date</label>
-        <input type="date" id="date" name="date">
-    </div>
-    <div>
-        <label for="content">Content</label>
-        <textarea id="content" name="content"></textarea>
-    </div>
-    <button type="submit">Create Report</button>
-</form>
+    <h1>Dashboard</h1>
 
-<h2>Existing Reports</h2>
-<ul>
-    {% for report in reports %}
-    <li>
-        <strong>{{ report.title }}</strong> - {{ report.date }}<br>
-        {{ report.content }}<br>
-        <form method="post" action="{{ url_for('admin.update_report', report_id=report.id) }}">
-            <input type="hidden" name="title" value="{{ report.title }}">
-            <input type="hidden" name="date" value="{{ report.date }}">
-            <input type="hidden" name="content" value="{{ report.content }}">
-            <button type="submit">Update</button>
-        </form>
-        <form method="post" action="{{ url_for('admin.delete_report', report_id=report.id) }}">
-            <button type="submit">Delete</button>
-        </form>
-    </li>
-    {% endfor %}
-</ul>
+    <!-- Manage Reports -->
+    <h2>Manage Reports</h2>
+    <form method="post" action="{{ url_for('admin.create_report') }}">
+        <div>
+            <label for="title">Title</label>
+            <input type="text" id="title" name="title">
+        </div>
+        <div>
+            <label for="date">Date</label>
+            <input type="date" id="date" name="date">
+        </div>
+        <div>
+            <label for="content">Content</label>
+            <textarea id="content" name="content"></textarea>
+        </div>
+        <button type="submit">Add Report</button>
+    </form>
+    <ul>
+        {% for report in reports %}
+            <li>
+                <strong>{{ report.title }}</strong> - {{ report.date }}
+                <form method="post" action="{{ url_for('admin.update_report', report_id=report.id) }}">
+                    <input type="text" name="title" value="{{ report.title }}">
+                    <input type="date" name="date" value="{{ report.date }}">
+                    <textarea name="content">{{ report.content }}</textarea>
+                    <button type="submit">Update</button>
+                </form>
+                <form method="post" action="{{ url_for('admin.delete_report', report_id=report.id) }}">
+                    <button type="submit">Delete</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <!-- Manage Users -->
+    <h2>Manage Users</h2>
+    <form method="post" action="{{ url_for('admin.manage_users') }}">
+        <div>
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username">
+        </div>
+        <div>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email">
+        </div>
+        <div>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password">
+        </div>
+        <div>
+            <label for="is_admin">Admin</label>
+            <input type="checkbox" id="is_admin" name="is_admin">
+        </div>
+        <button type="submit">Add User</button>
+    </form>
+    <ul>
+        {% for user in users %}
+            <li>
+                <strong>{{ user.username }}</strong> - {{ user.email }}
+                {% if user.is_admin %}
+                    (Admin)
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+
+    <!-- Manage Events -->
+    <h2>Manage Events</h2>
+    <form method="post" action="{{ url_for('admin.manage_events') }}">
+        <div>
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name">
+        </div>
+        <div>
+            <label for="date">Date</label>
+            <input type="date" id="date" name="date">
+        </div>
+        <button type="submit">Add Event</button>
+    </form>
+    <ul>
+        {% for event in events %}
+            <li>
+                <strong>{{ event.name }}</strong> - {{ event.date }}
+                <form method="post" action="{{ url_for('admin.update_event', event_id=event.id) }}">
+                    <input type="text" name="name" value="{{ event.name }}">
+                    <input type="date" name="date" value="{{ event.date }}">
+                    <button type="submit">Update</button>
+                </form>
+                <form method="post" action="{{ url_for('admin.delete_event', event_id=event.id) }}">
+                    <button type="submit">Delete</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
 {% endblock %}
 
