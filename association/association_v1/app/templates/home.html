@@ -3,5 +3,23 @@
 {% block content %}
 <h1>Welcome to Association v1</h1>
 <p>This is the home page.</p>
+
+<h2>Events</h2>
+<ul>
+    {% for event in events %}
+    <li>
+        <strong>{{ event.name }}</strong> - {{ event.date }}
+        <form method="post" action="{{ url_for('main.attend_event', event_id=event.id) }}">
+            <button type="submit">Attend</button>
+        </form>
+    </li>
+    {% endfor %}
+</ul>
 {% endblock %}
+
+
+
+
+
+
 

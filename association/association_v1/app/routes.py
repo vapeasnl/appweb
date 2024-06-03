@@ -62,6 +62,54 @@ def update_report(report_id):
         db.session.commit()
     return redirect(url_for('admin.dashboard'))
 
+@admin_bp.route('/users', methods=['GET', 'POST'])
+@login_required
+def manage_users():
+    if not current_user.is_admin:
+        return redirect(url_for('main.home'))
+    
+    # Ajoutez un message de débogage pour afficher la valeur de current_user.is_admin
+    print("Valeur de current_user.is_admin :", current_user.is_admin)
+    
+    if request.method == 'POST':
+        username = request.form['username']
+        email = request.form['email']
+        password = request.form['password']
+        is_admin = request.form.get('is_admin', False)
+        new_user = User(username=username, email=email, is_admin=is_admin)
+        new_user.set_password(password)
+        db.session.add(new_user)
+        db.session.commit()
+        flash('New user added successfully.')
+
+    users = User.query.all()
+    return render_template('manage_users.html', users=users)
+
+
+@admin_bp.route('/events', methods=['GET', 'POST'])
+@login_required
+def manage_events():
+    if request.method == 'POST':
+        name = request.form['name']
+        date = request.form['date']
+        new_event = Event(name=name, date=date)
+        db.session.add(new_event)
+        db.session.commit()
+        flash('New event added successfully.')
+
+    events = Event.query.all()
+    return render_template('manage_events.html', events=events)
+
+@main_bp.route('/events/<int:event_id>/attend', methods=['POST'])
+@login_required
+def attend_event(event_id):
+    event = Event.query.get(event_id)
+    if event:
+        current_user.attend(event)
+        db.session.commit()
+        flash('You have marked your attendance for the event.')
+    return redirect(url_for('main.home'))
+
 @admin_bp.route('/reports/<int:report_id>/delete', methods=['POST'])
 @login_required
 def delete_report(report_id):
