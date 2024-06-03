@@ -7,5 +7,9 @@
             <li>{{ event.name }} - {{ event.date }}</li>
         {% endfor %}
     </ul>
+
+    <h2>Welcome, {{ current_user.username }}</h2>
+    <p>This is the homepage of our application.</p>
+    <p>Here, you can find upcoming events and other important information.</p>
 {% endblock %}
 
