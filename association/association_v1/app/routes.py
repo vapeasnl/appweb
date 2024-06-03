@@ -5,12 +5,12 @@ from .models import db, User, Association, Event, Report
 main_bp = Blueprint('main', __name__)
 auth_bp = Blueprint('auth', __name__)
 admin_bp = Blueprint('admin', __name__)
-profile_bp = Blueprint('profile', __name__)
 
 @main_bp.route('/')
 def home():
-    events = Event.query.all()  # Récupérer tous les événements
+    events = Event.query.all()
     return render_template('home.html', events=events)
+
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
@@ -36,7 +36,9 @@ def dashboard():
     if not current_user.is_admin:
         return redirect(url_for('main.home'))
     reports = Report.query.all()
-    return render_template('dashboard.html', reports=reports)
+    users = User.query.all()
+    events = Event.query.all()
+    return render_template('dashboard.html', reports=reports, users=users, events=events)
 
 @admin_bp.route('/reports', methods=['POST'])
 @login_required
@@ -93,6 +95,9 @@ def manage_users():
     if not current_user.is_admin:
         return redirect(url_for('main.home'))
     
+    # Ajoutez un message de débogage pour afficher la valeur de current_user.is_admin
+    print("Valeur de current_user.is_admin :", current_user.is_admin)
+    
     if request.method == 'POST':
         username = request.form['username']
         email = request.form['email']
@@ -106,6 +111,7 @@ def manage_users():
 
     users = User.query.all()
     return render_template('manage_users.html', users=users)
+
 
 @admin_bp.route('/events', methods=['GET', 'POST'])
 @login_required
@@ -131,14 +137,13 @@ def attend_event(event_id):
         flash('You have marked your attendance for the event.')
     return redirect(url_for('main.home'))
 
-@profile_bp.route('/profile', methods=['GET', 'POST'])
+@admin_bp.route('/reports/<int:report_id>/delete', methods=['POST'])
 @login_required
-def profile():
-    if request.method == 'POST':
-        current_user.username = request.form['username']
-        current_user.email = request.form['email']
-        current_user.is_admin = 'is_admin' in request.form
+def delete_report(report_id):
+    if not current_user.is_admin:
+        return redirect(url_for('main.home'))
+    report = Report.query.get(report_id)
+    if report:
+        db.session.delete(report)
         db.session.commit()
-        flash('Profile updated successfully.')
-    return render_template('profile.html', user=current_user)
-
+    return redirect(url_for('admin.dashboard'))

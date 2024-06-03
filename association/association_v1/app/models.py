@@ -32,4 +32,3 @@ class Report(db.Model):
     title = db.Column(db.String(128), nullable=False)
     date = db.Column(db.DateTime, nullable=False)
     content = db.Column(db.Text, nullable=False)
-
