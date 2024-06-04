@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
 from .models import db, User, Association, Event, Report
+from datetime import datetime
 
 main_bp = Blueprint('main', __name__)
 auth_bp = Blueprint('auth', __name__)
@@ -53,15 +54,24 @@ def create_report():
     db.session.commit()
     return redirect(url_for('admin.dashboard'))
 
+
 @admin_bp.route('/reports/<int:report_id>', methods=['POST'])
 @login_required
 def update_report(report_id):
     if not current_user.is_admin:
         return redirect(url_for('main.home'))
+    
     report = Report.query.get(report_id)
     if report:
         report.title = request.form['title']
-        report.date = request.form['date']
+        date_str = request.form['date']
+        try:
+            date = datetime.strptime(date_str, '%Y-%m-%dT%H:%M')
+            report.date = date
+        except ValueError:
+            flash('Invalid date format. Please use YYYY-MM-DDTHH:MM format.')
+            return redirect(url_for('admin.dashboard'))
+        
         report.content = request.form['content']
         db.session.commit()
     return redirect(url_for('admin.dashboard'))
@@ -118,11 +128,15 @@ def manage_users():
 def manage_events():
     if request.method == 'POST':
         name = request.form['name']
-        date = request.form['date']
-        new_event = Event(name=name, date=date)
-        db.session.add(new_event)
-        db.session.commit()
-        flash('New event added successfully.')
+        date_str = request.form['date']
+        try:
+            date = datetime.strptime(date_str, '%Y-%m-%d %H:%M:%S')
+            new_event = Event(name=name, date=date)
+            db.session.add(new_event)
+            db.session.commit()
+            flash('New event added successfully.')
+        except ValueError:
+            flash('Invalid date format. Please use YYYY-MM-DD HH:MM:SS format.')
 
     events = Event.query.all()
     return render_template('manage_events.html', events=events)
