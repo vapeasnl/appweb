@@ -4,9 +4,9 @@
     <h1>Dashboard</h1>
 
     <!-- Manage Reports -->
-    <div class="card">
+    <div class="card border-primary mb-3">
         <div class="card-header">
-            <h2>Manage Reports <i class="fas fa-file-alt"></i></h2>
+            <h2 class="mb-0">Manage Reports <i class="fas fa-file-alt"></i></h2>
         </div>
         <div class="card-body">
             <form method="post" action="{{ url_for('admin.create_report') }}">
@@ -58,9 +58,9 @@
     </div>
 
     <!-- Manage Users -->
-    <div class="card mt-3">
+    <div class="card border-primary mt-3">
         <div class="card-header">
-            <h2>Manage Users <i class="fas fa-users"></i></h2>
+            <h2 class="mb-0">Manage Users <i class="fas fa-users"></i></h2>
         </div>
         <div class="card-body">
             <form method="post" action="{{ url_for('admin.manage_users') }}">
@@ -108,9 +108,9 @@
     </div>
 
     <!-- Manage Events -->
-    <div class="card mt-3">
+    <div class="card border-primary mt-3">
         <div class="card-header">
-            <h2>Manage Events <i class="fas fa-calendar-alt"></i></h2>
+            <h2 class="mb-0">Manage Events <i class="fas fa-calendar-alt"></i></h2>
         </div>
         <div class="card-body">
             <form method="post" action="{{ url_for('admin.manage_events') }}">
