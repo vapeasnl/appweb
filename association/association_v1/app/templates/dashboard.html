@@ -10,26 +10,41 @@
         </div>
         <div class="card-body">
             <form method="post" action="{{ url_for('admin.create_report') }}">
-                <!-- Form fields -->
+                <div class="mb-3">
+                    <label for="title" class="form-label">Title</label>
+                    <input type="text" class="form-control" id="title" name="title">
+                </div>
+                <div class="mb-3">
+                    <label for="date" class="form-label">Date</label>
+                    <input type="date" class="form-control" id="date" name="date">
+                </div>
+                <div class="mb-3">
+                    <label for="content" class="form-label">Content</label>
+                    <textarea class="form-control" id="content" name="content"></textarea>
+                </div>
                 <button type="submit" class="btn btn-primary">Add Report</button>
             </form>
             <div class="table-responsive">
-                <table class="table table-bordered table-striped">
-                    <!-- Table headers -->
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
                     <tbody>
-                        <!-- Table rows -->
                         {% for report in reports %}
                             <tr>
-                                <!-- Table data -->
                                 <td>{{ report.title }}</td>
                                 <td>{{ report.date }}</td>
                                 <td>
-                                    <!-- Update form -->
                                     <form method="post" action="{{ url_for('admin.update_report', report_id=report.id) }}">
-                                        <!-- Form fields -->
+                                        <input type="text" name="title" value="{{ report.title }}" class="form-control">
+                                        <input type="date" name="date" value="{{ report.date }}" class="form-control">
+                                        <textarea name="content" class="form-control">{{ report.content }}</textarea>
                                         <button type="submit" class="btn btn-sm btn-primary">Update</button>
                                     </form>
-                                    <!-- Delete form -->
                                     <form method="post" action="{{ url_for('admin.delete_report', report_id=report.id) }}">
                                         <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                                     </form>
@@ -49,17 +64,38 @@
         </div>
         <div class="card-body">
             <form method="post" action="{{ url_for('admin.manage_users') }}">
-                <!-- Form fields -->
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="username" name="username">
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" name="email">
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" name="password">
+                </div>
+                <div class="mb-3">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="is_admin" name="is_admin">
+                        <label class="form-check-label" for="is_admin">Admin</label>
+                    </div>
+                </div>
                 <button type="submit" class="btn btn-primary">Add User</button>
             </form>
             <div class="table-responsive">
-                <table class="table table-bordered table-striped">
-                    <!-- Table headers -->
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Admin</th>
+                        </tr>
+                    </thead>
                     <tbody>
-                        <!-- Table rows -->
                         {% for user in users %}
                             <tr>
-                                <!-- Table data -->
                                 <td>{{ user.username }}</td>
                                 <td>{{ user.email }}</td>
                                 <td>{% if user.is_admin %} Yes {% else %} No {% endif %}</td>
@@ -78,26 +114,36 @@
         </div>
         <div class="card-body">
             <form method="post" action="{{ url_for('admin.manage_events') }}">
-                <!-- Form fields -->
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="name" name="name">
+                </div>
+                <div class="mb-3">
+                    <label for="date" class="form-label">Date</label>
+                    <input type="date" class="form-control" id="date" name="date">
+                </div>
                 <button type="submit" class="btn btn-primary">Add Event</button>
             </form>
             <div class="table-responsive">
-                <table class="table table-bordered table-striped">
-                    <!-- Table headers -->
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
                     <tbody>
-                        <!-- Table rows -->
                         {% for event in events %}
                             <tr>
-                                <!-- Table data -->
                                 <td>{{ event.name }}</td>
                                 <td>{{ event.date }}</td>
                                 <td>
-                                    <!-- Update form -->
                                     <form method="post" action="{{ url_for('admin.update_event', event_id=event.id) }}">
-                                        <!-- Form fields -->
+                                        <input type="text" name="name" value="{{ event.name }}" class="form-control">
+                                        <input type="date" name="date" value="{{ event.date }}" class="form-control">
                                         <button type="submit" class="btn btn-sm btn-primary">Update</button>
                                     </form>
-                                    <!-- Delete form -->
                                     <form method="post" action="{{ url_for('admin.delete_event', event_id=event.id) }}">
                                         <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                                     </form>
