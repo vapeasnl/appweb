@@ -12,7 +12,6 @@ def home():
     events = Event.query.all()
     return render_template('home.html', events=events)
 
-
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -54,7 +53,6 @@ def create_report():
     db.session.commit()
     return redirect(url_for('admin.dashboard'))
 
-
 @admin_bp.route('/reports/<int:report_id>', methods=['POST'])
 @login_required
 def update_report(report_id):
@@ -74,6 +72,34 @@ def update_report(report_id):
         
         report.content = request.form['content']
         db.session.commit()
+    return redirect(url_for('admin.dashboard'))
+
+@admin_bp.route('/reports/<int:report_id>/delete', methods=['POST'])
+@login_required
+def delete_report(report_id):
+    if not current_user.is_admin:
+        return redirect(url_for('main.home'))
+    report = Report.query.get(report_id)
+    if report:
+        db.session.delete(report)
+        db.session.commit()
+    return redirect(url_for('admin.dashboard'))
+
+@admin_bp.route('/events', methods=['POST'])
+@login_required
+def create_event():
+    if not current_user.is_admin:
+        return redirect(url_for('main.home'))
+    name = request.form['name']
+    date_str = request.form['date']
+    try:
+        date = datetime.strptime(date_str, '%Y-%m-%d')
+        new_event = Event(name=name, date=date)
+        db.session.add(new_event)
+        db.session.commit()
+        flash('New event added successfully.')
+    except ValueError:
+        flash('Invalid date format. Please use YYYY-MM-DD format.')
     return redirect(url_for('admin.dashboard'))
 
 @admin_bp.route('/events/<int:event_id>/update', methods=['POST'])
@@ -99,47 +125,47 @@ def delete_event(event_id):
         db.session.commit()
     return redirect(url_for('admin.dashboard'))
 
-@admin_bp.route('/users', methods=['GET', 'POST'])
+@admin_bp.route('/users', methods=['POST'])
 @login_required
-def manage_users():
+def create_user():
     if not current_user.is_admin:
         return redirect(url_for('main.home'))
-    
-    # Ajoutez un message de débogage pour afficher la valeur de current_user.is_admin
-    print("Valeur de current_user.is_admin :", current_user.is_admin)
-    
-    if request.method == 'POST':
-        username = request.form['username']
-        email = request.form['email']
-        password = request.form['password']
-        is_admin = request.form.get('is_admin', False)
-        new_user = User(username=username, email=email, is_admin=is_admin)
-        new_user.set_password(password)
-        db.session.add(new_user)
-        db.session.commit()
-        flash('New user added successfully.')
+    username = request.form['username']
+    email = request.form['email']
+    password = request.form['password']
+    is_admin = request.form.get('is_admin', False)
+    new_user = User(username=username, email=email, is_admin=is_admin)
+    new_user.set_password(password)
+    db.session.add(new_user)
+    db.session.commit()
+    flash('New user added successfully.')
+    return redirect(url_for('admin.dashboard'))
 
-    users = User.query.all()
-    return render_template('manage_users.html', users=users)
-
-
-@admin_bp.route('/events', methods=['GET', 'POST'])
+@admin_bp.route('/users/<int:user_id>/update', methods=['POST'])
 @login_required
-def manage_events():
-    if request.method == 'POST':
-        name = request.form['name']
-        date_str = request.form['date']
-        try:
-            date = datetime.strptime(date_str, '%Y-%m-%d %H:%M:%S')
-            new_event = Event(name=name, date=date)
-            db.session.add(new_event)
-            db.session.commit()
-            flash('New event added successfully.')
-        except ValueError:
-            flash('Invalid date format. Please use YYYY-MM-DD HH:MM:SS format.')
+def update_user(user_id):
+    if not current_user.is_admin:
+        return redirect(url_for('main.home'))
+    user = User.query.get(user_id)
+    if user:
+        user.username = request.form['username']
+        user.email = request.form['email']
+        user.is_admin = 'is_admin' in request.form
+        if request.form['password']:
+            user.set_password(request.form['password'])
+        db.session.commit()
+    return redirect(url_for('admin.dashboard'))
 
-    events = Event.query.all()
-    return render_template('manage_events.html', events=events)
+@admin_bp.route('/users/<int:user_id>/delete', methods=['POST'])
+@login_required
+def delete_user(user_id):
+    if not current_user.is_admin:
+        return redirect(url_for('main.home'))
+    user = User.query.get(user_id)
+    if user:
+        db.session.delete(user)
+        db.session.commit()
+    return redirect(url_for('admin.dashboard'))
 
 @main_bp.route('/events/<int:event_id>/attend', methods=['POST'])
 @login_required
@@ -151,13 +177,3 @@ def attend_event(event_id):
         flash('You have marked your attendance for the event.')
     return redirect(url_for('main.home'))
 
-@admin_bp.route('/reports/<int:report_id>/delete', methods=['POST'])
-@login_required
-def delete_report(report_id):
-    if not current_user.is_admin:
-        return redirect(url_for('main.home'))
-    report = Report.query.get(report_id)
-    if report:
-        db.session.delete(report)
-        db.session.commit()
-    return redirect(url_for('admin.dashboard'))
