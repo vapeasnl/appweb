@@ -6,6 +6,7 @@ from datetime import datetime
 main_bp = Blueprint('main', __name__)
 auth_bp = Blueprint('auth', __name__)
 admin_bp = Blueprint('admin', __name__)
+profile_bp = Blueprint('profile', __name__)  # Ajout de cette ligne
 
 @main_bp.route('/')
 def home():
@@ -29,6 +30,26 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('auth.login'))
+
+@profile_bp.route('/profile')  # Utilisation de profile_bp pour définir les routes
+@login_required
+def profile():
+    return render_template('profile.html', user=current_user)
+
+@profile_bp.route('/manage_profile', methods=['GET', 'POST'])
+@login_required
+def manage_profile():
+    if request.method == 'POST':
+        current_user.name = request.form['name']
+        current_user.address = request.form['address']
+        current_user.postal_address = request.form['postal_address']
+        current_user.email = request.form['email']
+        current_user.date_of_birth = request.form['date_of_birth']
+        current_user.marital_status = request.form['marital_status']
+        db.session.commit()
+        flash('Profile updated successfully.')
+        return redirect(url_for('profile.profile'))
+    return render_template('manage_profile.html', user=current_user)
 
 @admin_bp.route('/dashboard')
 @login_required
