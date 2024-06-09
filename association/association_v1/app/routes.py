@@ -7,6 +7,29 @@ main_bp = Blueprint('main', __name__)
 auth_bp = Blueprint('auth', __name__)
 admin_bp = Blueprint('admin', __name__)
 profile_bp = Blueprint('profile', __name__)
+@main_bp.route('/about')
+def about():
+    return render_template('about.html')
+
+@main_bp.route('/activities')
+def activities():
+    return render_template('activities.html')
+
+@main_bp.route('/projects')
+def projects():
+    return render_template('projects.html')
+
+@main_bp.route('/partners')
+def partners():
+    return render_template('partners.html')
+
+@main_bp.route('/help')
+def help():
+    return render_template('help.html')
+
+@main_bp.route('/contact')
+def contact():
+    return render_template('contact.html')
 
 @main_bp.route('/')
 def home():
