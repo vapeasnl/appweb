@@ -1,20 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Profile</title>
-</head>
-<body>
-    <h1>User Profile</h1>
-    <p>Name: {{ user.name }}</p>
-    <p>Username: {{ user.username }}</p>
-    <p>Email: {{ user.email }}</p>
-    <p>Address: {{ user.address }}</p>
-    <p>Postal Address: {{ user.postal_address }}</p>
-    <p>Date of Birth: {{ user.date_of_birth }}</p>
-    <p>Marital Status: {{ user.marital_status }}</p>
-    <!-- Ajoutez d'autres champs ici -->
-</body>
-</html>
+{% extends 'base.html' %}
 
+{% block content %}
+<h1>User Profile</h1>
+<p>Name: {{ user.name }}</p>
+<p>Username: {{ user.username }}</p>
+<p>Email: {{ user.email }}</p>
+<p>Address: {{ user.address }}</p>
+<p>Postal Address: {{ user.postal_address }}</p>
+<p>Date of Birth: {{ user.date_of_birth }}</p>
+<p>Marital Status: {{ user.marital_status }}</p>
+{% endblock %}
