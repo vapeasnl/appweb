@@ -6,7 +6,7 @@ from datetime import datetime
 main_bp = Blueprint('main', __name__)
 auth_bp = Blueprint('auth', __name__)
 admin_bp = Blueprint('admin', __name__)
-profile_bp = Blueprint('profile', __name__)  # Ajout de cette ligne
+profile_bp = Blueprint('profile', __name__)
 
 @main_bp.route('/')
 def home():
@@ -31,7 +31,7 @@ def logout():
     logout_user()
     return redirect(url_for('auth.login'))
 
-@profile_bp.route('/profile')  # Utilisation de profile_bp pour définir les routes
+@profile_bp.route('/profile')
 @login_required
 def profile():
     return render_template('profile.html', user=current_user)
@@ -79,7 +79,6 @@ def create_report():
 def update_report(report_id):
     if not current_user.is_admin:
         return redirect(url_for('main.home'))
-    
     report = Report.query.get(report_id)
     if report:
         report.title = request.form['title']
@@ -90,7 +89,6 @@ def update_report(report_id):
         except ValueError:
             flash('Invalid date format. Please use YYYY-MM-DDTHH:MM format.')
             return redirect(url_for('admin.dashboard'))
-        
         report.content = request.form['content']
         db.session.commit()
     return redirect(url_for('admin.dashboard'))
@@ -197,4 +195,3 @@ def attend_event(event_id):
         db.session.commit()
         flash('You have marked your attendance for the event.')
     return redirect(url_for('main.home'))
-
