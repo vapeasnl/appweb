@@ -1,41 +1,42 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="card">
+<div class="card mt-5">
     <div class="card-header">
         <h2>Manage Profile</h2>
     </div>
     <div class="card-body">
         <form action="{{ url_for('profile.manage_profile') }}" method="POST">
             <div class="form-group">
-                <label for="name">Name:</label>
+                <label for="name">Name</label>
                 <input type="text" class="form-control" id="name" name="name" value="{{ user.name }}">
             </div>
             <div class="form-group">
-                <label for="username">Username:</label>
+                <label for="username">Username</label>
                 <input type="text" class="form-control" id="username" name="username" value="{{ user.username }}">
             </div>
             <div class="form-group">
-                <label for="email">Email:</label>
+                <label for="email">Email</label>
                 <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}">
             </div>
             <div class="form-group">
-                <label for="address">Address:</label>
+                <label for="address">Address</label>
                 <input type="text" class="form-control" id="address" name="address" value="{{ user.address }}">
             </div>
             <div class="form-group">
-                <label for="postal_address">Postal Address:</label>
+                <label for="postal_address">Postal Address</label>
                 <input type="text" class="form-control" id="postal_address" name="postal_address" value="{{ user.postal_address }}">
             </div>
             <div class="form-group">
-                <label for="date_of_birth">Date of Birth:</label>
+                <label for="date_of_birth">Date of Birth</label>
                 <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" value="{{ user.date_of_birth }}">
             </div>
             <div class="form-group">
-                <label for="marital_status">Marital Status:</label>
+                <label for="marital_status">Marital Status</label>
                 <select class="form-control" id="marital_status" name="marital_status">
                     <option value="Single" {% if user.marital_status == 'Single' %} selected {% endif %}>Single</option>
                     <option value="Married" {% if user.marital_status == 'Married' %} selected {% endif %}>Married</option>
+                    <!-- Ajoutez d'autres options ici -->
                 </select>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
