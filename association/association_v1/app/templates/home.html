@@ -1,20 +1,51 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>Upcoming Events</h1>
-    <ul>
-        {% for event in events %}
-            <li>
-                {{ event.name }} - {{ event.date }}
-                <form method="post" action="{{ url_for('main.attend_event', event_id=event.id) }}">
-                    <button type="submit">Mark Attendance</button>
-                </form>
-            </li>
-        {% endfor %}
-    </ul>
+    <!-- Jumbotron -->
+    <div class="jumbotron">
+        <div class="container">
+            <h1 class="display-4">Bienvenue, {{ current_user.username }}</h1>
+            <p class="lead">C'est la page d'accueil de notre association.</p>
+            <p>Vous trouverez ici les événements à venir, les actualités et d'autres informations importantes.</p>
+        </div>
+    </div>
 
-    <h2>Welcome, {{ current_user.username }}</h2>
-    <p>This is the homepage of our application.</p>
-    <p>Here, you can find upcoming events and other important information.</p>
+    <!-- Prochains événements -->
+    <div class="container mb-5">
+        <h2 class="mb-4">Prochains événements</h2>
+        <ul class="list-group">
+            {% for event in events %}
+                <li class="list-group-item">
+                    {{ event.name }} - {{ event.date }}
+                    <form method="post" action="{{ url_for('main.attend_event', event_id=event.id) }}" class="d-inline">
+                        <button type="submit" class="btn btn-primary btn-sm">Marquer la présence</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Actualités -->
+    <div class="container mb-5">
+        <h2 class="mb-4">Dernières actualités</h2>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Titre de l'actualité</h5>
+                <p class="card-text">Description de l'actualité. Description test pour la page d'acceuil.</p>
+            </div>
+        </div>
+        <!-- Ajouter d'autres actualités ici si nécessaire -->
+    </div>
+
+    <!-- Autres informations -->
+    <div class="container">
+        <h2 class="mb-4">Autres informations</h2>
+        <div class="alert alert-info" role="alert">
+            <h4 class="alert-heading">A propos de nous</h4>
+            <p>Informations sur notre association.</p>
+            <hr>
+            <p class="mb-0">Pour en savoir plus, contactez-nous à info@association.com</p>
+        </div>
+        <!-- Ajouter d'autres informations ici si nécessaire -->
+    </div>
 {% endblock %}
-
