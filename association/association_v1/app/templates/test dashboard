@@ -1,0 +1,223 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Dashboard</h1>
+
+<!-- Manage Reports -->
+<div class="card mb-3">
+    <div class="card-header">
+        <h2>Manage Reports <i class="fas fa-file-alt"></i></h2>
+    </div>
+    <div class="card-body">
+        <form method="post" action="{{ url_for('admin.create_report') }}">
+            <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" class="form-control" id="title" name="title">
+            </div>
+            <div class="mb-3">
+                <label for="date" class="form-label">Date</label>
+                <input type="date" class="form-control" id="date" name="date">
+            </div>
+            <div class="mb-3">
+                <label for="content" class="form-label">Content</label>
+                <textarea class="form-control" id="content" name="content"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Report</button>
+        </form>
+        <div class="table-responsive mt-4">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for report in reports %}
+                        <tr>
+                            <td>{{ report.title }}</td>
+                            <td>{{ report.date }}</td>
+                            <td>
+                                <form method="post" action="{{ url_for('admin.update_report', report_id=report.id) }}">
+                                    <input type="text" name="title" value="{{ report.title }}" class="form-control mb-2">
+                                    <input type="date" name="date" value="{{ report.date }}" class="form-control mb-2">
+                                    <textarea name="content" class="form-control mb-2">{{ report.content }}</textarea>
+                                    <button type="submit" class="btn btn-sm btn-primary">Update</button>
+                                </form>
+                                <form method="post" action="{{ url_for('admin.delete_report', report_id=report.id) }}" class="mt-2">
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Manage Users -->
+<div class="card mb-3">
+    <div class="card-header">
+        <h2>Manage Users <i class="fas fa-users"></i></h2>
+    </div>
+    <div class="card-body">
+        <form method="post" action="{{ url_for('admin.create_user') }}">
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" id="username" name="username">
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email">
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name="password">
+            </div>
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="is_admin" name="is_admin">
+                <label class="form-check-label" for="is_admin">Admin</label>
+            </div>
+            <button type="submit" class="btn btn-primary">Add User</button>
+        </form>
+        <div class="table-responsive mt-4">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Admin</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                        <tr>
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{% if user.is_admin %} Yes {% else %} No {% endif %}</td>
+                            <td>
+                                <form method="post" action="{{ url_for('admin.update_user', user_id=user.id) }}" class="d-inline">
+                                    <input type="text" name="username" value="{{ user.username }}" class="form-control mb-2">
+                                    <input type="email" name="email" value="{{ user.email }}" class="form-control mb-2">
+                                    <input type="checkbox" name="is_admin" {% if user.is_admin %} checked {% endif %} class="form-check-input mb-2">
+                                    <button type="submit" class="btn btn-sm btn-primary">Update</button>
+                                </form>
+                                <form method="post" action="{{ url_for('admin.delete_user', user_id=user.id) }}" class="d-inline mt-2">
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Manage Events -->
+<div class="card mb-3">
+    <div class="card-header">
+        <h2>Manage Events <i class="fas fa-calendar-alt"></i></h2>
+    </div>
+    <div class="card-body">
+        <form method="post" action="{{ url_for('admin.create_event') }}">
+            <div class="mb-3">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" class="form-control" id="name" name="name">
+            </div>
+            <div class="mb-3">
+                <label for="date" class="form-label">Date</label>
+                <input type="date" class="form-control" id="date" name="date">
+            </div>
+            <button type="submit" class="btn btn-primary">Add Event</button>
+        </form>
+        <div class="table-responsive mt-4">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for event in events %}
+                        <tr>
+                            <td>{{ event.name }}</td>
+                            <td>{{ event.date }}</td>
+                            <td>
+                                <form method="post" action="{{ url_for('admin.update_event', event_id=event.id) }}" class="d-inline">
+                                    <input type="text" name="name" value="{{ event.name }}" class="form-control mb-2">
+                                    <input type="date" name="date" value="{{ event.date }}" class="form-control mb-2">
+                                    <button type="submit" class="btn btn-sm btn-primary">Update</button>
+                                </form>
+                                <form method="post" action="{{ url_for('admin.delete_event', event_id=event.id) }}" class="d-inline mt-2">
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Manage News -->
+<div class="card mb-3">
+    <div class="card-header">
+        <h2>Manage News <i class="fas fa-newspaper"></i></h2>
+    </div>
+    <div class="card-body">
+        <!-- Form for creating news -->
+        <form method="post" action="{{ url_for('admin.create_news') }}">
+            <div class="mb-3">
+                <label for="news_title" class="form-label">Title</label>
+                <input type="text" class="form-control" id="news_title" name="news_title">
+            </div>
+            <div class="mb-3">
+                <label for="news_content" class="form-label">Content</label>
+                <textarea class="form-control" id="news_content" name="news_content"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Add News</button>
+        </form>
+        <!-- Table to display existing news -->
+        <div class="table-responsive mt-4">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Content</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for news in news_list %}
+                        <tr>
+                            <td>{{ news.title }}</td>
+                            <td>{{ news.content }}</td>
+                            <td>
+                                <!-- Form for updating news -->
+                                <form method="post" action="{{ url_for('admin.update_news', news_id=news.id) }}" class="d-inline">
+                                    <input type="text" name="news_title" value="{{ news.title }}" class="form-control mb-2">
+                                    <textarea name="news_content" class="form-control mb-2">{{ news.content }}</textarea>
+                                    <button type="submit" class="btn btn-sm btn-primary">Update</button>
+                                </form>
+                                <!-- Form for deleting news -->
+                                <form method="post" action="{{ url_for('admin.delete_news', news_id=news.id) }}" class="d-inline mt-2">
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
