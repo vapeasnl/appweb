@@ -90,7 +90,8 @@ def dashboard():
     reports = Report.query.all()
     users = User.query.all()
     events = Event.query.all()
-return render_template('dashboard.html', reports=reports, users=users, events=events, news_list=news_list)
+    news_list = News.query.all()
+    return render_template('dashboard.html', reports=reports, users=users, events=events, news_list=news_list)
 
 @admin_bp.route('/reports', methods=['POST'])
 @login_required
@@ -257,6 +258,19 @@ def delete_news(news_id):
         db.session.commit()
         flash('News deleted successfully.', 'success')
     return redirect(url_for('admin.dashboard'))
+@admin_bp.route('/news/create', methods=['POST'])
+@login_required
+def create_news():
+    if not current_user.is_admin:
+        return redirect(url_for('main.home'))
+    title = request.form['news_title']
+    content = request.form['news_content']
+    news = News(title=title, content=content)
+    db.session.add(news)
+    db.session.commit()
+    flash('News added successfully.', 'success')
+    return redirect(url_for('admin.dashboard'))
+
 
 
 
