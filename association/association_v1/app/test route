@@ -42,7 +42,9 @@ def contact():
 @main_bp.route('/')
 def home():
     events = Event.query.all()
-    return render_template('home.html', events=events)
+    news = News.query.order_by(News.date.desc()).all()
+    return render_template('home.html', events=events, news=news)
+
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
