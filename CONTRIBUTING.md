@@ -6,7 +6,7 @@ Contributing to AssociationHub
 
 TL;DR
 
-* If you [make a pull request](https://github.com/odoo/odoo/wiki/Contributing#making-pull-requests),
+* If you [make a pull request](https://github.com/vapeasnl),
   do not create an issue! Use the PR description for that
 * Issues are handled with a much lower priority than pull requests
 * Use this [template](https://github.com/vapeasnl/.github/blob/main/.github/ISSUE_TEMPLATE.md)
