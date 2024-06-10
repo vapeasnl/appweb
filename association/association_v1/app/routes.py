@@ -9,6 +9,8 @@ admin_bp = Blueprint('admin', __name__)
 profile_bp = Blueprint('profile', __name__)
 news_bp = Blueprint('news', __name__)
 
+#static route
+
 @main_bp.route('/about')
 def about():
     return render_template('about.html')
