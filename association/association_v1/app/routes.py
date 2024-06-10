@@ -1,12 +1,32 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
-from .models import db, User, Association, Event, Report
+
+
+from .models import db, User, Association, News, Event, Report
 from datetime import datetime
 
 main_bp = Blueprint('main', __name__)
 auth_bp = Blueprint('auth', __name__)
 admin_bp = Blueprint('admin', __name__)
 profile_bp = Blueprint('profile', __name__)
+news_bp = Blueprint('news', __name__)
+
+
+
+@admin_bp.route('/news/create', methods=['POST'])
+@login_required
+def create_news():
+    if not current_user.is_admin:
+        return redirect(url_for('main.home'))
+    title = request.form['news_title']
+    content = request.form['news_content']
+    news = News(title=title, content=content)
+    db.session.add(news)
+    db.session.commit()
+    flash('News added successfully.', 'success')
+    return redirect(url_for('admin.dashboard'))
+
+
 @main_bp.route('/about')
 def about():
     return render_template('about.html')
@@ -82,7 +102,8 @@ def dashboard():
     reports = Report.query.all()
     users = User.query.all()
     events = Event.query.all()
-    return render_template('dashboard.html', reports=reports, users=users, events=events)
+    news_list = News.query.all()
+    return render_template('dashboard.html', reports=reports, users=users, events=events, news_list=news_list)
 
 @admin_bp.route('/reports', methods=['POST'])
 @login_required
@@ -181,6 +202,73 @@ def create_user():
     db.session.add(new_user)
     db.session.commit()
     flash('New user added successfully.')
+    return redirect(url_for('admin.dashboard'))
+
+
+
+@news_bp.route('/news', methods=['GET'])
+def view_news():
+    news = News.query.order_by(News.date.desc()).all()
+    return render_template('news.html', news=news)
+
+@news_bp.route('/news/add', methods=['GET', 'POST'])
+@login_required
+def add_news():
+    if request.method == 'POST':
+        title = request.form['title']
+        content = request.form['content']
+        image_url = request.form['image_url']
+        news = News(title=title, content=content, image_url=image_url)
+        db.session.add(news)
+        db.session.commit()
+        flash('News added successfully.', 'success')
+        return redirect(url_for('news.view_news'))
+    return render_template('add_news.html')
+
+@news_bp.route('/news/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit_news(id):
+    news = News.query.get_or_404(id)
+    if request.method == 'POST':
+        news.title = request.form['title']
+        news.content = request.form['content']
+        news.image_url = request.form['image_url']
+        db.session.commit()
+        flash('News updated successfully.', 'success')
+        return redirect(url_for('news.view_news'))
+    return render_template('edit_news.html', news=news)
+
+@news_bp.route('/news/delete/<int:id>', methods=['POST'])
+@login_required
+def delete_news(id):
+    news = News.query.get_or_404(id)
+    db.session.delete(news)
+    db.session.commit()
+    flash('News deleted successfully.', 'success')
+    return redirect(url_for('news.view_news'))
+    @admin_bp.route('/news/<int:news_id>/update', methods=['POST'])
+@login_required
+def update_news(news_id):
+    if not current_user.is_admin:
+        return redirect(url_for('main.home'))
+    news = News.query.get(news_id)
+    if news:
+        news.title = request.form['news_title']
+        news.content = request.form['news_content']
+        db.session.commit()
+        flash('News updated successfully.', 'success')
+    return redirect(url_for('admin.dashboard'))
+
+@admin_bp.route('/news/<int:news_id>/delete', methods=['POST'])
+@login_required
+def delete_news(news_id):
+    if not current_user.is_admin:
+        return redirect(url_for('main.home'))
+    news = News.query.get(news_id)
+    if news:
+        db.session.delete(news)
+        db.session.commit()
+        flash('News deleted successfully.', 'success')
     return redirect(url_for('admin.dashboard'))
 
 @admin_bp.route('/users/<int:user_id>/update', methods=['POST'])
