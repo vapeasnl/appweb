@@ -172,7 +172,6 @@
         <h2>Manage News <i class="fas fa-newspaper"></i></h2>
     </div>
     <div class="card-body">
-        <!-- Form for creating news -->
         <form method="post" action="{{ url_for('admin.create_news') }}">
             <div class="mb-3">
                 <label for="news_title" class="form-label">Title</label>
@@ -184,7 +183,6 @@
             </div>
             <button type="submit" class="btn btn-primary">Add News</button>
         </form>
-        <!-- Table to display existing news -->
         <div class="table-responsive mt-4">
             <table class="table table-bordered">
                 <thead>
@@ -200,13 +198,11 @@
                             <td>{{ news.title }}</td>
                             <td>{{ news.content }}</td>
                             <td>
-                                <!-- Form for updating news -->
                                 <form method="post" action="{{ url_for('admin.update_news', news_id=news.id) }}" class="d-inline">
                                     <input type="text" name="news_title" value="{{ news.title }}" class="form-control mb-2">
                                     <textarea name="news_content" class="form-control mb-2">{{ news.content }}</textarea>
                                     <button type="submit" class="btn btn-sm btn-primary">Update</button>
                                 </form>
-                                <!-- Form for deleting news -->
                                 <form method="post" action="{{ url_for('admin.delete_news', news_id=news.id) }}" class="d-inline mt-2">
                                     <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                                 </form>
