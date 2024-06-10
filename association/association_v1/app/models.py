@@ -1,6 +1,6 @@
 from . import db, login_manager
 from flask_login import UserMixin
-
+from datetime import datetime
 
 
 
@@ -18,26 +18,18 @@ class User(db.Model, UserMixin):
     marital_status = db.Column(db.String(50), nullable=True)
     is_admin = db.Column(db.Boolean, default=False)  # Ajout de l'attribut is_admin
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     def set_password(self, password):
         self.password = password
 
     def check_password(self, password):
         return self.password == password
+class News(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    image_url = db.Column(db.String(100), nullable=True)  # URL de l'image
+    date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
 
 @login_manager.user_loader
 def load_user(user_id):
