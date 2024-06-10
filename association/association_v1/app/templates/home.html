@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <!-- Jumbotron -->
     <div class="jumbotron">
         <div class="container">
             <h1 class="display-4">Bienvenue, {{ current_user.username }}</h1>
@@ -10,7 +9,6 @@
         </div>
     </div>
 
-    <!-- Prochains événements -->
     <div class="container mb-5">
         <h2 class="mb-4">Prochains événements</h2>
         <ul class="list-group">
@@ -25,7 +23,6 @@
         </ul>
     </div>
 
-    <!-- Actualités -->
     <div class="container mb-5">
         <h2 class="mb-4">Dernières actualités</h2>
         <div class="row">
@@ -43,7 +40,6 @@
         </div>
     </div>
 
-    <!-- Autres informations -->
     <div class="container">
         <h2 class="mb-4">Autres informations</h2>
         <div class="alert alert-info" role="alert">
@@ -52,6 +48,5 @@
             <hr>
             <p class="mb-0">Pour en savoir plus, contactez-nous à info@association.com</p>
         </div>
-        <!-- Ajouter d'autres informations ici si nécessaire -->
     </div>
 {% endblock %}
