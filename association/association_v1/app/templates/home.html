@@ -28,13 +28,19 @@
     <!-- Actualités -->
     <div class="container mb-5">
         <h2 class="mb-4">Dernières actualités</h2>
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Titre de l'actualité</h5>
-                <p class="card-text">Description de l'actualité. Description test pour la page d'acceuil.</p>
-            </div>
+        <div class="row">
+            {% for item in news %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="{{ item.image_url }}" class="card-img-top" alt="{{ item.title }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ item.title }}</h5>
+                            <p class="card-text">{{ item.content }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
-        <!-- Ajouter d'autres actualités ici si nécessaire -->
     </div>
 
     <!-- Autres informations -->
