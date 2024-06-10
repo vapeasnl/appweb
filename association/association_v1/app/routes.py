@@ -1,7 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
-
-
 from .models import db, User, Association, News, Event, Report
 from datetime import datetime
 
@@ -10,10 +8,6 @@ auth_bp = Blueprint('auth', __name__)
 admin_bp = Blueprint('admin', __name__)
 profile_bp = Blueprint('profile', __name__)
 news_bp = Blueprint('news', __name__)
-
-
-
-
 
 @main_bp.route('/about')
 def about():
@@ -44,7 +38,16 @@ def home():
     events = Event.query.all()
     news = News.query.order_by(News.date.desc()).all()
     return render_template('home.html', events=events, news=news)
-
+    
+@main_bp.route('/events/<int:event_id>/attend', methods=['POST'])
+@login_required
+def attend_event(event_id):
+    event = Event.query.get(event_id)
+    if event:
+        current_user.attend(event)
+        db.session.commit()
+        flash('You have marked your attendance for the event.')
+    return redirect(url_for('main.home'))
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
@@ -94,6 +97,8 @@ def dashboard():
     events = Event.query.all()
     news_list = News.query.all()
     return render_template('dashboard.html', reports=reports, users=users, events=events, news_list=news_list)
+    
+#report
 
 @admin_bp.route('/reports', methods=['POST'])
 @login_required
@@ -138,6 +143,8 @@ def delete_report(report_id):
         db.session.commit()
     return redirect(url_for('admin.dashboard'))
 
+#event
+
 @admin_bp.route('/events', methods=['POST'])
 @login_required
 def create_event():
@@ -178,6 +185,8 @@ def delete_event(event_id):
         db.session.commit()
     return redirect(url_for('admin.dashboard'))
 
+#user
+
 @admin_bp.route('/users', methods=['POST'])
 @login_required
 def create_user():
@@ -193,8 +202,34 @@ def create_user():
     db.session.commit()
     flash('New user added successfully.')
     return redirect(url_for('admin.dashboard'))
+    
+@admin_bp.route('/users/<int:user_id>/update', methods=['POST'])
+@login_required
+def update_user(user_id):
+    if not current_user.is_admin:
+        return redirect(url_for('main.home'))
+    user = User.query.get(user_id)
+    if user:
+        user.username = request.form['username']
+        user.email = request.form['email']
+        user.is_admin = 'is_admin' in request.form
+        if request.form['password']:
+            user.set_password(request.form['password'])
+        db.session.commit()
+    return redirect(url_for('admin.dashboard'))
 
+@admin_bp.route('/users/<int:user_id>/delete', methods=['POST'])
+@login_required
+def delete_user(user_id):
+    if not current_user.is_admin:
+        return redirect(url_for('main.home'))
+    user = User.query.get(user_id)
+    if user:
+        db.session.delete(user)
+        db.session.commit()
+    return redirect(url_for('admin.dashboard'))
 
+#news
 
 @news_bp.route('/news', methods=['GET'])
 def view_news():
@@ -276,38 +311,6 @@ def create_news():
 
 
 
-@admin_bp.route('/users/<int:user_id>/update', methods=['POST'])
-@login_required
-def update_user(user_id):
-    if not current_user.is_admin:
-        return redirect(url_for('main.home'))
-    user = User.query.get(user_id)
-    if user:
-        user.username = request.form['username']
-        user.email = request.form['email']
-        user.is_admin = 'is_admin' in request.form
-        if request.form['password']:
-            user.set_password(request.form['password'])
-        db.session.commit()
-    return redirect(url_for('admin.dashboard'))
 
-@admin_bp.route('/users/<int:user_id>/delete', methods=['POST'])
-@login_required
-def delete_user(user_id):
-    if not current_user.is_admin:
-        return redirect(url_for('main.home'))
-    user = User.query.get(user_id)
-    if user:
-        db.session.delete(user)
-        db.session.commit()
-    return redirect(url_for('admin.dashboard'))
 
-@main_bp.route('/events/<int:event_id>/attend', methods=['POST'])
-@login_required
-def attend_event(event_id):
-    event = Event.query.get(event_id)
-    if event:
-        current_user.attend(event)
-        db.session.commit()
-        flash('You have marked your attendance for the event.')
-    return redirect(url_for('main.home'))
+
