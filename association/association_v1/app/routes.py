@@ -13,18 +13,6 @@ news_bp = Blueprint('news', __name__)
 
 
 
-@admin_bp.route('/news/create', methods=['POST'])
-@login_required
-def create_news():
-    if not current_user.is_admin:
-        return redirect(url_for('main.home'))
-    title = request.form['news_title']
-    content = request.form['news_content']
-    news = News(title=title, content=content)
-    db.session.add(news)
-    db.session.commit()
-    flash('News added successfully.', 'success')
-    return redirect(url_for('admin.dashboard'))
 
 
 @main_bp.route('/about')
@@ -54,7 +42,9 @@ def contact():
 @main_bp.route('/')
 def home():
     events = Event.query.all()
-    return render_template('home.html', events=events)
+    news = News.query.order_by(News.date.desc()).all()
+    return render_template('home.html', events=events, news=news)
+
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
@@ -246,7 +236,7 @@ def delete_news(id):
     db.session.commit()
     flash('News deleted successfully.', 'success')
     return redirect(url_for('news.view_news'))
-    @admin_bp.route('/news/<int:news_id>/update', methods=['POST'])
+@admin_bp.route('/news/<int:news_id>/update', methods=['POST'])
 @login_required
 def update_news(news_id):
     if not current_user.is_admin:
@@ -270,6 +260,21 @@ def delete_news(news_id):
         db.session.commit()
         flash('News deleted successfully.', 'success')
     return redirect(url_for('admin.dashboard'))
+@admin_bp.route('/news/create', methods=['POST'])
+@login_required
+def create_news():
+    if not current_user.is_admin:
+        return redirect(url_for('main.home'))
+    title = request.form['news_title']
+    content = request.form['news_content']
+    news = News(title=title, content=content)
+    db.session.add(news)
+    db.session.commit()
+    flash('News added successfully.', 'success')
+    return redirect(url_for('admin.dashboard'))
+
+
+
 
 @admin_bp.route('/users/<int:user_id>/update', methods=['POST'])
 @login_required
