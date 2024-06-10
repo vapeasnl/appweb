@@ -16,7 +16,7 @@ class User(db.Model, UserMixin):
     postal_address = db.Column(db.String(200), nullable=True)
     date_of_birth = db.Column(db.Date, nullable=True)
     marital_status = db.Column(db.String(50), nullable=True)
-    is_admin = db.Column(db.Boolean, default=False)  # Ajout de l'attribut is_admin
+    is_admin = db.Column(db.Boolean, default=False)
 
     def set_password(self, password):
         self.password = password
@@ -27,7 +27,7 @@ class News(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     content = db.Column(db.Text, nullable=False)
-    image_url = db.Column(db.String(100), nullable=True)  # URL de l'image
+    image_url = db.Column(db.String(100), nullable=True)
     date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
 
