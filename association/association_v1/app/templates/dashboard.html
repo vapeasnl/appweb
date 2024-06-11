@@ -222,10 +222,11 @@
     </div>
     <div class="card-body">
         <!-- Form to Add Achievement -->
-        <form method="post" action="{{ url_for('admin.add_achievement') }}">
-            <!-- Add form fields for achievement -->
-            <button type="submit" class="btn btn-primary">Add Achievement</button>
-        </form>
+<form method="post" action="{{ url_for('admin.manage_achievements') }}">
+    <!-- Add form fields for achievement -->
+    <button type="submit" class="btn btn-primary">Add Achievement</button>
+</form>
+
 
         <!-- Table to Display Existing Achievements -->
         <div class="table-responsive mt-4">
