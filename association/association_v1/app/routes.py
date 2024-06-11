@@ -90,16 +90,40 @@ def manage_profile():
 
 
 
-@admin_bp.route('/dashboard')
+@admin_bp.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
     if not current_user.is_admin:
         return redirect(url_for('main.home'))
+    
     reports = Report.query.all()
     users = User.query.all()
     events = Event.query.all()
     news_list = News.query.all()
-    return render_template('dashboard.html', reports=reports, users=users, events=events, news_list=news_list)
+    achievements = Achievement.query.all()
+    media_list = Media.query.all()
+
+    if request.method == 'POST':
+        # Logique pour gérer les actions sur les réalisations et les médias
+        if 'edit_achievement' in request.form:
+            achievement_id = request.form.get('edit_achievement')
+            return redirect(url_for('admin.edit_achievement', id=achievement_id))
+        elif 'delete_achievement' in request.form:
+            achievement_id = request.form.get('delete_achievement')
+            # Logique pour supprimer la réalisation avec l'id achievement_id
+            flash('Réalisation supprimée avec succès.', 'success')
+            return redirect(url_for('admin.dashboard'))
+
+        if 'edit_media' in request.form:
+            media_id = request.form.get('edit_media')
+            return redirect(url_for('admin.edit_media', id=media_id))
+        elif 'delete_media' in request.form:
+            media_id = request.form.get('delete_media')
+            # Logique pour supprimer le média avec l'id media_id
+            flash('Média supprimé avec succès.', 'success')
+            return redirect(url_for('admin.dashboard'))
+
+    return render_template('dashboard.html', reports=reports, users=users, events=events, news_list=news_list, achievements=achievements, media_list=media_list)
     
 #report
 
