@@ -322,10 +322,16 @@ def achievements():
     return render_template('achievements.html', achievements=achievements_list)
 
 
-@main_bp.route('/mediatheque')
-def mediatheque():
-    media_list = Media.query.all()
-    return render_template('mediatheque.html', media_list=media_list)
+@main_bp.route('/achievements', methods=['GET', 'POST'])
+def achievements():
+    years = Achievements.query.with_entities(Achievements.year).distinct().all()
+    selected_year = request.form.get('year')
+    if selected_year:
+        achievements = Achievements.query.filter_by(year=selected_year).all()
+    else:
+        achievements = Achievements.query.all()
+    return render_template('achievements.html', achievements=achievements, years=years, selected_year=selected_year)
+
 
 # Routes for Achievements
 @admin_bp.route('/achievements', methods=['POST'])
