@@ -324,6 +324,12 @@ def achievements():
 
 @main_bp.route('/achievements', methods=['GET', 'POST'])
 def achievements():
+    achievements = Achievement.query.all()
+    return render_template('achievements.html', achievements=achievements)
+
+@app.route('/achievements', methods=['GET', 'POST'], endpoint='main.achievements_year')
+@login_required
+def achievements_year():
     years = Achievements.query.with_entities(Achievements.year).distinct().all()
     selected_year = request.form.get('year')
     if selected_year:
@@ -331,8 +337,6 @@ def achievements():
     else:
         achievements = Achievements.query.all()
     return render_template('achievements.html', achievements=achievements, years=years, selected_year=selected_year)
-
-
 # Routes for Achievements
 @admin_bp.route('/achievements', methods=['POST'])
 @login_required
