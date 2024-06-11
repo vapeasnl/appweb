@@ -215,84 +215,94 @@
     </div>
 </div>
 
-<div class="container">
-    <!-- Section for Achievement Management -->
-    <section id="achievement-management">
-        <h2>Manage Achievements</h2>
-        <form method="post" action="{{ url_for('admin.create_achievement') }}">
-            <!-- Form fields for adding new achievement -->
+<!-- Manage Achievements -->
+<div class="card mb-3">
+    <div class="card-header">
+        <h2>Manage Achievements <i class="fas fa-trophy"></i></h2>
+    </div>
+    <div class="card-body">
+        <!-- Form to Add Achievement -->
+        <form method="post" action="{{ url_for('admin.manage_achievements') }}">
+            <!-- Add form fields for achievement -->
             <button type="submit" class="btn btn-primary">Add Achievement</button>
         </form>
-        <!-- Table to display existing achievements -->
-        <table class="table">
-            <!-- Table headers -->
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Loop through achievements and display them in rows -->
-                {% for achievement in achievements %}
-                <tr>
-                    <td>{{ achievement.name }}</td>
-                    <td>{{ achievement.start_date }}</td>
-                    <td>{{ achievement.end_date }}</td>
-                    <td>
-                        <!-- Buttons for editing and deleting achievements -->
-                        <form method="post" action="{{ url_for('admin.edit_achievement', id=achievement.id) }}" class="d-inline">
-                            <button type="submit" class="btn btn-sm btn-primary">Edit</button>
-                        </form>
-                        <form method="post" action="{{ url_for('admin.delete_achievement', id=achievement.id) }}" class="d-inline">
-                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </section>
 
-    <!-- Section for Media Management -->
-    <section id="media-management">
-        <h2>Manage Media</h2>
-        <!-- Form for adding new media -->
-        <form method="post" action="{{ url_for('admin.create_media') }}">
-            <!-- Add form fields for new media -->
+        <!-- Table to Display Existing Achievements -->
+        <div class="table-responsive mt-4">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Achievement Name</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Loop through achievements -->
+                    {% for achievement in achievements_list %}
+                        <tr>
+                            <td>{{ achievement.name }}</td>
+                            <td>{{ achievement.date }}</td>
+                            <!-- Add buttons to edit or delete achievement -->
+                            <td>
+                                <form method="post" action="{{ url_for('admin.edit_achievement', id=achievement.id) }}" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-primary">Edit</button>
+                                </form>
+                                <form method="post" action="{{ url_for('admin.delete_achievement', id=achievement.id) }}" class="d-inline">
+                                   <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Manage Media Library -->
+<div class="card mb-3">
+    <div class="card-header">
+        <h2>Manage Media Library <i class="fas fa-images"></i></h2>
+    </div>
+    <div class="card-body">
+        <!-- Form to Add Media -->
+        <form method="post" action="{{ url_for('admin.manage_media') }}">
+            <!-- Add form fields for media -->
             <button type="submit" class="btn btn-primary">Add Media</button>
         </form>
-        <!-- Table to display existing media -->
-        <table class="table">
-            <!-- Table headers -->
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Loop through media items and display them in rows -->
-                {% for media in media_list %}
-                <tr>
-                    <td>{{ media.name }}</td>
-                    <td>
-                        <!-- Buttons for editing and deleting media -->
-                        <form method="post" action="{{ url_for('admin.edit_media', id=media.id) }}" class="d-inline">
-                            <button type="submit" class="btn btn-sm btn-primary">Edit</button>
-                        </form>
-                        <form method="post" action="{{ url_for('admin.delete_media', id=media.id) }}" class="d-inline">
-                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </section>
+
+        <!-- Table to Display Existing Media -->
+        <div class="table-responsive mt-4">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Media Name</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Loop through media items -->
+                    {% for media in media_list %}
+                        <tr>
+                            <td>{{ media.name }}</td>
+                            <!-- Add buttons to edit or delete media -->
+                            <td>
+                                <form method="post" action="{{ url_for('admin.edit_media', id=media.id) }}" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-primary">Edit</button>
+                                </form>
+                                <form method="post" action="{{ url_for('admin.delete_media', id=media.id) }}" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
+
 
 
 {% endblock %}
