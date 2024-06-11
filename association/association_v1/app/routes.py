@@ -87,9 +87,6 @@ def manage_profile():
     return render_template('manage_profile.html', user=current_user)
 
 
-@main_bp.route('/projects')
-def projects():
-    return redirect(url_for('admin.manage_achievements'))
 
 @main_bp.route('/mediatheque')
 def mediatheque():
@@ -377,6 +374,7 @@ def edit_achievement(id):
 @main_bp.route('/projects')
 def projects():
     return redirect(url_for('admin.manage_achievements'))
+
 
 @main_bp.route('/mediatheque')
 def mediatheque():
