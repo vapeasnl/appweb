@@ -1,6 +1,16 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>Contactez-Nous</h1>
-    <p>Vous avez des questions ou souhaitez nous contacter ? Contactez-nous en utilisant le formulaire ci-dessous ou via nos coordonnées.</p>
+    <h1>Contact us</h1>
+    <p>Do you have any questions or would like to contact us? Contact us using the form below or via our contact details.</p>
+    <form action="/submit_contact" method="post"> <label for="name">Name:</label><br> <input type="text" id="name" name="name"><br><br>
+ 
+<label for="email">Email:</label><br>
+<input type="email" id="email" name="email"><br><br>
+
+<label for="message">Message:</label><br>
+<textarea id="message" name="message" rows="4" cols="50"></textarea><br><br>
+
+<input type="submit" value="Submit">
+</form> <h2>Model de l'association:</h2> <ul> <li>Nom: Oisis association for sustainable development</li> <li>Email: OASD@association.com</li> <li>Adresse: adresse postale</li> <li>Téléphone: 0614550116</li> </ul>
 {% endblock %}
