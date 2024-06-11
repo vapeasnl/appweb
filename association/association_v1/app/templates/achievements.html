@@ -1,11 +1,18 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>Nos Projets</h1>
-    <p>Explorez les projets sur lesquels nous travaillons actuellement ou que nous avons réalisés.</p>
 
 <div class="container my-5">
     <h1 class="mb-4">Achievements</h1>
+    <p>Explorez les projets sur lesquels nous travaillons actuellement ou que nous avons réalisés.</p>
+    <form method="post" action="{{ url_for('main.achievements') }}">
+    <select name="year" class="form-select mb-3" onchange="this.form.submit()">
+        <option value="">Sélectionner une année</option>
+        {% for year in years %}
+            <option value="{{ year }}" {% if year == selected_year %} selected {% endif %}>{{ year }}</option>
+        {% endfor %}
+    </select>
+</form>
     <div class="table-responsive mt-4">
         <table class="table table-bordered">
             <thead>
