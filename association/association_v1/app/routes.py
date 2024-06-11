@@ -314,75 +314,6 @@ def create_news():
     return redirect(url_for('admin.dashboard'))
 
 
-@admin_bp.route('/achievements', methods=['GET', 'POST'])
-@login_required
-def manage_achievements():
-    if not current_user.is_admin:
-        return redirect(url_for('main.home'))
-
-    if request.method == 'POST':
-        name = request.form['name']
-        start_date = request.form['start_date']
-        end_date = request.form['end_date']
-        site = request.form['site']
-        objectives = request.form['objectives']
-        beneficiaries_kind = request.form['beneficiaries_kind']
-        beneficiaries_number = request.form['beneficiaries_number']
-        results_obtained = request.form['results_obtained']
-
-        new_achievement = Achievement(
-            name=name, 
-            start_date=start_date, 
-            end_date=end_date, 
-            site=site, 
-            objectives=objectives, 
-            beneficiaries_kind=beneficiaries_kind, 
-            beneficiaries_number=beneficiaries_number, 
-            results_obtained=results_obtained
-        )
-        db.session.add(new_achievement)
-        db.session.commit()
-        flash('Achievement added successfully.', 'success')
-
-    achievements = Achievement.query.all()
-    return render_template('manage_achievements.html', achievements=achievements)
-
-@admin_bp.route('/achievements/<int:id>/edit', methods=['GET', 'POST'])
-@login_required
-def edit_achievement(id):
-    if not current_user.is_admin:
-        return redirect(url_for('main.home'))
-
-    achievement = Achievement.query.get_or_404(id)
-    if request.method == 'POST':
-        achievement.name = request.form['name']
-        achievement.start_date = request.form['start_date']
-        achievement.end_date = request.form['end_date']
-        achievement.site = request.form['site']
-        achievement.objectives = request.form['objectives']
-        achievement.beneficiaries_kind = request.form['beneficiaries_kind']
-        achievement.beneficiaries_number = request.form['beneficiaries_number']
-        achievement.results_obtained = request.form['results_obtained']
-        db.session.commit()
-        flash('Achievement updated successfully.', 'success')
-        return redirect(url_for('admin.manage_achievements'))
-
-    return render_template('edit_achievement.html', achievement=achievement)
-
-@admin_bp.route('/achievements/<int:id>/delete', methods=['POST'])
-@login_required
-def delete_achievement(id):
-    if not current_user.is_admin:
-        return redirect(url_for('main.home'))
-
-    if request.method == 'POST':
-        achievement = Achievement.query.get_or_404(id)
-        db.session.delete(achievement)
-        db.session.commit()
-        flash('Achievement deleted successfully.', 'success')
-
-    return redirect(url_for('admin.manage_achievements'))
-
 @main_bp.route('/projects')
 def projects():
     return redirect(url_for('admin.manage_achievements'))
@@ -392,54 +323,99 @@ def projects():
 def mediatheque():
     media_list = Media.query.all()
     return render_template('mediatheque.html', media_list=media_list)
-@admin_bp.route('/media', methods=['GET', 'POST'])
+
+# Routes for Achievements
+@admin_bp.route('/achievements', methods=['POST'])
 @login_required
-def manage_media():
+def create_achievement():
     if not current_user.is_admin:
         return redirect(url_for('main.home'))
-
-    if request.method == 'POST':
-        title = request.form['title']
-        description = request.form['description']
-        image_url = request.form['image_url']
-
-        new_media = Media(title=title, description=description, image_url=image_url)
-        db.session.add(new_media)
+    name = request.form['name']
+    start_date = request.form['start_date']
+    end_date = request.form['end_date']
+    site = request.form['site']
+    objectives = request.form['objectives']
+    beneficiaries_kind = request.form['beneficiaries_kind']
+    beneficiaries_number = request.form['beneficiaries_number']
+    results_obtained = request.form['results_obtained']
+    try:
+        start_date = datetime.strptime(start_date, '%Y-%m-%d')
+        end_date = datetime.strptime(end_date, '%Y-%m-%d')
+        new_achievement = Achievement(name=name, start_date=start_date, end_date=end_date, site=site, objectives=objectives, beneficiaries_kind=beneficiaries_kind, beneficiaries_number=beneficiaries_number, results_obtained=results_obtained)
+        db.session.add(new_achievement)
         db.session.commit()
-        flash('Media added successfully.', 'success')
+        flash('New achievement added successfully.')
+    except ValueError:
+        flash('Invalid date format. Please use YYYY-MM-DD format.')
+    return redirect(url_for('admin.dashboard'))
 
-    media_list = Media.query.all()
-    return render_template('manage_media.html', media_list=media_list)
-
-@admin_bp.route('/media/<int:id>/edit', methods=['GET', 'POST'])
+@admin_bp.route('/achievements/<int:achievement_id>/update', methods=['POST'])
 @login_required
-def edit_media(id):
+def update_achievement(achievement_id):
     if not current_user.is_admin:
         return redirect(url_for('main.home'))
+    achievement = Achievement.query.get(achievement_id)
+    if achievement:
+        achievement.name = request.form['name']
+        achievement.start_date = request.form['start_date']
+        achievement.end_date = request.form['end_date']
+        achievement.site = request.form['site']
+        achievement.objectives = request.form['objectives']
+        achievement.beneficiaries_kind = request.form['beneficiaries_kind']
+        achievement.beneficiaries_number = request.form['beneficiaries_number']
+        achievement.results_obtained = request.form['results_obtained']
+        db.session.commit()
+    return redirect(url_for('admin.dashboard'))
 
-    media = Media.query.get_or_404(id)
-    if request.method == 'POST':
+@admin_bp.route('/achievements/<int:achievement_id>/delete', methods=['POST'])
+@login_required
+def delete_achievement(achievement_id):
+    if not current_user.is_admin:
+        return redirect(url_for('main.home'))
+    achievement = Achievement.query.get(achievement_id)
+    if achievement:
+        db.session.delete(achievement)
+        db.session.commit()
+    return redirect(url_for('admin.dashboard'))
+
+# Routes for Media
+@admin_bp.route('/media', methods=['POST'])
+@login_required
+def create_media():
+    if not current_user.is_admin:
+        return redirect(url_for('main.home'))
+    title = request.form['title']
+    description = request.form['description']
+    file_url = request.form['file_url']
+    new_media = Media(title=title, description=description, file_url=file_url)
+    db.session.add(new_media)
+    db.session.commit()
+    flash('New media added successfully.')
+    return redirect(url_for('admin.dashboard'))
+
+@admin_bp.route('/media/<int:media_id>/update', methods=['POST'])
+@login_required
+def update_media(media_id):
+    if not current_user.is_admin:
+        return redirect(url_for('main.home'))
+    media = Media.query.get(media_id)
+    if media:
         media.title = request.form['title']
         media.description = request.form['description']
-        media.image_url = request.form['image_url']
+        media.file_url = request.form['file_url']
         db.session.commit()
-        flash('Media updated successfully.', 'success')
-        return redirect(url_for('admin.manage_media'))
+    return redirect(url_for('admin.dashboard'))
 
-    return render_template('edit_media.html', media=media)
-
-@admin_bp.route('/media/<int:id>/delete', methods=['POST'])
+@admin_bp.route('/media/<int:media_id>/delete', methods=['POST'])
 @login_required
-def delete_media(id):
+def delete_media(media_id):
     if not current_user.is_admin:
         return redirect(url_for('main.home'))
-
-    media = Media.query.get_or_404(id)
-    db.session.delete(media)
-    db.session.commit()
-    flash('Media deleted successfully.', 'success')
-    return redirect(url_for('admin.manage_media'))
-
+    media = Media.query.get(media_id)
+    if media:
+        db.session.delete(media)
+        db.session.commit()
+    return redirect(url_for('admin.dashboard'))
 
 
 
