@@ -317,7 +317,6 @@ def create_news():
 
 
 @main_bp.route('/achievements', methods=['GET', 'POST'])
-@login_required
 def achievements():
     if request.method == 'POST':
         selected_year = request.form.get('year')
@@ -325,13 +324,15 @@ def achievements():
             achievements = Achievement.query.filter_by(year=selected_year).all()
         else:
             achievements = Achievement.query.all()
+        return render_template('achievements.html', achievements=achievements)
     else:
         achievements = Achievement.query.all()
-        selected_year = None
+        return render_template('achievements.html', achievements=achievements)
 
-    years = Achievement.query.with_entities(Achievement.year).distinct().all()
-    
-    return render_template('achievements.html', achievements=achievements, years=years, selected_year=selected_year)
+@main_bp.route('/achievements/year/<int:year>', methods=['GET'])
+def achievements_by_year(year):
+    achievements = Achievement.query.filter_by(year=year).all()
+    return render_template('achievements.html', achievements=achievements)
 
 # Routes for Achievements
 @admin_bp.route('/achievements', methods=['POST'])
