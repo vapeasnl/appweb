@@ -314,9 +314,12 @@ def create_news():
     return redirect(url_for('admin.dashboard'))
 
 
-@main_bp.route('/projects')
-def projects():
-    return redirect(url_for('admin.manage_achievements'))
+
+
+@main_bp.route('/achievements')
+def achievements():
+    achievements_list = Achievement.query.all()
+    return render_template('achievements.html', achievements=achievements_list)
 
 
 @main_bp.route('/mediatheque')
