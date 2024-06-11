@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
-from .models import db, User, Association, News, Event, Report
+from .models import db, User, Association, News, Event, Report, Achievement, Media
 from datetime import datetime
 
 main_bp = Blueprint('main', __name__)
@@ -85,6 +85,55 @@ def manage_profile():
         flash('Profile updated successfully.')
         return redirect(url_for('profile.profile'))
     return render_template('manage_profile.html', user=current_user)
+
+@admin_bp.route('/media', methods=['GET', 'POST'])
+@login_required
+def manage_media():
+    if not current_user.is_admin:
+        return redirect(url_for('main.home'))
+
+    if request.method == 'POST':
+        title = request.form['title']
+        description = request.form['description']
+        image_url = request.form['image_url']
+
+        new_media = Media(title=title, description=description, image_url=image_url)
+        db.session.add(new_media)
+        db.session.commit()
+        flash('Media added successfully.', 'success')
+
+    media_list = Media.query.all()
+    return render_template('manage_media.html', media_list=media_list)
+
+@admin_bp.route('/media/<int:id>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_media(id):
+    if not current_user.is_admin:
+        return redirect(url_for('main.home'))
+
+    media = Media.query.get_or_404(id)
+    if request.method == 'POST':
+        media.title = request.form['title']
+        media.description = request.form['description']
+        media.image_url = request.form['image_url']
+        db.session.commit()
+        flash('Media updated successfully.', 'success')
+        return redirect(url_for('admin.manage_media'))
+
+    return render_template('edit_media.html', media=media)
+
+@admin_bp.route('/media/<int:id>/delete', methods=['POST'])
+@login_required
+def delete_media(id):
+    if not current_user.is_admin:
+        return redirect(url_for('main.home'))
+
+    media = Media.query.get_or_404(id)
+    db.session.delete(media)
+    db.session.commit()
+    flash('Media deleted successfully.', 'success')
+    return redirect(url_for('admin.manage_media'))
+
 @admin_bp.route('/achievements', methods=['GET', 'POST'])
 @login_required
 def manage_achievements():
