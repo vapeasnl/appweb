@@ -30,6 +30,23 @@ class News(db.Model):
     image_url = db.Column(db.String(100), nullable=True)
     date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
+class Media(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    image_url = db.Column(db.String(200), nullable=False)
+
+class Achievement(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    start_date = db.Column(db.Date, nullable=False)
+    end_date = db.Column(db.Date, nullable=False)  # Nouveau champ pour la date de fin
+    site = db.Column(db.String(100), nullable=False)
+    objectives = db.Column(db.Text, nullable=False)
+    beneficiaries_kind = db.Column(db.String(100), nullable=False)
+    beneficiaries_number = db.Column(db.Integer, nullable=False)
+    results_obtained = db.Column(db.Text, nullable=False)
+
 
 @login_manager.user_loader
 def load_user(user_id):
