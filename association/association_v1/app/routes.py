@@ -88,11 +88,6 @@ def manage_profile():
 
 
 
-@main_bp.route('/mediatheque')
-def mediatheque():
-    media_list = Media.query.all()
-    return render_template('mediatheque.html', media_list=media_list)
-
 
 
 @admin_bp.route('/dashboard')
