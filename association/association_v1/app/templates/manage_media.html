@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-5">
+    <h1 class="mb-4">Manage Media</h1>
+    <form method="post" class="mb-4">
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" class="form-control" id="title" name="title" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea class="form-control" id="description" name="description" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="image_url">Image URL</label>
+            <input type="text" class="form-control" id="image_url" name="image_url" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Media</button>
+    </form>
+
+    <div class="row">
+        {% for media in media_list %}
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <img src="{{ media.image_url }}" class="card-img-top" alt="{{ media.title }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ media.title }}</h5>
+                    <p class="card-text">{{ media.description }}</p>
+                    <a href="{{ url_for('admin.edit_media', id=media.id) }}" class="btn btn-sm btn-primary">Edit</a>
+                    <form method="post" action="{{ url_for('admin.delete_media', id=media.id) }}" class="d-inline">
+                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
