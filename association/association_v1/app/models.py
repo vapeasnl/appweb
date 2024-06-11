@@ -39,13 +39,14 @@ class Media(db.Model):
 class Achievement(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
-    start_date = db.Column(db.Date, nullable=False)
-    end_date = db.Column(db.Date, nullable=False)  # Nouveau champ pour la date de fin
+    start_date = db.Column(db.DateTime, nullable=False)
+    end_date = db.Column(db.DateTime, nullable=False)
     site = db.Column(db.String(100), nullable=False)
     objectives = db.Column(db.Text, nullable=False)
     beneficiaries_kind = db.Column(db.String(100), nullable=False)
     beneficiaries_number = db.Column(db.Integer, nullable=False)
     results_obtained = db.Column(db.Text, nullable=False)
+    year = db.Column(db.Integer, nullable=False)
 
 
 @login_manager.user_loader
