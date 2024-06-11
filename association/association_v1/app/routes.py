@@ -90,51 +90,17 @@ def manage_profile():
 
 
 
-@admin_bp.route('/dashboard', methods=['GET', 'POST'])
+@admin_bp.route('/dashboard')
 @login_required
 def dashboard():
     if not current_user.is_admin:
         return redirect(url_for('main.home'))
-    
-    # Récupération des données existantes
     reports = Report.query.all()
     users = User.query.all()
     events = Event.query.all()
     news_list = News.query.all()
     achievements = Achievement.query.all()
     media_list = Media.query.all()
-
-    if request.method == 'POST':
-        # Vérifie si le formulaire pour ajouter une réalisation a été soumis
-        if 'add_achievement' in request.form:
-            # Récupère les données du formulaire
-            name = request.form['name']
-            start_date = request.form['start_date']
-            end_date = request.form['end_date']
-            site = request.form['site']
-            objectives = request.form['objectives']
-            beneficiaries_kind = request.form['beneficiaries_kind']
-            beneficiaries_number = request.form['beneficiaries_number']
-            results_obtained = request.form['results_obtained']
-
-            # Crée une nouvelle réalisation et l'ajoute à la base de données
-            new_achievement = Achievement(
-                name=name, 
-                start_date=start_date, 
-                end_date=end_date, 
-                site=site, 
-                objectives=objectives, 
-                beneficiaries_kind=beneficiaries_kind, 
-                beneficiaries_number=beneficiaries_number, 
-                results_obtained=results_obtained
-            )
-            db.session.add(new_achievement)
-            db.session.commit()
-
-            # Redirige vers la page dashboard
-            flash('Achievement added successfully.', 'success')
-            return redirect(url_for('admin.dashboard'))
-
     return render_template('dashboard.html', reports=reports, users=users, events=events, news_list=news_list, achievements=achievements, media_list=media_list)
 
 #report
