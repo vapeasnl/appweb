@@ -229,7 +229,9 @@
             <thead>
                 <tr>
                     <th>Name</th>
-                    <!-- Add more headers as needed -->
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -237,7 +239,8 @@
                 {% for achievement in achievements %}
                 <tr>
                     <td>{{ achievement.name }}</td>
-                    <!-- Add more cells for other achievement details -->
+                    <td>{{ achievement.start_date }}</td>
+                    <td>{{ achievement.end_date }}</td>
                     <td>
                         <!-- Buttons for editing and deleting achievements -->
                         <form method="post" action="{{ url_for('admin.edit_achievement', id=achievement.id) }}" class="d-inline">
@@ -267,7 +270,7 @@
             <thead>
                 <tr>
                     <th>Name</th>
-                    <!-- Add more headers as needed -->
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -275,7 +278,6 @@
                 {% for media in media_list %}
                 <tr>
                     <td>{{ media.name }}</td>
-                    <!-- Add more cells for other media details -->
                     <td>
                         <!-- Buttons for editing and deleting media -->
                         <form method="post" action="{{ url_for('admin.edit_media', id=media.id) }}" class="d-inline">
