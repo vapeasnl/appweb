@@ -104,19 +104,48 @@ def dashboard():
     media_list = Media.query.all()
 
     if request.method == 'POST':
-        # Logique pour gérer les actions sur les réalisations et les médias
-        if 'edit_achievement' in request.form:
+        # Ajout d'une réalisation
+        if 'add_achievement' in request.form:
+            # Logique pour ajouter une réalisation
+            name = request.form['name']
+            start_date = request.form['start_date']
+            end_date = request.form['end_date']
+            site = request.form['site']
+            objectives = request.form['objectives']
+            beneficiaries_kind = request.form['beneficiaries_kind']
+            beneficiaries_number = request.form['beneficiaries_number']
+            results_obtained = request.form['results_obtained']
+
+            new_achievement = Achievement(
+                name=name, 
+                start_date=start_date, 
+                end_date=end_date, 
+                site=site, 
+                objectives=objectives, 
+                beneficiaries_kind=beneficiaries_kind, 
+                beneficiaries_number=beneficiaries_number, 
+                results_obtained=results_obtained
+            )
+            db.session.add(new_achievement)
+            db.session.commit()
+            flash('Réalisation ajoutée avec succès.', 'success')
+
+        # Gestion de l'édition et de la suppression des réalisations
+        elif 'edit_achievement' in request.form:
             achievement_id = request.form.get('edit_achievement')
             return redirect(url_for('admin.edit_achievement', id=achievement_id))
+
         elif 'delete_achievement' in request.form:
             achievement_id = request.form.get('delete_achievement')
-            # Logique pour supprimer la réalisation avec l'id achievement_id
+            achievement = Achievement.query.get(achievement_id)
+            db.session.delete(achievement)
+            db.session.commit()
             flash('Réalisation supprimée avec succès.', 'success')
-            return redirect(url_for('admin.dashboard'))
 
-        if 'edit_media' in request.form:
+        elif 'edit_media' in request.form:
             media_id = request.form.get('edit_media')
             return redirect(url_for('admin.edit_media', id=media_id))
+
         elif 'delete_media' in request.form:
             media_id = request.form.get('delete_media')
             # Logique pour supprimer le média avec l'id media_id
@@ -124,7 +153,7 @@ def dashboard():
             return redirect(url_for('admin.dashboard'))
 
     return render_template('dashboard.html', reports=reports, users=users, events=events, news_list=news_list, achievements=achievements, media_list=media_list)
-    
+ 
 #report
 
 @admin_bp.route('/reports', methods=['POST'])
