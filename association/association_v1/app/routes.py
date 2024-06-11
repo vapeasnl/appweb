@@ -19,9 +19,6 @@ def about():
 def activities():
     return render_template('activities.html')
 
-@main_bp.route('/projects')
-def projects():
-    return render_template('projects.html')
 
 @main_bp.route('/partners')
 def partners():
@@ -88,6 +85,71 @@ def manage_profile():
         flash('Profile updated successfully.')
         return redirect(url_for('profile.profile'))
     return render_template('manage_profile.html', user=current_user)
+@admin_bp.route('/achievements', methods=['GET', 'POST'])
+@login_required
+def manage_achievements():
+    if not current_user.is_admin:
+        return redirect(url_for('main.home'))
+
+    if request.method == 'POST':
+        name = request.form['name']
+        start_date = request.form['start_date']
+        end_date = request.form['end_date']
+        site = request.form['site']
+        objectives = request.form['objectives']
+        beneficiaries_kind = request.form['beneficiaries_kind']
+        beneficiaries_number = request.form['beneficiaries_number']
+        results_obtained = request.form['results_obtained']
+
+        new_achievement = Achievement(
+            name=name, 
+            start_date=start_date, 
+            end_date=end_date, 
+            site=site, 
+            objectives=objectives, 
+            beneficiaries_kind=beneficiaries_kind, 
+            beneficiaries_number=beneficiaries_number, 
+            results_obtained=results_obtained
+        )
+        db.session.add(new_achievement)
+        db.session.commit()
+        flash('Achievement added successfully.', 'success')
+
+    achievements = Achievement.query.all()
+    return render_template('manage_achievements.html', achievements=achievements)
+
+@admin_bp.route('/achievements/<int:id>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_achievement(id):
+    if not current_user.is_admin:
+        return redirect(url_for('main.home'))
+
+    achievement = Achievement.query.get_or_404(id)
+    if request.method == 'POST':
+        achievement.name = request.form['name']
+        achievement.start_date = request.form['start_date']
+        achievement.end_date = request.form['end_date']
+        achievement.site = request.form['site']
+        achievement.objectives = request.form['objectives']
+        achievement.beneficiaries_kind = request.form['beneficiaries_kind']
+        achievement.beneficiaries_number = request.form['beneficiaries_number']
+        achievement.results_obtained = request.form['results_obtained']
+        db.session.commit()
+        flash('Achievement updated successfully.', 'success')
+        return redirect(url_for('admin.manage_achievements'))
+
+    return render_template('edit_achievement.html', achievement=achievement)
+
+@main_bp.route('/projects')
+def projects():
+    return redirect(url_for('admin.manage_achievements'))
+
+@main_bp.route('/mediatheque')
+def mediatheque():
+    media_list = Media.query.all()
+    return render_template('mediatheque.html', media_list=media_list)
+
+
 
 @admin_bp.route('/dashboard')
 @login_required
