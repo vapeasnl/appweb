@@ -366,6 +366,21 @@ def edit_achievement(id):
         return redirect(url_for('admin.manage_achievements'))
 
     return render_template('edit_achievement.html', achievement=achievement)
+
+@admin_bp.route('/achievements/<int:id>/delete', methods=['POST'])
+@login_required
+def delete_achievement(id):
+    if not current_user.is_admin:
+        return redirect(url_for('main.home'))
+
+    if request.method == 'POST':
+        achievement = Achievement.query.get_or_404(id)
+        db.session.delete(achievement)
+        db.session.commit()
+        flash('Achievement deleted successfully.', 'success')
+
+    return redirect(url_for('admin.manage_achievements'))
+
 @main_bp.route('/projects')
 def projects():
     return redirect(url_for('admin.manage_achievements'))
