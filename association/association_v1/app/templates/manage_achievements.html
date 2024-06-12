@@ -3,6 +3,18 @@
 {% block content %}
 <div class="container my-5">
     <h1 class="mb-4">Manage Achievements</h1>
+     <form method="post" action="{{ url_for('main.achievements') }}">
+        <div class="form-group">
+            <label for="year">Select Year:</label>
+            <select class="form-control" id="year" name="year">
+                <option value="">All</option>
+                {% for year in years %}
+                    <option value="{{ year }}">{{ year }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Filter</button>
+    </form>
     <form method="post" action="{{ url_for('admin.create_achievement') }}">
         <div class="form-group">
             <label for="name">Activity Name</label>
