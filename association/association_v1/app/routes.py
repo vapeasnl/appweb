@@ -403,6 +403,7 @@ def achievements():
         achievements = Achievement.query.all()
     return render_template('achievements.html', achievements=achievements, years=years, selected_year=selected_year)
 
+
 # Routes for Media
 @admin_bp.route('/media', methods=['POST'])
 @login_required
