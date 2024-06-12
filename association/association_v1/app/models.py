@@ -2,7 +2,7 @@ from . import db, login_manager
 from flask_login import UserMixin
 from datetime import datetime
 
-
+db = SQLAlchemy()
 
 class User(db.Model, UserMixin):
     __tablename__ = 'user'
@@ -46,7 +46,6 @@ class Achievement(db.Model):
     beneficiaries_kind = db.Column(db.String(150), nullable=False)
     beneficiaries_number = db.Column(db.Integer, nullable=False)
     results_obtained = db.Column(db.Text, nullable=False)
-
 
 @login_manager.user_loader
 def load_user(user_id):
