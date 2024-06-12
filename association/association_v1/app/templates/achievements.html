@@ -3,16 +3,14 @@
 {% block content %}
 <div class="container my-5">
     <h1 class="mb-4">Achievements</h1>
+    <p>Explorez les projets sur lesquels nous travaillons actuellement ou que nous avons réalisés.</p>
     <form method="post" action="{{ url_for('main.achievements') }}">
-        <div class="form-group">
-            <label for="year">Select Year</label>
-            <select name="year" id="year" class="form-control" onchange="this.form.submit()">
-                <option value="">All Years</option>
-                {% for year in years %}
-                    <option value="{{ year }}" {% if year == selected_year %} selected {% endif %}>{{ year }}</option>
-                {% endfor %}
-            </select>
-        </div>
+        <select name="year" class="form-select mb-3" onchange="this.form.submit()">
+            <option value="">Sélectionner une année</option>
+            {% for year in years %}
+                <option value="{{ year }}" {% if year == selected_year %} selected {% endif %}>{{ year }}</option>
+            {% endfor %}
+        </select>
     </form>
     <div class="table-responsive mt-4">
         <table class="table table-bordered">
@@ -29,15 +27,15 @@
             </thead>
             <tbody>
                 {% for achievement in achievements %}
-                    <tr>
-                        <td>{{ achievement.name }}</td>
-                        <td>{{ achievement.start_date }} - {{ achievement.end_date }}</td>
-                        <td>{{ achievement.site }}</td>
-                        <td>{{ achievement.objectives }}</td>
-                        <td>{{ achievement.beneficiaries_kind }}</td>
-                        <td>{{ achievement.beneficiaries_number }}</td>
-                        <td>{{ achievement.results_obtained }}</td>
-                    </tr>
+                <tr>
+                    <td>{{ achievement.name }}</td>
+                    <td>{{ achievement.start_date }} - {{ achievement.end_date }}</td>
+                    <td>{{ achievement.site }}</td>
+                    <td>{{ achievement.objectives }}</td>
+                    <td>{{ achievement.beneficiaries_kind }}</td>
+                    <td>{{ achievement.beneficiaries_number }}</td>
+                    <td>{{ achievement.results_obtained }}</td>
+                </tr>
                 {% endfor %}
             </tbody>
         </table>
