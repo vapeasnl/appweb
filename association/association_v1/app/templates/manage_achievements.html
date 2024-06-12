@@ -54,31 +54,31 @@
             </thead>
             <tbody>
                 {% for achievement in achievements %}
-                    <tr>
-                        <td>{{ achievement.name }}</td>
-                        <td>{{ achievement.start_date }} - {{ achievement.end_date }}</td>
-                        <td>{{ achievement.site }}</td>
-                        <td>{{ achievement.objectives }}</td>
-                        <td>{{ achievement.beneficiaries_kind }}</td>
-                        <td>{{ achievement.beneficiaries_number }}</td>
-                        <td>{{ achievement.results_obtained }}</td>
-                        <td>
-                            <form method="post" action="{{ url_for('admin.update_achievement', achievement_id=achievement.id) }}" class="d-inline">
-                                <input type="text" name="name" value="{{ achievement.name }}" class="form-control mb-2">
-                                <input type="date" name="start_date" value="{{ achievement.start_date }}" class="form-control mb-2">
-                                <input type="date" name="end_date" value="{{ achievement.end_date }}" class="form-control mb-2">
-                                <input type="text" name="site" value="{{ achievement.site }}" class="form-control mb-2">
-                                <textarea name="objectives" class="form-control mb-2">{{ achievement.objectives }}</textarea>
-                                <input type="text" name="beneficiaries_kind" value="{{ achievement.beneficiaries_kind }}" class="form-control mb-2">
-                                <input type="number" name="beneficiaries_number" value="{{ achievement.beneficiaries_number }}" class="form-control mb-2">
-                                <textarea name="results_obtained" class="form-control mb-2">{{ achievement.results_obtained }}</textarea>
-                                <button type="submit" class="btn btn-sm btn-primary">Update</button>
-                            </form>
-                            <form method="post" action="{{ url_for('admin.delete_achievement', achievement_id=achievement.id) }}" class="d-inline mt-2">
-                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
+                <tr>
+                    <td>{{ achievement.name }}</td>
+                    <td>{{ achievement.start_date }} - {{ achievement.end_date }}</td>
+                    <td>{{ achievement.site }}</td>
+                    <td>{{ achievement.objectives }}</td>
+                    <td>{{ achievement.beneficiaries_kind }}</td>
+                    <td>{{ achievement.beneficiaries_number }}</td>
+                    <td>{{ achievement.results_obtained }}</td>
+                    <td>
+                        <form method="post" action="{{ url_for('admin.update_achievement', achievement_id=achievement.id) }}" class="d-inline">
+                            <input type="text" name="name" value="{{ achievement.name }}" class="form-control mb-2">
+                            <input type="date" name="start_date" value="{{ achievement.start_date }}" class="form-control mb-2">
+                            <input type="date" name="end_date" value="{{ achievement.end_date }}" class="form-control mb-2">
+                            <input type="text" name="site" value="{{ achievement.site }}" class="form-control mb-2">
+                            <textarea name="objectives" class="form-control mb-2">{{ achievement.objectives }}</textarea>
+                            <input type="text" name="beneficiaries_kind" value="{{ achievement.beneficiaries_kind }}" class="form-control mb-2">
+                            <input type="number" name="beneficiaries_number" value="{{ achievement.beneficiaries_number }}" class="form-control mb-2">
+                            <textarea name="results_obtained" class="form-control mb-2">{{ achievement.results_obtained }}</textarea>
+                            <button type="submit" class="btn btn-sm btn-primary">Update</button>
+                        </form>
+                        <form method="post" action="{{ url_for('admin.delete_achievement', achievement_id=achievement.id) }}" class="d-inline mt-2">
+                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
                 {% endfor %}
             </tbody>
         </table>
