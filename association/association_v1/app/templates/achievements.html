@@ -9,7 +9,7 @@
             <select name="year" id="year" class="form-control" onchange="this.form.submit()">
                 <option value="">All Years</option>
                 {% for year in years %}
-                    <option value="{{ year }}" {% if year == selected_year %}selected{% endif %}>{{ year }}</option>
+                    <option value="{{ year }}" {% if year == selected_year %} selected {% endif %}>{{ year }}</option>
                 {% endfor %}
             </select>
         </div>
