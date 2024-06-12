@@ -372,8 +372,8 @@ def update_achievement(achievement_id):
     achievement = Achievement.query.get(achievement_id)
     if achievement:
         achievement.name = request.form['name']
-        achievement.start_date = request.form['start_date']
-        achievement.end_date = request.form['end_date']
+        achievement.start_date = datetime.strptime(request.form['start_date'], '%Y-%m-%d')
+        achievement.end_date = datetime.strptime(request.form['end_date'], '%Y-%m-%d')
         achievement.site = request.form['site']
         achievement.objectives = request.form['objectives']
         achievement.beneficiaries_kind = request.form['beneficiaries_kind']
@@ -392,6 +392,16 @@ def delete_achievement(achievement_id):
         db.session.delete(achievement)
         db.session.commit()
     return redirect(url_for('admin.dashboard'))
+
+@main_bp.route('/achievements', methods=['GET', 'POST'])
+def achievements():
+    years = [year[0] for year in db.session.query(func.extract('year', Achievement.start_date)).distinct()]
+    selected_year = request.form.get('year')
+    if selected_year:
+        achievements = Achievement.query.filter(func.extract('year', Achievement.start_date) == int(selected_year)).all()
+    else:
+        achievements = Achievement.query.all()
+    return render_template('achievements.html', achievements=achievements, years=years, selected_year=selected_year)
 
 # Routes for Media
 @admin_bp.route('/media', methods=['POST'])
