@@ -1,8 +1,9 @@
-from . import db, login_manager
-from flask_login import UserMixin
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin, LoginManager
 from datetime import datetime
 
 db = SQLAlchemy()
+login_manager = LoginManager()
 
 class User(db.Model, UserMixin):
     __tablename__ = 'user'
@@ -23,6 +24,7 @@ class User(db.Model, UserMixin):
 
     def check_password(self, password):
         return self.password == password
+
 class News(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
@@ -34,7 +36,7 @@ class Media(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text, nullable=False)
-    image_url = db.Column(db.String(200), nullable=False)
+    file_url = db.Column(db.String(200), nullable=False)
 
 class Achievement(db.Model):
     id = db.Column(db.Integer, primary_key=True)
