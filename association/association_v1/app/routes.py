@@ -316,23 +316,26 @@ def create_news():
 
 
 
+@main_bp.route('/achievements/year/<int:year>', methods=['GET'])
+def achievements_by_year(year):
+    achievements = Achievement.query.filter(func.year(Achievement.start_date) == year).all()
+    return render_template('achievements.html', achievements=achievements)
+
+
 @main_bp.route('/achievements', methods=['GET', 'POST'])
 def achievements():
+    years = [year.year for year in Achievement.query.with_entities(func.year(Achievement.start_date)).distinct().all()]
     if request.method == 'POST':
         selected_year = request.form.get('year')
         if selected_year:
-            achievements = Achievement.query.filter_by(year=selected_year).all()
+            achievements = Achievement.query.filter(func.year(Achievement.start_date) == selected_year).all()
         else:
             achievements = Achievement.query.all()
-        return render_template('achievements.html', achievements=achievements)
+        return render_template('achievements.html', achievements=achievements, years=years)
     else:
         achievements = Achievement.query.all()
-        return render_template('achievements.html', achievements=achievements)
+        return render_template('achievements.html', achievements=achievements, years=years)
 
-@main_bp.route('/achievements/year/<int:year>', methods=['GET'])
-def achievements_by_year(year):
-    achievements = Achievement.query.filter_by(year=year).all()
-    return render_template('achievements.html', achievements=achievements)
 
 # Routes for Achievements
 @admin_bp.route('/achievements', methods=['POST'])
