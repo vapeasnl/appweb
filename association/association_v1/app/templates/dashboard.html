@@ -254,8 +254,20 @@
                 <label for="results_obtained" class="form-label">The Results Obtained</label>
                 <textarea class="form-control" id="results_obtained" name="results_obtained" required></textarea>
             </div>
+            <!-- Champ de sélection pour l'année -->
+            <div class="mb-3">
+                <label for="year" class="form-label">Year</label>
+                <select class="form-control" id="year" name="year">
+                    {% for year in years %}
+                        <option value="{{ year }}">{{ year }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <!-- Bouton de soumission -->
             <button type="submit" class="btn btn-primary">Add Achievement</button>
         </form>
+        
+        <!-- Tableau d'affichage des réalisations -->
         <div class="table-responsive mt-4">
             <table class="table table-bordered">
                 <thead>
@@ -267,6 +279,19 @@
                         <th>Beneficiaries Kind</th>
                         <th>Beneficiaries Number</th>
                         <th>The Results Obtained</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for achievement in achievements %}
+                        <tr>
+                            <td>{{ achievement.name }}</td>
+                            <td>{{ achievement.start_date }} - {{ achievement.end_date }}</td>
+                            <td>{{ achievement.site }}</td>
+                            <td>{{ achievement.objectives }}</td>
+                            <td>{{ achievement.beneficiaries_kind }}</td>
+                            <td>{{ achievement.beneficiaries_number }}</td>
+                            <td>{{ achievement.results_obtained }}</td>
                         <th>Actions</th>
                     </tr>
                 </thead>
