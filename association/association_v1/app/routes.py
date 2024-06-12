@@ -3,6 +3,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
 from .models import db, User, Association, News, Event, Report, Achievement, Media
 from datetime import datetime
+from sqlalchemy import func
 
 main_bp = Blueprint('main', __name__)
 auth_bp = Blueprint('auth', __name__)
