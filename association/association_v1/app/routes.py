@@ -325,17 +325,18 @@ def achievements_by_year(year):
 
 @main_bp.route('/achievements', methods=['GET', 'POST'])
 def achievements():
-    years = [year.year for year in Achievement.query.with_entities(func.year(Achievement.start_date)).distinct().all()]
     if request.method == 'POST':
         selected_year = request.form.get('year')
         if selected_year:
-            achievements = Achievement.query.filter(func.year(Achievement.start_date) == selected_year).all()
+            achievements = Achievement.query.filter_by(year=selected_year).all()
         else:
             achievements = Achievement.query.all()
-        return render_template('achievements.html', achievements=achievements, years=years)
+        return render_template('achievements.html', achievements=achievements)
     else:
+        years = [year[0] for year in db.session.query(func.extract('year', Achievement.start_date)).distinct()]
         achievements = Achievement.query.all()
         return render_template('achievements.html', achievements=achievements, years=years)
+
 
 
 # Routes for Achievements
