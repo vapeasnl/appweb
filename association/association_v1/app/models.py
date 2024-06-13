@@ -5,7 +5,6 @@ from . import login_manager
 
 db = SQLAlchemy()
 
-
 class User(db.Model, UserMixin):
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
@@ -50,10 +49,6 @@ class Achievement(db.Model):
     beneficiaries_number = db.Column(db.Integer, nullable=False)
     results_obtained = db.Column(db.Text, nullable=False)
 
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
-
 class Association(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), nullable=False)
@@ -68,3 +63,7 @@ class Report(db.Model):
     title = db.Column(db.String(128), nullable=False)
     date = db.Column(db.DateTime, nullable=False)
     content = db.Column(db.Text, nullable=False)
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
