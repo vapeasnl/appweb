@@ -1,3 +1,4 @@
+
 from sqlalchemy import func
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
@@ -11,7 +12,6 @@ profile_bp = Blueprint('profile', __name__)
 news_bp = Blueprint('news', __name__)
 
 # Static routes
-
 @main_bp.route('/about')
 def about():
     return render_template('about.html')
@@ -97,10 +97,10 @@ def dashboard():
     news_list = News.query.all()
     achievements = Achievement.query.all()
     media_list = Media.query.all()
-    return render_template('dashboard.html', reports=reports, users=users, events=events, news_list=news_list, achievements=achievements, media_list=media_list)
+    years = [year[0] for year in db.session.query(func.extract('year', Achievement.start_date)).distinct()]
+    return render_template('dashboard.html', reports=reports, users=users, events=events, news_list=news_list, achievements=achievements, media_list=media_list, years=years)
 
-# Report routes
-
+# Routes for Reports
 @admin_bp.route('/reports', methods=['POST'])
 @login_required
 def create_report():
@@ -144,8 +144,7 @@ def delete_report(report_id):
         db.session.commit()
     return redirect(url_for('admin.dashboard'))
 
-# Event routes
-
+# Routes for Events
 @admin_bp.route('/events', methods=['POST'])
 @login_required
 def create_event():
@@ -186,8 +185,7 @@ def delete_event(event_id):
         db.session.commit()
     return redirect(url_for('admin.dashboard'))
 
-# User routes
-
+# Routes for Users
 @admin_bp.route('/users', methods=['POST'])
 @login_required
 def create_user():
@@ -203,7 +201,7 @@ def create_user():
     db.session.commit()
     flash('New user added successfully.')
     return redirect(url_for('admin.dashboard'))
-
+    
 @admin_bp.route('/users/<int:user_id>/update', methods=['POST'])
 @login_required
 def update_user(user_id):
@@ -230,8 +228,7 @@ def delete_user(user_id):
         db.session.commit()
     return redirect(url_for('admin.dashboard'))
 
-# News routes
-
+# Routes for News
 @news_bp.route('/news', methods=['GET'])
 def view_news():
     news = News.query.order_by(News.date.desc()).all()
@@ -311,7 +308,11 @@ def create_news():
     flash('News added successfully.', 'success')
     return redirect(url_for('admin.dashboard'))
 
-# Achievement routes
+# Routes for Achievements
+@main_bp.route('/achievements/year/<int:year>', methods=['GET'])
+def achievements_by_year(year):
+    achievements = Achievement.query.filter(func.year(Achievement.start_date) == year).all()
+    return render_template('achievements.html', achievements=achievements)
 
 @main_bp.route('/achievements', methods=['GET', 'POST'])
 def achievements():
@@ -336,7 +337,6 @@ def create_achievement():
     beneficiaries_kind = request.form['beneficiaries_kind']
     beneficiaries_number = request.form['beneficiaries_number']
     results_obtained = request.form['results_obtained']
-    year = request.form['year']
     try:
         start_date = datetime.strptime(start_date, '%Y-%m-%d')
         end_date = datetime.strptime(end_date, '%Y-%m-%d')
@@ -377,8 +377,7 @@ def delete_achievement(achievement_id):
         db.session.commit()
     return redirect(url_for('admin.dashboard'))
 
-# Media routes
-
+# Routes for Media
 @admin_bp.route('/media', methods=['POST'])
 @login_required
 def create_media():
