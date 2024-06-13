@@ -200,7 +200,9 @@
                             <td>
                                 <form method="post" action="{{ url_for('admin.update_news', news_id=news.id) }}" class="d-inline">
                                     <input type="text" name="news_title" value="{{ news.title }}" class="form-control mb-2">
-                                    <textarea name="news_content" class="form-control mb-2">{{ news.content }}</textarea>
+                                    <
+
+textarea name="news_content" class="form-control mb-2">{{ news.content }}</textarea>
                                     <button type="submit" class="btn btn-sm btn-primary">Update</button>
                                 </form>
                                 <form method="post" action="{{ url_for('admin.delete_news', news_id=news.id) }}" class="d-inline mt-2">
@@ -215,7 +217,7 @@
     </div>
 </div>
 
- <!-- Manage Achievements -->
+<!-- Manage Achievements -->
 <div class="card mb-3">
     <div class="card-header">
         <h2>Manage Achievements <i class="fas fa-trophy"></i></h2>
@@ -254,7 +256,6 @@
                 <label for="results_obtained" class="form-label">The Results Obtained</label>
                 <textarea class="form-control" id="results_obtained" name="results_obtained" required></textarea>
             </div>
-            <!-- Champ de sélection pour l'année -->
             <div class="mb-3">
                 <label for="year" class="form-label">Year</label>
                 <select class="form-control" id="year" name="year">
@@ -263,11 +264,8 @@
                     {% endfor %}
                 </select>
             </div>
-            <!-- Bouton de soumission -->
             <button type="submit" class="btn btn-primary">Add Achievement</button>
         </form>
-        
-        <!-- Tableau d'affichage des réalisations -->
         <div class="table-responsive mt-4">
             <table class="table table-bordered">
                 <thead>
@@ -315,7 +313,6 @@
         </div>
     </div>
 </div>
-
 
 <!-- Manage Media -->
 <div class="card mb-3">
@@ -375,6 +372,3 @@
     </div>
 </div>
 {% endblock %}
-
-
-
