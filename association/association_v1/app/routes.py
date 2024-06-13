@@ -1,9 +1,8 @@
-
-from sqlalchemy import func
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
 from .models import db, User, Association, News, Event, Report, Achievement, Media
 from datetime import datetime
+from sqlalchemy import func
 
 main_bp = Blueprint('main', __name__)
 auth_bp = Blueprint('auth', __name__)
@@ -11,7 +10,6 @@ admin_bp = Blueprint('admin', __name__)
 profile_bp = Blueprint('profile', __name__)
 news_bp = Blueprint('news', __name__)
 
-# Static routes
 @main_bp.route('/about')
 def about():
     return render_template('about.html')
@@ -97,10 +95,9 @@ def dashboard():
     news_list = News.query.all()
     achievements = Achievement.query.all()
     media_list = Media.query.all()
-    years = [year[0] for year in db.session.query(func.extract('year', Achievement.start_date)).distinct()]
-    return render_template('dashboard.html', reports=reports, users=users, events=events, news_list=news_list, achievements=achievements, media_list=media_list, years=years)
+    return render_template('dashboard.html', reports=reports, users=users, events=events, news_list=news_list, achievements=achievements, media_list=media_list)
 
-# Routes for Reports
+# Routes for Report
 @admin_bp.route('/reports', methods=['POST'])
 @login_required
 def create_report():
@@ -144,7 +141,7 @@ def delete_report(report_id):
         db.session.commit()
     return redirect(url_for('admin.dashboard'))
 
-# Routes for Events
+# Routes for Event
 @admin_bp.route('/events', methods=['POST'])
 @login_required
 def create_event():
@@ -185,7 +182,7 @@ def delete_event(event_id):
         db.session.commit()
     return redirect(url_for('admin.dashboard'))
 
-# Routes for Users
+# Routes for User
 @admin_bp.route('/users', methods=['POST'])
 @login_required
 def create_user():
@@ -201,7 +198,7 @@ def create_user():
     db.session.commit()
     flash('New user added successfully.')
     return redirect(url_for('admin.dashboard'))
-    
+
 @admin_bp.route('/users/<int:user_id>/update', methods=['POST'])
 @login_required
 def update_user(user_id):
@@ -316,13 +313,17 @@ def achievements_by_year(year):
 
 @main_bp.route('/achievements', methods=['GET', 'POST'])
 def achievements():
-    years = [year[0] for year in db.session.query(func.extract('year', Achievement.start_date)).distinct()]
-    selected_year = request.form.get('year')
-    if selected_year:
-        achievements = Achievement.query.filter(func.extract('year', Achievement.start_date) == int(selected_year)).all()
+    if request.method == 'POST':
+        selected_year = request.form.get('year')
+        if selected_year:
+            achievements = Achievement.query.filter(func.extract('year', Achievement.start_date) == int(selected_year)).all()
+        else:
+            achievements = Achievement.query.all()
+        return render_template('achievements.html', achievements=achievements)
     else:
+        years = [year[0] for year in db.session.query(func.extract('year', Achievement.start_date)).distinct()]
         achievements = Achievement.query.all()
-    return render_template('achievements.html', achievements=achievements, years=years, selected_year=selected_year)
+        return render_template('achievements.html', achievements=achievements, years=years)
 
 @admin_bp.route('/achievements', methods=['POST'])
 @login_required
@@ -340,7 +341,11 @@ def create_achievement():
     try:
         start_date = datetime.strptime(start_date, '%Y-%m-%d')
         end_date = datetime.strptime(end_date, '%Y-%m-%d')
-        new_achievement = Achievement(name=name, start_date=start_date, end_date=end_date, site=site, objectives=objectives, beneficiaries_kind=beneficiaries_kind, beneficiaries_number=beneficiaries_number, results_obtained=results_obtained)
+        new_achievement = Achievement(
+            name=name, start_date=start_date, end_date=end_date, site=site,
+            objectives=objectives, beneficiaries_kind=beneficiaries_kind,
+            beneficiaries_number=beneficiaries_number, results_obtained=results_obtained
+        )
         db.session.add(new_achievement)
         db.session.commit()
         flash('New achievement added successfully.')
