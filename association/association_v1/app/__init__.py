@@ -23,3 +23,4 @@ def create_app():
     app.register_blueprint(profile_bp)
 
     return app
+
