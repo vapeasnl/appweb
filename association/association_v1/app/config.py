@@ -1,5 +1,3 @@
-import os
-
 class Config:
     SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:01031991@localhost/association_v1_db'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
