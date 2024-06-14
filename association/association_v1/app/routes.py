@@ -1,8 +1,9 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify
 from flask_login import login_user, logout_user, login_required, current_user
 from .models import db, User, Association, News, Event, Report, Achievement, Media
 from datetime import datetime
 from sqlalchemy import func
+
 
 main_bp = Blueprint('main', __name__)
 auth_bp = Blueprint('auth', __name__)
@@ -420,3 +421,26 @@ def delete_media(media_id):
         db.session.delete(media)
         db.session.commit()
     return redirect(url_for('admin.dashboard'))
+@app.route('/achievements/by_year', methods=['GET'])
+def get_achievements_by_year():
+    selected_year = request.args.get('year')
+    if selected_year:
+        achievements = Achievement.query.filter_by(year=selected_year).all()
+    else:
+        achievements = Achievement.query.all()
+
+    achievements_list = [
+        {
+            'name': achievement.name,
+            'start_date': achievement.start_date.strftime('%Y-%m-%d'),
+            'end_date': achievement.end_date.strftime('%Y-%m-%d'),
+            'site': achievement.site,
+            'objectives': achievement.objectives,
+            'beneficiaries_kind': achievement.beneficiaries_kind,
+            'beneficiaries_number': achievement.beneficiaries_number,
+            'results_obtained': achievement.results_obtained
+        }
+        for achievement in achievements
+    ]
+
+    return jsonify(achievements_list)
