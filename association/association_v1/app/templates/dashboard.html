@@ -217,7 +217,7 @@
 <!-- Manage Achievements -->
 <div class="card mb-3">
     <div class="card-header">
-        <h2>Manage Achievements</h2>
+        <h2>Manage Achievements <i class="fas fa-trophy"></i></h2>
     </div>
     <div class="card-body">
         <form method="post" action="{{ url_for('admin.create_achievement') }}">
@@ -253,9 +253,16 @@
                 <label for="results_obtained" class="form-label">The Results Obtained</label>
                 <textarea class="form-control" id="results_obtained" name="results_obtained" required></textarea>
             </div>
+            <div class="mb-3">
+                <label for="year" class="form-label">Year</label>
+                <select class="form-control" id="year" name="year">
+                    {% for year in years %}
+                        <option value="{{ year }}">{{ year }}</option>
+                    {% endfor %}
+                </select>
+            </div>
             <button type="submit" class="btn btn-primary">Add Achievement</button>
         </form>
-
         <div class="table-responsive mt-4">
             <table class="table table-bordered">
                 <thead>
@@ -272,31 +279,31 @@
                 </thead>
                 <tbody>
                     {% for achievement in achievements %}
-                    <tr>
-                        <td>{{ achievement.name }}</td>
-                        <td>{{ achievement.start_date }} - {{ achievement.end_date }}</td>
-                        <td>{{ achievement.site }}</td>
-                        <td>{{ achievement.objectives }}</td>
-                        <td>{{ achievement.beneficiaries_kind }}</td>
-                        <td>{{ achievement.beneficiaries_number }}</td>
-                        <td>{{ achievement.results_obtained }}</td>
-                        <td>
-                            <form method="post" action="{{ url_for('admin.update_achievement', achievement_id=achievement.id) }}" class="d-inline">
-                                <input type="text" name="name" value="{{ achievement.name }}" class="form-control mb-2">
-                                <input type="date" name="start_date" value="{{ achievement.start_date }}" class="form-control mb-2">
-                                <input type="date" name="end_date" value="{{ achievement.end_date }}" class="form-control mb-2">
-                                <input type="text" name="site" value="{{ achievement.site }}" class="form-control mb-2">
-                                <textarea name="objectives" class="form-control mb-2">{{ achievement.objectives }}</textarea>
-                                <input type="text" name="beneficiaries_kind" value="{{ achievement.beneficiaries_kind }}" class="form-control mb-2">
-                                <input type="number" name="beneficiaries_number" value="{{ achievement.beneficiaries_number }}" class="form-control mb-2">
-                                <textarea name="results_obtained" class="form-control mb-2">{{ achievement.results_obtained }}</textarea>
-                                <button type="submit" class="btn btn-sm btn-primary">Update</button>
-                            </form>
-                            <form method="post" action="{{ url_for('admin.delete_achievement', achievement_id=achievement.id) }}" class="d-inline mt-2">
-                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td>{{ achievement.name }}</td>
+                            <td>{{ achievement.start_date }} - {{ achievement.end_date }}</td>
+                            <td>{{ achievement.site }}</td>
+                            <td>{{ achievement.objectives }}</td>
+                            <td>{{ achievement.beneficiaries_kind }}</td>
+                            <td>{{ achievement.beneficiaries_number }}</td>
+                            <td>{{ achievement.results_obtained }}</td>
+                            <td>
+                                <form method="post" action="{{ url_for('admin.update_achievement', achievement_id=achievement.id) }}" class="d-inline">
+                                    <input type="text" name="name" value="{{ achievement.name }}" class="form-control mb-2">
+                                    <input type="date" name="start_date" value="{{ achievement.start_date }}" class="form-control mb-2">
+                                    <input type="date" name="end_date" value="{{ achievement.end_date }}" class="form-control mb-2">
+                                    <input type="text" name="site" value="{{ achievement.site }}" class="form-control mb-2">
+                                    <textarea name="objectives" class="form-control mb-2">{{ achievement.objectives }}</textarea>
+                                    <input type="text" name="beneficiaries_kind" value="{{ achievement.beneficiaries_kind }}" class="form-control mb-2">
+                                    <input type="number" name="beneficiaries_number" value="{{ achievement.beneficiaries_number }}" class="form-control mb-2">
+                                    <textarea name="results_obtained" class="form-control mb-2">{{ achievement.results_obtained }}</textarea>
+                                    <button type="submit" class="btn btn-sm btn-primary">Update</button>
+                                </form>
+                                <form method="post" action="{{ url_for('admin.delete_achievement', achievement_id=achievement.id) }}" class="d-inline mt-2">
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
                     {% endfor %}
                 </tbody>
             </table>
@@ -307,7 +314,7 @@
 <!-- Manage Media -->
 <div class="card mb-3">
     <div class="card-header">
-        <h2>Manage Media</h2>
+        <h2>Manage Media <i class="fas fa-images"></i></h2>
     </div>
     <div class="card-body">
         <form method="post" action="{{ url_for('admin.create_media') }}">
@@ -317,15 +324,14 @@
             </div>
             <div class="mb-3">
                 <label for="description" class="form-label">Description</label>
-                <textarea class="form-control" id="description" name="description" required></textarea>
+                <textarea class="form-control" id="description" name="description"></textarea>
             </div>
             <div class="mb-3">
                 <label for="file_url" class="form-label">File URL</label>
-                <input type="url" class="form-control" id="file_url" name="file_url" required>
+                <input type="text" class="form-control" id="file_url" name="file_url" required>
             </div>
             <button type="submit" class="btn btn-primary">Add Media</button>
         </form>
-
         <div class="table-responsive mt-4">
             <table class="table table-bordered">
                 <thead>
@@ -339,23 +345,23 @@
                 </thead>
                 <tbody>
                     {% for media in media_list %}
-                    <tr>
-                        <td>{{ media.title }}</td>
-                        <td>{{ media.description }}</td>
-                        <td>{{ media.file_url }}</td>
-                        <td>{{ media.upload_date }}</td>
-                        <td>
-                            <form method="post" action="{{ url_for('admin.update_media', media_id=media.id) }}" class="d-inline">
-                                <input type="text" name="title" value="{{ media.title }}" class="form-control mb-2">
-                                <textarea name="description" class="form-control mb-2">{{ media.description }}</textarea>
-                                <input type="url" name="file_url" value="{{ media.file_url }}" class="form-control mb-2">
-                                <button type="submit" class="btn btn-sm btn-primary">Update</button>
-                            </form>
-                            <form method="post" action="{{ url_for('admin.delete_media', media_id=media.id) }}" class="d-inline mt-2">
-                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td>{{ media.title }}</td>
+                            <td>{{ media.description }}</td>
+                            <td><a href="{{ media.file_url }}" target="_blank">{{ media.file_url }}</a></td>
+                            <td>{{ media.upload_date }}</td>
+                            <td>
+                                <form method="post" action="{{ url_for('admin.update_media', media_id=media.id) }}" class="d-inline">
+                                    <input type="text" name="title" value="{{ media.title }}" class="form-control mb-2">
+                                    <textarea name="description" class="form-control mb-2">{{ media.description }}</textarea>
+                                    <input type="text" name="file_url" value="{{ media.file_url }}" class="form-control mb-2">
+                                    <button type="submit" class="btn btn-sm btn-primary">Update</button>
+                                </form>
+                                <form method="post" action="{{ url_for('admin.delete_media', media_id=media.id) }}" class="d-inline mt-2">
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
                     {% endfor %}
                 </tbody>
             </table>
