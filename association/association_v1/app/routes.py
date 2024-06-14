@@ -306,6 +306,11 @@ def create_news():
     return redirect(url_for('admin.dashboard'))
 
 # Routes for Achievements
+@main_bp.route('/achievements/year/<int:year>', methods=['GET'])
+def achievements_by_year(year):
+    achievements = Achievement.query.filter(func.year(Achievement.start_date) == year).all()
+    return render_template('achievements.html', achievements=achievements)
+
 @main_bp.route('/achievements', methods=['GET', 'POST'])
 def achievements():
     if request.method == 'POST':
@@ -319,8 +324,6 @@ def achievements():
         years = [year[0] for year in db.session.query(func.extract('year', Achievement.start_date)).distinct()]
         achievements = Achievement.query.all()
         return render_template('achievements.html', achievements=achievements, years=years)
-
-
 
 @admin_bp.route('/achievements', methods=['POST'])
 @login_required
@@ -379,6 +382,7 @@ def delete_achievement(achievement_id):
         db.session.commit()
     return redirect(url_for('admin.dashboard'))
 
+# Routes for Media
 @admin_bp.route('/media', methods=['POST'])
 @login_required
 def create_media():
