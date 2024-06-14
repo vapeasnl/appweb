@@ -7,6 +7,7 @@ db = SQLAlchemy()
 
 class User(db.Model, UserMixin):
     __tablename__ = 'user'
+
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), nullable=False, unique=True)
     password = db.Column(db.String(100), nullable=False)
@@ -31,6 +32,12 @@ class News(db.Model):
     image_url = db.Column(db.String(100), nullable=True)
     date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
+class Media(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    file_url = db.Column(db.String(200), nullable=False)
+    upload_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
 class Achievement(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -43,12 +50,9 @@ class Achievement(db.Model):
     beneficiaries_number = db.Column(db.Integer, nullable=False)
     results_obtained = db.Column(db.Text, nullable=False)
 
-class Media(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
-    description = db.Column(db.Text, nullable=False)
-    file_url = db.Column(db.String(200), nullable=False)
-    upload_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 class Association(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -64,7 +68,3 @@ class Report(db.Model):
     title = db.Column(db.String(128), nullable=False)
     date = db.Column(db.DateTime, nullable=False)
     content = db.Column(db.Text, nullable=False)
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
