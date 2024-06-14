@@ -1,15 +1,16 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify
+from sqlalchemy import func
+from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
 from .models import db, User, Association, News, Event, Report, Achievement, Media
 from datetime import datetime
-from sqlalchemy import func
-
 
 main_bp = Blueprint('main', __name__)
 auth_bp = Blueprint('auth', __name__)
 admin_bp = Blueprint('admin', __name__)
 profile_bp = Blueprint('profile', __name__)
 news_bp = Blueprint('news', __name__)
+
+# Static routes
 
 @main_bp.route('/about')
 def about():
@@ -98,7 +99,8 @@ def dashboard():
     media_list = Media.query.all()
     return render_template('dashboard.html', reports=reports, users=users, events=events, news_list=news_list, achievements=achievements, media_list=media_list)
 
-# Routes for Report
+# Report routes
+
 @admin_bp.route('/reports', methods=['POST'])
 @login_required
 def create_report():
@@ -142,7 +144,8 @@ def delete_report(report_id):
         db.session.commit()
     return redirect(url_for('admin.dashboard'))
 
-# Routes for Event
+# Event routes
+
 @admin_bp.route('/events', methods=['POST'])
 @login_required
 def create_event():
@@ -183,7 +186,8 @@ def delete_event(event_id):
         db.session.commit()
     return redirect(url_for('admin.dashboard'))
 
-# Routes for User
+# User routes
+
 @admin_bp.route('/users', methods=['POST'])
 @login_required
 def create_user():
@@ -226,7 +230,8 @@ def delete_user(user_id):
         db.session.commit()
     return redirect(url_for('admin.dashboard'))
 
-# Routes for News
+# News routes
+
 @news_bp.route('/news', methods=['GET'])
 def view_news():
     news = News.query.order_by(News.date.desc()).all()
@@ -306,21 +311,17 @@ def create_news():
     flash('News added successfully.', 'success')
     return redirect(url_for('admin.dashboard'))
 
-
+# Achievement routes
 
 @main_bp.route('/achievements', methods=['GET', 'POST'])
 def achievements():
-    if request.method == 'POST':
-        selected_year = request.form.get('year')
-        if selected_year:
-            achievements = Achievement.query.filter(func.extract('year', Achievement.start_date) == int(selected_year)).all()
-        else:
-            achievements = Achievement.query.all()
-        return render_template('achievements.html', achievements=achievements)
+    years = [year[0] for year in db.session.query(func.extract('year', Achievement.start_date)).distinct()]
+    selected_year = request.form.get('year')
+    if selected_year:
+        achievements = Achievement.query.filter(func.extract('year', Achievement.start_date) == int(selected_year)).all()
     else:
-        years = [year[0] for year in db.session.query(func.extract('year', Achievement.start_date)).distinct()]
         achievements = Achievement.query.all()
-        return render_template('achievements.html', achievements=achievements, years=years)
+    return render_template('achievements.html', achievements=achievements, years=years, selected_year=selected_year)
 
 @admin_bp.route('/achievements', methods=['POST'])
 @login_required
@@ -335,14 +336,11 @@ def create_achievement():
     beneficiaries_kind = request.form['beneficiaries_kind']
     beneficiaries_number = request.form['beneficiaries_number']
     results_obtained = request.form['results_obtained']
+    year = request.form['year']
     try:
         start_date = datetime.strptime(start_date, '%Y-%m-%d')
         end_date = datetime.strptime(end_date, '%Y-%m-%d')
-        new_achievement = Achievement(
-            name=name, start_date=start_date, end_date=end_date, site=site,
-            objectives=objectives, beneficiaries_kind=beneficiaries_kind,
-            beneficiaries_number=beneficiaries_number, results_obtained=results_obtained
-        )
+        new_achievement = Achievement(name=name, start_date=start_date, end_date=end_date, site=site, objectives=objectives, beneficiaries_kind=beneficiaries_kind, beneficiaries_number=beneficiaries_number, results_obtained=results_obtained)
         db.session.add(new_achievement)
         db.session.commit()
         flash('New achievement added successfully.')
@@ -379,7 +377,8 @@ def delete_achievement(achievement_id):
         db.session.commit()
     return redirect(url_for('admin.dashboard'))
 
-# Routes for Media
+# Media routes
+
 @admin_bp.route('/media', methods=['POST'])
 @login_required
 def create_media():
@@ -417,15 +416,3 @@ def delete_media(media_id):
         db.session.delete(media)
         db.session.commit()
     return redirect(url_for('admin.dashboard'))
-
-
-@main_bp.route('/achievements/by_year', methods=['GET'])
-def achievements_by_year():
-    year = request.args.get('year')
-
-    if not year:
-        return jsonify({'error': 'Year parameter is required'}), 400
-
-    # Query achievements by year
-    achievements = Achievement.query.filter_by(year=year).all()
-    return jsonify([achievement.serialize() for achievement in achievements])
