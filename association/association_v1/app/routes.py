@@ -320,21 +320,13 @@ def achievements():
         achievements = Achievement.query.all()
         return render_template('achievements.html', achievements=achievements, years=years)
 
-@admin_bp.route('/dashboard')
-@login_required
-def dashboard():
-    if not current_user.is_admin:
-        return redirect(url_for('main.index'))
-    achievements = Achievement.query.all()
-    reports = Report.query.all()
-    media_list = Media.query.all()
-    return render_template('admin_dashboard.html', achievements=achievements, reports=reports, media_list=media_list)
+
 
 @admin_bp.route('/achievements', methods=['POST'])
 @login_required
 def create_achievement():
     if not current_user.is_admin:
-        return redirect(url_for('main.index'))
+        return redirect(url_for('main.home'))
     name = request.form['name']
     start_date = request.form['start_date']
     end_date = request.form['end_date']
@@ -362,7 +354,7 @@ def create_achievement():
 @login_required
 def update_achievement(achievement_id):
     if not current_user.is_admin:
-        return redirect(url_for('main.index'))
+        return redirect(url_for('main.home'))
     achievement = Achievement.query.get(achievement_id)
     if achievement:
         achievement.name = request.form['name']
@@ -380,7 +372,7 @@ def update_achievement(achievement_id):
 @login_required
 def delete_achievement(achievement_id):
     if not current_user.is_admin:
-        return redirect(url_for('main.index'))
+        return redirect(url_for('main.home'))
     achievement = Achievement.query.get(achievement_id)
     if achievement:
         db.session.delete(achievement)
@@ -391,7 +383,7 @@ def delete_achievement(achievement_id):
 @login_required
 def create_media():
     if not current_user.is_admin:
-        return redirect(url_for('main.index'))
+        return redirect(url_for('main.home'))
     title = request.form['title']
     description = request.form['description']
     file_url = request.form['file_url']
@@ -405,7 +397,7 @@ def create_media():
 @login_required
 def update_media(media_id):
     if not current_user.is_admin:
-        return redirect(url_for('main.index'))
+        return redirect(url_for('main.home'))
     media = Media.query.get(media_id)
     if media:
         media.title = request.form['title']
@@ -418,7 +410,7 @@ def update_media(media_id):
 @login_required
 def delete_media(media_id):
     if not current_user.is_admin:
-        return redirect(url_for('main.index'))
+        return redirect(url_for('main.home'))
     media = Media.query.get(media_id)
     if media:
         db.session.delete(media)
