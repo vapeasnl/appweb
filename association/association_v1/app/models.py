@@ -1,9 +1,9 @@
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import UserMixin, LoginManager
+from flask_login import UserMixin
 from datetime import datetime
+from . import login_manager
 
 db = SQLAlchemy()
-login_manager = LoginManager()
 
 class User(db.Model, UserMixin):
     __tablename__ = 'user'
@@ -37,6 +37,7 @@ class Media(db.Model):
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text, nullable=False)
     file_url = db.Column(db.String(200), nullable=False)
+    upload_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
 class Achievement(db.Model):
     id = db.Column(db.Integer, primary_key=True)
