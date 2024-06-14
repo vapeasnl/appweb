@@ -306,11 +306,7 @@ def create_news():
     flash('News added successfully.', 'success')
     return redirect(url_for('admin.dashboard'))
 
-# Routes for Achievements
-@main_bp.route('/achievements/year/<int:year>', methods=['GET'])
-def achievements_by_year(year):
-    achievements = Achievement.query.filter(func.year(Achievement.start_date) == year).all()
-    return render_template('achievements.html', achievements=achievements)
+
 
 @main_bp.route('/achievements', methods=['GET', 'POST'])
 def achievements():
