@@ -31,13 +31,6 @@ class News(db.Model):
     image_url = db.Column(db.String(100), nullable=True)
     date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
-class Media(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
-    description = db.Column(db.Text, nullable=False)
-    file_url = db.Column(db.String(200), nullable=False)
-    upload_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-
 class Achievement(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150), nullable=False)
@@ -48,6 +41,13 @@ class Achievement(db.Model):
     beneficiaries_kind = db.Column(db.String(150), nullable=False)
     beneficiaries_number = db.Column(db.Integer, nullable=False)
     results_obtained = db.Column(db.Text, nullable=False)
+
+class Media(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    file_url = db.Column(db.String(200), nullable=False)
+    upload_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
 class Association(db.Model):
     id = db.Column(db.Integer, primary_key=True)
