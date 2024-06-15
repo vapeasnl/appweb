@@ -328,6 +328,8 @@ def achievements():
 def create_achievement():
     if not current_user.is_admin:
         return redirect(url_for('main.home'))
+    
+    # Récupération des données du formulaire
     name = request.form['name']
     start_date = request.form['start_date']
     end_date = request.form['end_date']
@@ -336,16 +338,37 @@ def create_achievement():
     beneficiaries_kind = request.form['beneficiaries_kind']
     beneficiaries_number = request.form['beneficiaries_number']
     results_obtained = request.form['results_obtained']
+    
     try:
+        # Conversion des dates au format datetime
         start_date = datetime.strptime(start_date, '%Y-%m-%d')
         end_date = datetime.strptime(end_date, '%Y-%m-%d')
-        new_achievement = Achievement(name=name, start_date=start_date, end_date=end_date, site=site, objectives=objectives, beneficiaries_kind=beneficiaries_kind, beneficiaries_number=beneficiaries_number, results_obtained=results_obtained)
+        
+        # Création d'une nouvelle instance d'Achievement
+        new_achievement = Achievement(
+            name=name,
+            start_date=start_date,
+            end_date=end_date,
+            site=site,
+            objectives=objectives,
+            beneficiaries_kind=beneficiaries_kind,
+            beneficiaries_number=beneficiaries_number,
+            results_obtained=results_obtained
+        )
+        
+        # Ajout de l'achievement à la base de données
         db.session.add(new_achievement)
         db.session.commit()
+        
+        # Message flash pour indiquer que l'achievement a été ajouté avec succès
         flash('New achievement added successfully.')
+        
     except ValueError:
         flash('Invalid date format. Please use YYYY-MM-DD format.')
+    
+    # Redirection vers la page de tableau de bord admin après l'ajout
     return redirect(url_for('admin.dashboard'))
+
 
 @admin_bp.route('/achievements/<int:achievement_id>/update', methods=['POST'])
 @login_required
