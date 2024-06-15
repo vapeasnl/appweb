@@ -3,18 +3,20 @@
 {% block content %}
 <h1>Media Gallery</h1>
 
-<div class="row">
-    {% for media in media_list %}
-    <div class="col-md-4 mb-4">
-        <div class="card">
-            <img src="{{ media.file_url }}" class="card-img-top" alt="{{ media.title }}">
-            <div class="card-body">
-                <h5 class="card-title">{{ media.title }}</h5>
-                <p class="card-text">{{ media.description }}</p>
-                <p class="card-text"><small class="text-muted">Uploaded on {{ media.upload_date }}</small></p>
+<div class="container">
+    <div class="row">
+        {% for media in media_list %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="{{ media.file_url }}" class="card-img-top" alt="{{ media.title }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ media.title }}</h5>
+                        <p class="card-text">{{ media.description }}</p>
+                        <a href="{{ media.file_url }}" class="btn btn-primary" target="_blank">View</a>
+                    </div>
+                </div>
             </div>
-        </div>
+        {% endfor %}
     </div>
-    {% endfor %}
 </div>
 {% endblock %}
