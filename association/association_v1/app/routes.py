@@ -842,8 +842,10 @@ def delete_media(media_id):
         db.session.commit()
     return redirect(url_for('admin.dashboard'))
 
+
 @main_bp.route('/media')
 def view_media():
-    media_list = Media.query.order_by(Media.upload_date.desc()).all()
+    media_list = Media.query.all()
     return render_template('media.html', media_list=media_list)
+
 
