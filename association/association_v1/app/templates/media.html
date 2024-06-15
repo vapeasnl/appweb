@@ -2,21 +2,30 @@
 
 {% block content %}
 <h1>Media Gallery</h1>
-
-<div class="container">
-    <div class="row">
-        {% for media in media_list %}
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <img src="{{ media.file_url }}" class="card-img-top" alt="{{ media.title }}">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ media.title }}</h5>
-                        <p class="card-text">{{ media.description }}</p>
-                        <a href="{{ media.file_url }}" class="btn btn-primary" target="_blank">View</a>
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
-    </div>
+<div class="media-gallery">
+    {% for media in media_list %}
+        <div class="media-item">
+            <h3>{{ media.title }}</h3>
+            <p>{{ media.description }}</p>
+            <img src="{{ media.file_url }}" alt="{{ media.title }}">
+            <p>Uploaded on: {{ media.upload_date }}</p>
+        </div>
+    {% endfor %}
 </div>
+<style>
+    .media-gallery {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .media-item {
+        flex: 1 0 21%; /* Adjust this percentage to control the number of items per row */
+        margin: 5px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        padding: 10px;
+    }
+    .media-item img {
+        max-width: 100%;
+        height: auto;
+    }
+</style>
 {% endblock %}
