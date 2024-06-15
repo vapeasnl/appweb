@@ -744,6 +744,7 @@ def achievements():
 def create_achievement():
     if not current_user.is_admin:
         return redirect(url_for('main.home'))
+    
     name = request.form['name']
     start_date = request.form['start_date']
     end_date = request.form['end_date']
@@ -752,16 +753,23 @@ def create_achievement():
     beneficiaries_kind = request.form['beneficiaries_kind']
     beneficiaries_number = request.form['beneficiaries_number']
     results_obtained = request.form['results_obtained']
-    year = request.form['year']
+
     try:
         start_date = datetime.strptime(start_date, '%Y-%m-%d')
         end_date = datetime.strptime(end_date, '%Y-%m-%d')
-        new_achievement = Achievement(name=name, start_date=start_date, end_date=end_date, site=site, objectives=objectives, beneficiaries_kind=beneficiaries_kind, beneficiaries_number=beneficiaries_number, results_obtained=results_obtained)
+        
+        new_achievement = Achievement(
+            name=name, start_date=start_date, end_date=end_date, site=site,
+            objectives=objectives, beneficiaries_kind=beneficiaries_kind,
+            beneficiaries_number=beneficiaries_number, results_obtained=results_obtained
+        )
         db.session.add(new_achievement)
         db.session.commit()
+        
         flash('New achievement added successfully.')
     except ValueError:
         flash('Invalid date format. Please use YYYY-MM-DD format.')
+
     return redirect(url_for('admin.dashboard'))
 
 @admin_bp.route('/achievements/<int:achievement_id>/update', methods=['POST'])
@@ -832,3 +840,9 @@ def delete_media(media_id):
         db.session.delete(media)
         db.session.commit()
     return redirect(url_for('admin.dashboard'))
+
+@main_bp.route('/media')
+def view_media():
+    media_list = Media.query.order_by(Media.upload_date.desc()).all()
+    return render_template('media.html', media_list=media_list)
+
