@@ -352,15 +352,7 @@ def create_achievement():
     except ValueError:
         flash('Invalid date format. Please use YYYY-MM-DD format.', 'error')
 
-    # Re-render the dashboard template
-    reports = Report.query.all()
-    users = User.query.all()
-    events = Event.query.all()
-    news_list = News.query.all()
-    achievements = Achievement.query.all()
-    media_list = Media.query.all()
-    return render_template('dashboard.html', reports=reports, users=users, events=events, news_list=news_list, achievements=achievements, media_list=media_list)
-
+   return redirect(url_for('admin.dashboard'))
 
 @admin_bp.route('/achievements/<int:achievement_id>/update', methods=['POST'])
 @login_required
