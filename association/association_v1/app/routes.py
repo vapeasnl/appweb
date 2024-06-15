@@ -766,11 +766,12 @@ def create_achievement():
         db.session.add(new_achievement)
         db.session.commit()
         
-        flash('New achievement added successfully.')
+        flash('New achievement added successfully.', 'success')
     except ValueError:
-        flash('Invalid date format. Please use YYYY-MM-DD format.')
+        flash('Invalid date format. Please use YYYY-MM-DD format.', 'danger')
 
     return redirect(url_for('admin.dashboard'))
+
 
 @admin_bp.route('/achievements/<int:achievement_id>/update', methods=['POST'])
 @login_required
