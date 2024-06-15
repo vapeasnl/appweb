@@ -1,20 +1,20 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container my-5">
-    <h1 class="mb-4">Mediatheque</h1>
-    <div class="row">
-        {% for media in media_list %}
-        <div class="col-md-4">
-            <div class="card mb-4">
-                <img src="{{ media.file_url }}" class="card-img-top" alt="{{ media.title }}">
-                <div class="card-body">
-                    <h5 class="card-title">{{ media.title }}</h5>
-                    <p class="card-text">{{ media.description }}</p>
-                </div>
+<h1>Media Gallery</h1>
+
+<div class="row">
+    {% for media in media_list %}
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <img src="{{ media.file_url }}" class="card-img-top" alt="{{ media.title }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ media.title }}</h5>
+                <p class="card-text">{{ media.description }}</p>
+                <p class="card-text"><small class="text-muted">Uploaded on {{ media.upload_date }}</small></p>
             </div>
         </div>
-        {% endfor %}
     </div>
+    {% endfor %}
 </div>
 {% endblock %}
