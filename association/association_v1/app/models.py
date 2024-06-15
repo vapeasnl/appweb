@@ -1,9 +1,8 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 from datetime import datetime
-from . import login_manager
+from . import db, login_manager
 
-db = SQLAlchemy()
 
 class User(db.Model, UserMixin):
     __tablename__ = 'user'
