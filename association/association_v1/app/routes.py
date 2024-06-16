@@ -352,10 +352,13 @@ def create_achievement():
         db.session.add(new_achievement)
         db.session.commit()
         flash('New achievement added successfully.', 'success')
-    except ValueError:
+        print("New achievement added successfully.")
+    except ValueError as ve:
         flash('Invalid date format. Please use YYYY-MM-DD format.', 'error')
+        print(f"ValueError: {ve}")
     except Exception as e:
         flash(f'An error occurred: {str(e)}', 'error')
+        print(f"Exception: {e}")
 
     # Re-render the dashboard template with the updated data
     reports = Report.query.all()
