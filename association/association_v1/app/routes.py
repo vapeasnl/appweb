@@ -329,6 +329,9 @@ def create_achievement():
     if not current_user.is_admin:
         return redirect(url_for('main.home'))
 
+    # Ajout de logs pour déboguer les données reçues
+    print("Form Data Received:", request.form)
+
     name = request.form['name']
     start_date = request.form['start_date']
     end_date = request.form['end_date']
@@ -349,10 +352,15 @@ def create_achievement():
         db.session.add(new_achievement)
         db.session.commit()
         flash('New achievement added successfully.', 'success')
-    except ValueError:
+        print("New achievement added successfully.")
+    except ValueError as ve:
         flash('Invalid date format. Please use YYYY-MM-DD format.', 'error')
+        print(f"ValueError: {ve}")
+    except Exception as e:
+        flash(f'An error occurred: {str(e)}', 'error')
+        print(f"Exception: {e}")
 
-    # Re-render the dashboard template
+    # Re-render the dashboard template with the updated data
     reports = Report.query.all()
     users = User.query.all()
     events = Event.query.all()
@@ -361,6 +369,7 @@ def create_achievement():
     media_list = Media.query.all()
     return render_template('dashboard.html', reports=reports, users=users, events=events, news_list=news_list, achievements=achievements, media_list=media_list)
 
+    
 @admin_bp.route('/achievements/<int:achievement_id>/update', methods=['POST'])
 @login_required
 def update_achievement(achievement_id):
