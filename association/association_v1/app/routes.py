@@ -323,7 +323,7 @@ def achievements():
         achievements = Achievement.query.all()
     return render_template('achievements.html', achievements=achievements, years=years, selected_year=selected_year)
 
-@admin_bp.route('/achievements', methods=['POST'])
+@admin_bp.route('/achievements/create', methods=['POST'])
 @login_required
 def create_achievement():
     if not current_user.is_admin:
