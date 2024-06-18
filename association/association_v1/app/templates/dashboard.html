@@ -44,7 +44,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for report in reports %}
+                    {% for report in reports.items %}
                         <tr>
                             <td>{{ report.title }}</td>
                             <td>{{ report.date }}</td>
@@ -64,6 +64,25 @@
                 </tbody>
             </table>
         </div>
+        <nav>
+            <ul class="pagination">
+                {% if reports.has_prev %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('admin.dashboard', page=reports.prev_num) }}">Previous</a>
+                    </li>
+                {% endif %}
+                {% for page_num in reports.iter_pages() %}
+                    <li class="page-item {% if page_num == reports.page %}active{% endif %}">
+                        <a class="page-link" href="{{ url_for('admin.dashboard', page=page_num) }}">{{ page_num }}</a>
+                    </li>
+                {% endfor %}
+                {% if reports.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('admin.dashboard', page=reports.next_num) }}">Next</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
     </div>
 </div>
 
@@ -103,7 +122,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for user in users %}
+                    {% for user in users.items %}
                         <tr>
                             <td>{{ user.username }}</td>
                             <td>{{ user.email }}</td>
@@ -124,6 +143,25 @@
                 </tbody>
             </table>
         </div>
+        <nav>
+            <ul class="pagination">
+                {% if users.has_prev %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('admin.dashboard', page=users.prev_num) }}">Previous</a>
+                    </li>
+                {% endif %}
+                {% for page_num in users.iter_pages() %}
+                    <li class="page-item {% if page_num == users.page %}active{% endif %}">
+                        <a class="page-link" href="{{ url_for('admin.dashboard', page=page_num) }}">{{ page_num }}</a>
+                    </li>
+                {% endfor %}
+                {% if users.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('admin.dashboard', page=users.next_num) }}">Next</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
     </div>
 </div>
 
@@ -154,7 +192,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for event in events %}
+                    {% for event in events.items %}
                         <tr>
                             <td>{{ event.name }}</td>
                             <td>{{ event.date }}</td>
@@ -173,6 +211,25 @@
                 </tbody>
             </table>
         </div>
+        <nav>
+            <ul class="pagination">
+                {% if events.has_prev %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('admin.dashboard', page=events.prev_num) }}">Previous</a>
+                    </li>
+                {% endif %}
+                {% for page_num in events.iter_pages() %}
+                    <li class="page-item {% if page_num == events.page %}active{% endif %}">
+                        <a class="page-link" href="{{ url_for('admin.dashboard', page=page_num) }}">{{ page_num }}</a>
+                    </li>
+                {% endfor %}
+                {% if events.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('admin.dashboard', page=events.next_num) }}">Next</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
     </div>
 </div>
 
@@ -203,7 +260,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for news in news_list %}
+                    {% for news in news_list.items %}
                         <tr>
                             <td>{{ news.title }}</td>
                             <td>{{ news.content }}</td>
@@ -222,8 +279,28 @@
                 </tbody>
             </table>
         </div>
+        <nav>
+            <ul class="pagination">
+                {% if news_list.has_prev %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('admin.dashboard', page=news_list.prev_num) }}">Previous</a>
+                    </li>
+                {% endif %}
+                {% for page_num in news_list.iter_pages() %}
+                    <li class="page-item {% if page_num == news_list.page %}active{% endif %}">
+                        <a class="page-link" href="{{ url_for('admin.dashboard', page=page_num) }}">{{ page_num }}</a>
+                    </li>
+                {% endfor %}
+                {% if news_list.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('admin.dashboard', page=news_list.next_num) }}">Next</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
     </div>
 </div>
+
 <!-- Manage Achievements -->
 <div class="card mb-3">
     <div class="card-header">
@@ -231,41 +308,40 @@
     </div>
     <div class="card-body">
         <form method="post" action="{{ url_for('admin.create_achievement') }}">
-    <div class="mb-3">
-        <label for="name" class="form-label">Activity Name</label>
-        <input type="text" class="form-control" id="name" name="name" required>
-    </div>
-    <div class="mb-3">
-        <label for="start_date" class="form-label">Start Date</label>
-        <input type="date" class="form-control" id="start_date" name="start_date" required>
-    </div>
-    <div class="mb-3">
-        <label for="end_date" class="form-label">End Date</label>
-        <input type="date" class="form-control" id="end_date" name="end_date" required>
-    </div>
-    <div class="mb-3">
-        <label for="site" class="form-label">Site</label>
-        <input type="text" class="form-control" id="site" name="site" required>
-    </div>
-    <div class="mb-3">
-        <label for="objectives" class="form-label">Objectives</label>
-        <textarea class="form-control" id="objectives" name="objectives" required></textarea>
-    </div>
-    <div class="mb-3">
-        <label for="beneficiaries_kind" class="form-label">Beneficiaries Kind</label>
-        <input type="text" class="form-control" id="beneficiaries_kind" name="beneficiaries_kind" required>
-    </div>
-    <div class="mb-3">
-        <label for="beneficiaries_number" class="form-label">Beneficiaries Number</label>
-        <input type="number" class="form-control" id="beneficiaries_number" name="beneficiaries_number" required>
-    </div>
-    <div class="mb-3">
-        <label for="results_obtained" class="form-label">The Results Obtained</label>
-        <textarea class="form-control" id="results_obtained" name="results_obtained" required></textarea>
-    </div>
-    <button type="submit" class="btn btn-primary">Add Achievement</button>
-</form>
-
+            <div class="mb-3">
+                <label for="name" class="form-label">Activity Name</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+            <div class="mb-3">
+                <label for="start_date" class="form-label">Start Date</label>
+                <input type="date" class="form-control" id="start_date" name="start_date" required>
+            </div>
+            <div class="mb-3">
+                <label for="end_date" class="form-label">End Date</label>
+                <input type="date" class="form-control" id="end_date" name="end_date" required>
+            </div>
+            <div class="mb-3">
+                <label for="site" class="form-label">Site</label>
+                <input type="text" class="form-control" id="site" name="site" required>
+            </div>
+            <div class="mb-3">
+                <label for="objectives" class="form-label">Objectives</label>
+                <textarea class="form-control" id="objectives" name="objectives" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="beneficiaries_kind" class="form-label">Beneficiaries Kind</label>
+                <input type="text" class="form-control" id="beneficiaries_kind" name="beneficiaries_kind" required>
+            </div>
+            <div class="mb-3">
+                <label for="beneficiaries_number" class="form-label">Beneficiaries Number</label>
+                <input type="number" class="form-control" id="beneficiaries_number" name="beneficiaries_number" required>
+            </div>
+            <div class="mb-3">
+                <label for="results_obtained" class="form-label">The Results Obtained</label>
+                <textarea class="form-control" id="results_obtained" name="results_obtained" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Achievement</button>
+        </form>
         <div class="table-responsive mt-4">
             <table class="table table-bordered">
                 <thead>
@@ -281,7 +357,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for achievement in achievements %}
+                    {% for achievement in achievements.items %}
                         <tr>
                             <td>{{ achievement.name }}</td>
                             <td>{{ achievement.start_date }} - {{ achievement.end_date }}</td>
@@ -311,6 +387,25 @@
                 </tbody>
             </table>
         </div>
+        <nav>
+            <ul class="pagination">
+                {% if achievements.has_prev %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('admin.dashboard', page=achievements.prev_num) }}">Previous</a>
+                    </li>
+                {% endif %}
+                {% for page_num in achievements.iter_pages() %}
+                    <li class="page-item {% if page_num == achievements.page %}active{% endif %}">
+                        <a class="page-link" href="{{ url_for('admin.dashboard', page=page_num) }}">{{ page_num }}</a>
+                    </li>
+                {% endfor %}
+                {% if achievements.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('admin.dashboard', page=achievements.next_num) }}">Next</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
     </div>
 </div>
 
@@ -347,7 +442,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for media in media_list %}
+                    {% for media in media_list.items %}
                         <tr>
                             <td>{{ media.title }}</td>
                             <td>{{ media.description }}</td>
@@ -369,6 +464,25 @@
                 </tbody>
             </table>
         </div>
+        <nav>
+            <ul class="pagination">
+                {% if media_list.has_prev %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('admin.dashboard', page=media_list.prev_num) }}">Previous</a>
+                    </li>
+                {% endif %}
+                {% for page_num in media_list.iter_pages() %}
+                    <li class="page-item {% if page_num == media_list.page %}active{% endif %}">
+                        <a class="page-link" href="{{ url_for('admin.dashboard', page=page_num) }}">{{ page_num }}</a>
+                    </li>
+                {% endfor %}
+                {% if media_list.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('admin.dashboard', page=media_list.next_num) }}">Next</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
     </div>
 </div>
 {% endblock %}
