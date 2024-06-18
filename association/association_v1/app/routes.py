@@ -85,20 +85,21 @@ def manage_profile():
         return redirect(url_for('profile.profile'))
     return render_template('manage_profile.html', user=current_user)
 
-@admin_bp.route('/dashboard', methods=['GET'])
+@admin_bp.route('/dashboard')
 @login_required
 def dashboard():
     if not current_user.is_admin:
         return redirect(url_for('main.home'))
-    
+
     page = request.args.get('page', 1, type=int)
-    
-    reports = Report.query.paginate(page=page, per_page=5)
-    users = User.query.paginate(page=page, per_page=5)
-    events = Event.query.paginate(page=page, per_page=5)
-    news_list = News.query.paginate(page=page, per_page=5)
-    achievements = Achievement.query.paginate(page=page, per_page=5)
-    media_list = Media.query.paginate(page=page, per_page=5)
+    per_page = 5
+
+    reports = Report.query.paginate(page, per_page, error_out=False)
+    users = User.query.paginate(page, per_page, error_out=False)
+    events = Event.query.paginate(page, per_page, error_out=False)
+    news_list = News.query.paginate(page, per_page, error_out=False)
+    achievements = Achievement.query.paginate(page, per_page, error_out=False)
+    media_list = Media.query.paginate(page, per_page, error_out=False)
 
     return render_template('dashboard.html', reports=reports, users=users, events=events, news_list=news_list, achievements=achievements, media_list=media_list)
 
@@ -311,7 +312,7 @@ def create_news():
     return redirect(url_for('admin.dashboard'))
 
 # Achievement routes
-@main_bp.route('/achievements/create', methods=['GET', 'POST'])
+@main_bp.route('/achievements', methods=['GET', 'POST'])
 def achievements():
     years = [year[0] for year in db.session.query(func.extract('year', Achievement.start_date)).distinct()]
     selected_year = request.form.get('year')
@@ -321,7 +322,7 @@ def achievements():
         achievements = Achievement.query.all()
     return render_template('achievements.html', achievements=achievements, years=years, selected_year=selected_year)
 
-@admin_bp.route('/achievements', methods=['POST'])
+@admin_bp.route('/achievements/create', methods=['POST'])
 @login_required
 def create_achievement():
     if not current_user.is_admin:
