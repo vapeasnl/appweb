@@ -13,7 +13,6 @@
     {% endif %}
 {% endwith %}
 
-<!-- Navigation Tabs -->
 <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
     <li class="nav-item" role="presentation">
         <button class="nav-link active" id="pills-reports-tab" data-bs-toggle="pill" data-bs-target="#pills-reports" type="button" role="tab" aria-controls="pills-reports" aria-selected="true">Manage Reports</button>
@@ -35,7 +34,6 @@
     </li>
 </ul>
 
-<!-- Tab Content -->
 <div class="tab-content" id="pills-tabContent">
     <!-- Manage Reports -->
     <div class="tab-pane fade show active" id="pills-reports" role="tabpanel" aria-labelledby="pills-reports-tab">
@@ -104,7 +102,7 @@
             </ul>
         </nav>
     </div>
-    
+
     <!-- Manage Users -->
     <div class="tab-pane fade" id="pills-users" role="tabpanel" aria-labelledby="pills-users-tab">
         <form method="post" action="{{ url_for('admin.create_user') }}">
@@ -178,7 +176,7 @@
             </ul>
         </nav>
     </div>
-    
+
     <!-- Manage Events -->
     <div class="tab-pane fade" id="pills-events" role="tabpanel" aria-labelledby="pills-events-tab">
         <form method="post" action="{{ url_for('admin.create_event') }}">
@@ -241,7 +239,7 @@
             </ul>
         </nav>
     </div>
-    
+
     <!-- Manage News -->
     <div class="tab-pane fade" id="pills-news" role="tabpanel" aria-labelledby="pills-news-tab">
         <form method="post" action="{{ url_for('admin.create_news') }}">
@@ -304,7 +302,7 @@
             </ul>
         </nav>
     </div>
-    
+
     <!-- Manage Achievements -->
     <div class="tab-pane fade" id="pills-achievements" role="tabpanel" aria-labelledby="pills-achievements-tab">
         <form method="post" action="{{ url_for('admin.create_achievement') }}">
@@ -342,6 +340,7 @@
             </div>
             <button type="submit" class="btn btn-primary">Add Achievement</button>
         </form>
+
         <div class="table-responsive mt-4">
             <table class="table table-bordered">
                 <thead>
@@ -407,7 +406,7 @@
             </ul>
         </nav>
     </div>
-    
+
     <!-- Manage Media -->
     <div class="tab-pane fade" id="pills-media" role="tabpanel" aria-labelledby="pills-media-tab">
         <form method="post" action="{{ url_for('admin.create_media') }}">
