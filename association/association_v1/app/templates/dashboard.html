@@ -13,7 +13,32 @@
     {% endif %}
 {% endwith %}
 
-<!-- Manage Reports -->
+<!-- Navigation Tabs -->
+<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="pills-reports-tab" data-bs-toggle="pill" data-bs-target="#pills-reports" type="button" role="tab" aria-controls="pills-reports" aria-selected="true">Manage Reports</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="pills-users-tab" data-bs-toggle="pill" data-bs-target="#pills-users" type="button" role="tab" aria-controls="pills-users" aria-selected="false">Manage Users</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="pills-events-tab" data-bs-toggle="pill" data-bs-target="#pills-events" type="button" role="tab" aria-controls="pills-events" aria-selected="false">Manage Events</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="pills-news-tab" data-bs-toggle="pill" data-bs-target="#pills-news" type="button" role="tab" aria-controls="pills-news" aria-selected="false">Manage News</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="pills-achievements-tab" data-bs-toggle="pill" data-bs-target="#pills-achievements" type="button" role="tab" aria-controls="pills-achievements" aria-selected="false">Manage Achievements</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="pills-media-tab" data-bs-toggle="pill" data-bs-target="#pills-media" type="button" role="tab" aria-controls="pills-media" aria-selected="false">Manage Media</button>
+    </li>
+</ul>
+
+<!-- Tab Content -->
+<div class="tab-content" id="pills-tabContent">
+    <!-- Manage Reports -->
+    <div class="tab-pane fade show active" id="pills-reports" role="tabpanel" aria-labelledby="pills-reports-tab">
 <div class="card mb-3">
     <div class="card-header">
         <h2>Manage Reports <i class="fas fa-file-alt"></i></h2>
@@ -85,8 +110,10 @@
         </nav>
     </div>
 </div>
-
-<!-- Manage Users -->
+    </div>
+    
+    <!-- Manage Users -->
+    <div class="tab-pane fade" id="pills-users" role="tabpanel" aria-labelledby="pills-users-tab">
 <div class="card mb-3">
     <div class="card-header">
         <h2>Manage Users <i class="fas fa-users"></i></h2>
@@ -164,8 +191,10 @@
         </nav>
     </div>
 </div>
-
-<!-- Manage Events -->
+    </div>
+    
+    <!-- Manage Events -->
+    <div class="tab-pane fade" id="pills-events" role="tabpanel" aria-labelledby="pills-events-tab">
 <div class="card mb-3">
     <div class="card-header">
         <h2>Manage Events <i class="fas fa-calendar-alt"></i></h2>
@@ -232,8 +261,10 @@
         </nav>
     </div>
 </div>
-
-<!-- Manage News -->
+    </div>
+    
+    <!-- Manage News -->
+    <div class="tab-pane fade" id="pills-news" role="tabpanel" aria-labelledby="pills-news-tab">
 <div class="card mb-3">
     <div class="card-header">
         <h2>Manage News <i class="fas fa-newspaper"></i></h2>
@@ -300,8 +331,10 @@
         </nav>
     </div>
 </div>
-
-<!-- Manage Achievements -->
+    </div>
+    
+    <!-- Manage Achievements -->
+    <div class="tab-pane fade" id="pills-achievements" role="tabpanel" aria-labelledby="pills-achievements-tab">
 <div class="card mb-3">
     <div class="card-header">
         <h2>Manage Achievements <i class="fas fa-trophy"></i></h2>
@@ -408,8 +441,10 @@
         </nav>
     </div>
 </div>
-
-<!-- Manage Media -->
+    </div>
+    
+    <!-- Manage Media -->
+    <div class="tab-pane fade" id="pills-media" role="tabpanel" aria-labelledby="pills-media-tab">
 <div class="card mb-3">
     <div class="card-header">
         <h2>Manage Media <i class="fas fa-images"></i></h2>
@@ -485,4 +520,7 @@
         </nav>
     </div>
 </div>
+    </div>
+</div>
+
 {% endblock %}
