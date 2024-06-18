@@ -1,4 +1,3 @@
-from sqlalchemy import func
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
 from .models import db, User, Association, News, Event, Report, Achievement, Media
@@ -91,16 +90,20 @@ def manage_profile():
 def dashboard():
     if not current_user.is_admin:
         return redirect(url_for('main.home'))
-    reports = Report.query.all()
-    users = User.query.all()
-    events = Event.query.all()
-    news_list = News.query.all()
-    achievements = Achievement.query.all()
-    media_list = Media.query.all()
+
+    page = request.args.get('page', 1, type=int)
+    per_page = 5
+
+    reports = Report.query.paginate(page, per_page, error_out=False)
+    users = User.query.paginate(page, per_page, error_out=False)
+    events = Event.query.paginate(page, per_page, error_out=False)
+    news_list = News.query.paginate(page, per_page, error_out=False)
+    achievements = Achievement.query.paginate(page, per_page, error_out=False)
+    media_list = Media.query.paginate(page, per_page, error_out=False)
+
     return render_template('dashboard.html', reports=reports, users=users, events=events, news_list=news_list, achievements=achievements, media_list=media_list)
 
 # Report routes
-
 @admin_bp.route('/reports', methods=['POST'])
 @login_required
 def create_report():
@@ -145,7 +148,6 @@ def delete_report(report_id):
     return redirect(url_for('admin.dashboard'))
 
 # Event routes
-
 @admin_bp.route('/events', methods=['POST'])
 @login_required
 def create_event():
@@ -187,7 +189,6 @@ def delete_event(event_id):
     return redirect(url_for('admin.dashboard'))
 
 # User routes
-
 @admin_bp.route('/users', methods=['POST'])
 @login_required
 def create_user():
@@ -231,7 +232,6 @@ def delete_user(user_id):
     return redirect(url_for('admin.dashboard'))
 
 # News routes
-
 @news_bp.route('/news', methods=['GET'])
 def view_news():
     news = News.query.order_by(News.date.desc()).all()
@@ -312,8 +312,7 @@ def create_news():
     return redirect(url_for('admin.dashboard'))
 
 # Achievement routes
-
-@main_bp.route('/achievements', methods=['GET', 'POST'])
+@main_bp.route('/achievements/create', methods=['GET', 'POST'])
 def achievements():
     years = [year[0] for year in db.session.query(func.extract('year', Achievement.start_date)).distinct()]
     selected_year = request.form.get('year')
@@ -323,14 +322,11 @@ def achievements():
         achievements = Achievement.query.all()
     return render_template('achievements.html', achievements=achievements, years=years, selected_year=selected_year)
 
-@admin_bp.route('/achievements/create', methods=['POST'])
+@admin_bp.route('/achievements', methods=['POST'])
 @login_required
 def create_achievement():
     if not current_user.is_admin:
         return redirect(url_for('main.home'))
-
-    # Ajout de logs pour déboguer les données reçues
-    print("Form Data Received:", request.form)
 
     name = request.form['name']
     start_date = request.form['start_date']
@@ -352,24 +348,13 @@ def create_achievement():
         db.session.add(new_achievement)
         db.session.commit()
         flash('New achievement added successfully.', 'success')
-        print("New achievement added successfully.")
-    except ValueError as ve:
+    except ValueError:
         flash('Invalid date format. Please use YYYY-MM-DD format.', 'error')
-        print(f"ValueError: {ve}")
     except Exception as e:
         flash(f'An error occurred: {str(e)}', 'error')
-        print(f"Exception: {e}")
 
-    # Re-render the dashboard template with the updated data
-    reports = Report.query.all()
-    users = User.query.all()
-    events = Event.query.all()
-    news_list = News.query.all()
-    achievements = Achievement.query.all()
-    media_list = Media.query.all()
-    return render_template('dashboard.html', reports=reports, users=users, events=events, news_list=news_list, achievements=achievements, media_list=media_list)
+    return redirect(url_for('admin.dashboard'))
 
-    
 @admin_bp.route('/achievements/<int:achievement_id>/update', methods=['POST'])
 @login_required
 def update_achievement(achievement_id):
@@ -400,7 +385,6 @@ def delete_achievement(achievement_id):
     return redirect(url_for('admin.dashboard'))
 
 # Media routes
-
 @admin_bp.route('/media', methods=['POST'])
 @login_required
 def create_media():
@@ -443,4 +427,3 @@ def delete_media(media_id):
 def view_media():
     media_list = Media.query.all()
     return render_template('media.html', media_list=media_list)
-
