@@ -39,11 +39,6 @@
 <div class="tab-content" id="pills-tabContent">
     <!-- Manage Reports -->
     <div class="tab-pane fade show active" id="pills-reports" role="tabpanel" aria-labelledby="pills-reports-tab">
-<div class="card mb-3">
-    <div class="card-header">
-        <h2>Manage Reports <i class="fas fa-file-alt"></i></h2>
-    </div>
-    <div class="card-body">
         <form method="post" action="{{ url_for('admin.create_report') }}">
             <div class="mb-3">
                 <label for="title" class="form-label">Title</label>
@@ -109,16 +104,9 @@
             </ul>
         </nav>
     </div>
-</div>
-    </div>
     
     <!-- Manage Users -->
     <div class="tab-pane fade" id="pills-users" role="tabpanel" aria-labelledby="pills-users-tab">
-<div class="card mb-3">
-    <div class="card-header">
-        <h2>Manage Users <i class="fas fa-users"></i></h2>
-    </div>
-    <div class="card-body">
         <form method="post" action="{{ url_for('admin.create_user') }}">
             <div class="mb-3">
                 <label for="username" class="form-label">Username</label>
@@ -190,16 +178,9 @@
             </ul>
         </nav>
     </div>
-</div>
-    </div>
     
     <!-- Manage Events -->
     <div class="tab-pane fade" id="pills-events" role="tabpanel" aria-labelledby="pills-events-tab">
-<div class="card mb-3">
-    <div class="card-header">
-        <h2>Manage Events <i class="fas fa-calendar-alt"></i></h2>
-    </div>
-    <div class="card-body">
         <form method="post" action="{{ url_for('admin.create_event') }}">
             <div class="mb-3">
                 <label for="name" class="form-label">Name</label>
@@ -260,16 +241,9 @@
             </ul>
         </nav>
     </div>
-</div>
-    </div>
     
     <!-- Manage News -->
     <div class="tab-pane fade" id="pills-news" role="tabpanel" aria-labelledby="pills-news-tab">
-<div class="card mb-3">
-    <div class="card-header">
-        <h2>Manage News <i class="fas fa-newspaper"></i></h2>
-    </div>
-    <div class="card-body">
         <form method="post" action="{{ url_for('admin.create_news') }}">
             <div class="mb-3">
                 <label for="news_title" class="form-label">Title</label>
@@ -330,16 +304,9 @@
             </ul>
         </nav>
     </div>
-</div>
-    </div>
     
     <!-- Manage Achievements -->
     <div class="tab-pane fade" id="pills-achievements" role="tabpanel" aria-labelledby="pills-achievements-tab">
-<div class="card mb-3">
-    <div class="card-header">
-        <h2>Manage Achievements <i class="fas fa-trophy"></i></h2>
-    </div>
-    <div class="card-body">
         <form method="post" action="{{ url_for('admin.create_achievement') }}">
             <div class="mb-3">
                 <label for="name" class="form-label">Activity Name</label>
@@ -440,16 +407,9 @@
             </ul>
         </nav>
     </div>
-</div>
-    </div>
     
     <!-- Manage Media -->
     <div class="tab-pane fade" id="pills-media" role="tabpanel" aria-labelledby="pills-media-tab">
-<div class="card mb-3">
-    <div class="card-header">
-        <h2>Manage Media <i class="fas fa-images"></i></h2>
-    </div>
-    <div class="card-body">
         <form method="post" action="{{ url_for('admin.create_media') }}">
             <div class="mb-3">
                 <label for="title" class="form-label">Title</label>
@@ -520,7 +480,4 @@
         </nav>
     </div>
 </div>
-    </div>
-</div>
-
 {% endblock %}
