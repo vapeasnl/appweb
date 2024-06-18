@@ -211,15 +211,25 @@ def create_user():
 def update_user(user_id):
     if not current_user.is_admin:
         return redirect(url_for('main.home'))
+
     user = User.query.get(user_id)
-    if user:
+    if not user:
+        return "Utilisateur non trouvé", 404  # Gestion de l'utilisateur non trouvé
+
+    try:
         user.username = request.form['username']
         user.email = request.form['email']
         user.is_admin = 'is_admin' in request.form
-        if request.form['password']:
+        if request.form.get('password'):  # Utilisation de get() pour éviter une exception
             user.set_password(request.form['password'])
         db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+        print(f"Erreur lors de la mise à jour de l'utilisateur : {str(e)}")
+        return "Erreur lors de la mise à jour de l'utilisateur", 500  # Gestion de l'erreur interne du serveur
+
     return redirect(url_for('admin.dashboard'))
+
 
 @admin_bp.route('/users/<int:user_id>/delete', methods=['POST'])
 @login_required
