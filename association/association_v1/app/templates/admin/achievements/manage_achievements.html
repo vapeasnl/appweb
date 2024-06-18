@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-5">
+    <h1 class="mb-4">Manage Achievements</h1>
+    <form method="post" action="{{ url_for('admin.create_achievement') }}">
+        <div class="form-group">
+            <label for="name">Activity Name</label>
+            <input type="text" class="form-control" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+            <label for="start_date">Start Date</label>
+            <input type="date" class="form-control" id="start_date" name="start_date" required>
+        </div>
+        <div class="form-group">
+            <label for="end_date">End Date</label>
+            <input type="date" class="form-control" id="end_date" name="end_date" required>
+        </div>
+        <div class="form-group">
+            <label for="site">Site</label>
+            <input type="text" class="form-control" id="site" name="site" required>
+        </div>
+        <div class="form-group">
+            <label for="objectives">Objectives</label>
+            <textarea class="form-control" id="objectives" name="objectives" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="beneficiaries_kind">Beneficiaries Kind</label>
+            <input type="text" class="form-control" id="beneficiaries_kind" name="beneficiaries_kind" required>
+        </div>
+        <div class="form-group">
+            <label for="beneficiaries_number">Beneficiaries Number</label>
+            <input type="number" class="form-control" id="beneficiaries_number" name="beneficiaries_number" required>
+        </div>
+        <div class="form-group">
+            <label for="results_obtained">The Results Obtained</label>
+            <textarea class="form-control" id="results_obtained" name="results_obtained" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Achievement</button>
+    </form>
+    <div class="table-responsive mt-4">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Activity Name</th>
+                    <th>Date (Start - End)</th>
+                    <th>Site</th>
+                    <th>Objectives</th>
+                    <th>Beneficiaries Kind</th>
+                    <th>Beneficiaries Number</th>
+                    <th>The Results Obtained</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for achievement in achievements %}
+                <tr>
+                    <td>{{ achievement.name }}</td>
+                    <td>{{ achievement.start_date }} - {{ achievement.end_date }}</td>
+                    <td>{{ achievement.site }}</td>
+                    <td>{{ achievement.objectives }}</td>
+                    <td>{{ achievement.beneficiaries_kind }}</td>
+                    <td>{{ achievement.beneficiaries_number }}</td>
+                    <td>{{ achievement.results_obtained }}</td>
+                    <td>
+                        <form method="post" action="{{ url_for('admin.update_achievement', achievement_id=achievement.id) }}" class="d-inline">
+                            <input type="text" name="name" value="{{ achievement.name }}" class="form-control mb-2">
+                            <input type="date" name="start_date" value="{{ achievement.start_date }}" class="form-control mb-2">
+                            <input type="date" name="end_date" value="{{ achievement.end_date }}" class="form-control mb-2">
+                            <input type="text" name="site" value="{{ achievement.site }}" class="form-control mb-2">
+                            <textarea name="objectives" class="form-control mb-2">{{ achievement.objectives }}</textarea>
+                            <input type="text" name="beneficiaries_kind" value="{{ achievement.beneficiaries_kind }}" class="form-control mb-2">
+                            <input type="number" name="beneficiaries_number" value="{{ achievement.beneficiaries_number }}" class="form-control mb-2">
+                            <textarea name="results_obtained" class="form-control mb-2">{{ achievement.results_obtained }}</textarea>
+                            <button type="submit" class="btn btn-sm btn-primary">Update</button>
+                        </form>
+                        <form method="post" action="{{ url_for('admin.delete_achievement', achievement_id=achievement.id) }}" class="d-inline mt-2">
+                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
