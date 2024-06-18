@@ -90,19 +90,23 @@ def manage_profile():
 def dashboard():
     if not current_user.is_admin:
         return redirect(url_for('main.home'))
-
+    
     page = request.args.get('page', 1, type=int)
-    per_page = 5
 
-    reports = Report.query.paginate(page, per_page, error_out=False)
-    users = User.query.paginate(page, per_page, error_out=False)
-    events = Event.query.paginate(page, per_page, error_out=False)
-    news_list = News.query.paginate(page, per_page, error_out=False)
-    achievements = Achievement.query.paginate(page, per_page, error_out=False)
-    media_list = Media.query.paginate(page, per_page, error_out=False)
-
-    return render_template('dashboard.html', reports=reports, users=users, events=events, news_list=news_list, achievements=achievements, media_list=media_list)
-
+    reports = Report.query.paginate(page, per_page=10)
+    users = User.query.paginate(page, per_page=10)
+    events = Event.query.paginate(page, per_page=10)
+    news_list = News.query.paginate(page, per_page=10)
+    achievements = Achievement.query.paginate(page, per_page=10)
+    media_list = Media.query.paginate(page, per_page=10)
+    
+    return render_template('dashboard.html', 
+                           reports=reports, 
+                           users=users, 
+                           events=events, 
+                           news_list=news_list, 
+                           achievements=achievements, 
+                           media_list=media_list)
 # Report routes
 @admin_bp.route('/reports', methods=['POST'])
 @login_required
