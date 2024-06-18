@@ -94,12 +94,12 @@ def dashboard():
     page = request.args.get('page', 1, type=int)
     per_page = 5
 
-    reports = Report.query.paginate(page, per_page, error_out=False)
-    users = User.query.paginate(page, per_page, error_out=False)
-    events = Event.query.paginate(page, per_page, error_out=False)
-    news_list = News.query.paginate(page, per_page, error_out=False)
-    achievements = Achievement.query.paginate(page, per_page, error_out=False)
-    media_list = Media.query.paginate(page, per_page, error_out=False)
+    reports = Report.query.paginate(page=page, per_page=per_page, error_out=False)
+    users = User.query.paginate(page=page, per_page=per_page, error_out=False)
+    events = Event.query.paginate(page=page, per_page=per_page, error_out=False)
+    news_list = News.query.paginate(page=page, per_page=per_page, error_out=False)
+    achievements = Achievement.query.paginate(page=page, per_page=per_page, error_out=False)
+    media_list = Media.query.paginate(page=page, per_page=per_page, error_out=False)
 
     return render_template('dashboard.html', reports=reports, users=users, events=events, news_list=news_list, achievements=achievements, media_list=media_list)
 
