@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Dashboard</h1>
+
+<h2>Reports</h2>
+<ul>
+    {% for report in reports %}
+    <li>
+        <strong>{{ report.title }}</strong> - {{ report.date }}<br>
+        {{ report.content }}
+    </li>
+    {% endfor %}
+</ul>
+
+<h2>Events</h2>
+<form method="post" action="{{ url_for('admin.manage_events') }}">
+    <div>
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name">
+    </div>
+    <div>
+        <label for="date">Date</label>
+        <input type="date" id="date" name="date">
+    </div>
+    <button type="submit">Add Event</button>
+</form>
+<ul>
+    {% for event in events %}
+    <li>
+        <strong>{{ event.name }}</strong> - {{ event.date }}
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
