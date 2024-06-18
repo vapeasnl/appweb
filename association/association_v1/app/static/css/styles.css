@@ -69,18 +69,6 @@ button.btn:hover {
     background-color: #0056b3;
 }
 
-.nav-pills .nav-link {
-    margin-right: 10px;
-}
 
-.card-header h2 {
-    font-size: 1.5rem;
-    display: flex;
-    align-items: center;
-}
-
-.card-header h2 i {
-    margin-left: 10px;
-}
 
 
