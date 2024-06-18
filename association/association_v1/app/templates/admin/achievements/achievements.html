@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-5">
+    <h1 class="mb-4">Achievements</h1>
+    <p>Explorez les projets sur lesquels nous travaillons actuellement ou que nous avons réalisés.</p>
+    <form method="post" action="{{ url_for('main.achievements') }}">
+        <select name="year" class="form-select mb-3" onchange="this.form.submit()">
+            <option value="">Sélectionner une année</option>
+            {% for year in years %}
+                <option value="{{ year }}" {% if year == selected_year %} selected {% endif %}>{{ year }}</option>
+            {% endfor %}
+        </select>
+    </form>
+    <div class="table-responsive mt-4">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Activity Name</th>
+                    <th>Date (Start - End)</th>
+                    <th>Site</th>
+                    <th>Objectives</th>
+                    <th>Beneficiaries Kind</th>
+                    <th>Beneficiaries Number</th>
+                    <th>The Results Obtained</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for achievement in achievements %}
+                <tr>
+                    <td>{{ achievement.name }}</td>
+                    <td>{{ achievement.start_date }} - {{ achievement.end_date }}</td>
+                    <td>{{ achievement.site }}</td>
+                    <td>{{ achievement.objectives }}</td>
+                    <td>{{ achievement.beneficiaries_kind }}</td>
+                    <td>{{ achievement.beneficiaries_number }}</td>
+                    <td>{{ achievement.results_obtained }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
