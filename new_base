@@ -358,6 +358,8 @@
               </a>
             </li>
 
+                {% if current_user.is_authenticated %}
+
             <li>
               <a href="{{ url_for('profile.manage_profile') }}" class="nav-link text-white">
                 <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#grid"/></svg>
@@ -372,6 +374,8 @@
               </a>
             </li>
 
+                    {% if current_user.is_admin %}
+
 	    <li>
               <a href="{{ url_for('admin.dashboard') }}" class="nav-link text-white">
                 <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#speedometer2"/></svg>
@@ -379,23 +383,33 @@
               </a>
             </li>
 
+                    {% endif %}
+
 	   <li>
+              <a href="{{ url_for('auth.logout') }}" class="nav-link text-white">
+                <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#logout"/></svg>
+                Logout
+              </a>
+            </li>
+
+                {% else %}
+	    <li>
               <a href="{{ url_for('auth.login') }}" class="nav-link text-white">
                 <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#login"/></svg>
                 Login
               </a>
             </li>
 
-	   <li>
-              <a href="{{ url_for('auth.logout') }}" class="nav-link text-white">
-                <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#logout"/></svg>
-                Dashboard
-              </a>
-            </li>
+	    {% endif %}
+
+	    
 
           </ul>
         </div>
       </div>
+    </div>
+    <div class="container mt-4">
+        {% block content %}{% endblock %}
     </div>
     <div class="px-3 py-2 border-bottom mb-3">
       <div class="container d-flex flex-wrap justify-content-center">
@@ -403,10 +417,7 @@
           <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
         </form>
 
-        <div class="text-end">
-          <button type="button" class="btn btn-light text-dark me-2">Login</button>
-          <button type="button" class="btn btn-primary">Sign-up</button>
-        </div>
+        
       </div>
     </div>
   </header>
