@@ -34,14 +34,11 @@
         <button class="nav-link" id="pills-media-tab" data-bs-toggle="pill" data-bs-target="#pills-media" type="button" role="tab" aria-controls="pills-media" aria-selected="false">Manage Media</button>
     </li>
 </ul>
-
-<!-- Tab Content -->
- <div class="card-header">
-    <h2>Manage Reports <i class="fas fa-file-alt"></i></h2>
-</div>
-<div class="card-body">
-    <!-- Formulaire de Création de Rapport -->
-    <form method="post" action="{{ url_for('admin.create_report') }}">
+<!-- Contenu des onglets -->
+<div class="tab-content" id="pills-tabContent">
+    <!-- Onglet Manage Reports -->
+    <div class="tab-pane fade show active" id="pills-reports" role="tabpanel" aria-labelledby="pills-reports-tab">
+        <form method="post" action="{{ url_for('admin.create_report') }}">
         <div class="mb-3">
             <label for="create-title" class="form-label">Title</label>
             <input type="text" class="form-control" id="create-title" name="title">
@@ -137,18 +134,11 @@
         </ul>
     </nav>
 </div>
+    </div>
 
-
-    
-  <!-- Manage Users -->
-<div class="tab-pane fade" id="pills-users" role="tabpanel" aria-labelledby="pills-users-tab">
-    <div class="card mb-3">
-        <div class="card-header">
-            <h2>Manage Users <i class="fas fa-users"></i></h2>
-        </div>
-        <div class="card-body">
-            <!-- Form for creating a new user -->
-            <form method="post" action="{{ url_for('admin.create_user') }}">
+    <!-- Onglet Manage Users -->
+    <div class="tab-pane fade" id="pills-users" role="tabpanel" aria-labelledby="pills-users-tab">
+        <form method="post" action="{{ url_for('admin.create_user') }}">
                 <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
                     <input type="text" class="form-control" id="username" name="username">
@@ -262,6 +252,40 @@
         </div>
     </div>
 </div>
+    </div>
+
+    <!-- Onglet Manage Events -->
+    <div class="tab-pane fade" id="pills-events" role="tabpanel" aria-labelledby="pills-events-tab">
+        <!-- Contenu de la gestion des événements -->
+        <p>Contenu de la gestion des événements</p>
+    </div>
+
+    <!-- Onglet Manage News -->
+    <div class="tab-pane fade" id="pills-news" role="tabpanel" aria-labelledby="pills-news-tab">
+        <!-- Contenu de la gestion des actualités -->
+        <p>Contenu de la gestion des actualités</p>
+    </div>
+
+    <!-- Onglet Manage Achievements -->
+    <div class="tab-pane fade" id="pills-achievements" role="tabpanel" aria-labelledby="pills-achievements-tab">
+        <!-- Contenu de la gestion des réalisations -->
+        <p>Contenu de la gestion des réalisations</p>
+    </div>
+
+    <!-- Onglet Manage Media -->
+    <div class="tab-pane fade" id="pills-media" role="tabpanel" aria-labelledby="pills-media-tab">
+        <!-- Contenu de la gestion des médias -->
+        <p>Contenu de la gestion des médias</p>
+    </div>
+</div>
+
+
+
+    
+
+
+
+            
 
     
     <!-- Manage Events -->
