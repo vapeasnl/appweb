@@ -34,9 +34,14 @@
         <button class="nav-link" id="pills-media-tab" data-bs-toggle="pill" data-bs-target="#pills-media" type="button" role="tab" aria-controls="pills-media" aria-selected="false">Manage Media</button>
     </li>
 </ul>
+
 <!-- Contenu des onglets -->
 <div class="tab-content" id="pills-tabContent">
     <!-- Onglet Manage Reports -->
+    <div class="tab-pane fade show active" id="pills-reports" role="tabpanel" aria-labelledby="pills-reports-tab">
+        <!-- Contenu de la gestion des rapports -->
+        <p>Contenu de la gestion des rapports</p>
+         <!-- Onglet Manage Reports -->
     <div class="tab-pane fade show active" id="pills-reports" role="tabpanel" aria-labelledby="pills-reports-tab">
         <form method="post" action="{{ url_for('admin.create_report') }}">
         <div class="mb-3">
@@ -136,7 +141,13 @@
 </div>
     </div>
 
+    </div>
+
     <!-- Onglet Manage Users -->
+    <div class="tab-pane fade" id="pills-users" role="tabpanel" aria-labelledby="pills-users-tab">
+        <!-- Contenu de la gestion des utilisateurs -->
+        <p>Contenu de la gestion des utilisateurs</p>
+         <!-- Onglet Manage Users -->
     <div class="tab-pane fade" id="pills-users" role="tabpanel" aria-labelledby="pills-users-tab">
         <form method="post" action="{{ url_for('admin.create_user') }}">
                 <div class="mb-3">
@@ -251,8 +262,13 @@
          </nav>
 </div>
     </div>
+    </div>
 
     <!-- Onglet Manage Events -->
+    <div class="tab-pane fade" id="pills-events" role="tabpanel" aria-labelledby="pills-events-tab">
+        <!-- Contenu de la gestion des événements -->
+        <p>Contenu de la gestion des événements</p>
+         <!-- Onglet Manage Events -->
    <!-- Manage Events -->
 <div class="tab-pane fade" id="pills-events" role="tabpanel" aria-labelledby="pills-events-tab">
     <div class="card mb-3">
@@ -350,9 +366,13 @@
              </nav>
 </div>
     </div>
-
+    </div>
 
     <!-- Onglet Manage News -->
+    <div class="tab-pane fade" id="pills-news" role="tabpanel" aria-labelledby="pills-news-tab">
+        <!-- Contenu de la gestion des actualités -->
+        <p>Contenu de la gestion des actualités</p>
+         <!-- Onglet Manage News -->
    <!-- Manage News -->
 <div class="tab-pane fade" id="pills-news" role="tabpanel" aria-labelledby="pills-news-tab">
     <div class="card mb-3">
@@ -450,8 +470,13 @@
                </nav>
 </div>
     </div>
+    </div>
 
-    <!-- Manage Achievements -->
+    <!-- Onglet Manage Achievements -->
+    <div class="tab-pane fade" id="pills-achievements" role="tabpanel" aria-labelledby="pills-achievements-tab">
+        <!-- Contenu de la gestion des réalisations -->
+        <p>Contenu de la gestion des réalisations</p>
+         <!-- Manage Achievements -->
 <div class="tab-pane fade" id="pills-achievements" role="tabpanel" aria-labelledby="pills-achievements-tab">
     <div class="card mb-3">
         <div class="card-header">
@@ -606,9 +631,13 @@
            </nav>
 </div>
     </div>
+    </div>
 
-
-  <!-- Manage Media -->
+    <!-- Onglet Manage Media -->
+    <div class="tab-pane fade" id="pills-media" role="tabpanel" aria-labelledby="pills-media-tab">
+        <!-- Contenu de la gestion des médias -->
+        <p>Contenu de la gestion des médias</p>
+          <!-- Manage Media -->
 <div class="tab-pane fade" id="pills-media" role="tabpanel" aria-labelledby="pills-media-tab">
     <div class="card mb-3">
         <div class="card-header">
@@ -720,6 +749,53 @@
         </div>
     </div>
 </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
+   
+
+   
+
+
+   
+
+   
+
+
+
 
 
 
