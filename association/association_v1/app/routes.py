@@ -124,22 +124,30 @@ def update_report(report_id):
     if not current_user.is_admin:
         return redirect(url_for('main.home'))
     
+    # Récupère le rapport existant depuis la base de données
     report = Report.query.get(report_id)
     
     if report:
+        # Met à jour les champs du rapport avec les données du formulaire
         report.title = request.form['title']
+        report.content = request.form['content']
+        
+        # Gestion de la date
         date_str = request.form['date']
+        
         try:
-            # Parse la date au format YYYY-MM-DD
+            # Essaye de parser la date au format YYYY-MM-DD
             date = datetime.strptime(date_str, '%Y-%m-%d')
             report.date = date
         except ValueError:
             flash('Invalid date format. Please use YYYY-MM-DD format.')
-            return redirect(url_for('admin.dashboard'))
+            return redirect(url_for('admin.dashboard'))  # Redirige vers le tableau de bord en cas d'erreur
         
-        report.content = request.form['content']
+        # Sauvegarde les modifications dans la base de données
         db.session.commit()
+        flash('Report updated successfully.')
     
+    # Redirige vers le tableau de bord une fois la mise à jour effectuée
     return redirect(url_for('admin.dashboard'))
 
 @admin_bp.route('/reports/<int:report_id>/delete', methods=['POST'])
