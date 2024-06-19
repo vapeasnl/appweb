@@ -123,18 +123,23 @@ def create_report():
 def update_report(report_id):
     if not current_user.is_admin:
         return redirect(url_for('main.home'))
+    
     report = Report.query.get(report_id)
+    
     if report:
         report.title = request.form['title']
         date_str = request.form['date']
         try:
-            date = datetime.strptime(date_str, '%Y-%m-%dT%H:%M')
+            # Parse la date au format YYYY-MM-DD
+            date = datetime.strptime(date_str, '%Y-%m-%d')
             report.date = date
         except ValueError:
-            flash('Invalid date format. Please use YYYY-MM-DDTHH:MM format.')
+            flash('Invalid date format. Please use YYYY-MM-DD format.')
             return redirect(url_for('admin.dashboard'))
+        
         report.content = request.form['content']
         db.session.commit()
+    
     return redirect(url_for('admin.dashboard'))
 
 @admin_bp.route('/reports/<int:report_id>/delete', methods=['POST'])
