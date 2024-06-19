@@ -226,21 +226,18 @@ def update_user(user_id):
         return redirect(url_for('main.home'))
 
     user = User.query.get(user_id)
-    if not user:
-        return "Utilisateur non trouvé", 404  # Gestion de l'utilisateur non trouvé
-
-    try:
+    if user:
         user.username = request.form['username']
         user.email = request.form['email']
-        user.is_admin = 'is_admin' in request.form
-        if request.form.get('password'):  # Utilisation de get() pour éviter une exception
-            user.set_password(request.form['password'])
+        user.is_admin = 'is_admin' in request.form  # Check if checkbox is checked
+        
+        new_password = request.form.get('password')
+        if new_password:
+            user.set_password(new_password)  # Update password if provided
+        
         db.session.commit()
-    except Exception as e:
-        db.session.rollback()
-        print(f"Erreur lors de la mise à jour de l'utilisateur : {str(e)}")
-        return "Erreur lors de la mise à jour de l'utilisateur", 500  # Gestion de l'erreur interne du serveur
-
+        flash('User updated successfully.')
+    
     return redirect(url_for('admin.dashboard'))
 
 
