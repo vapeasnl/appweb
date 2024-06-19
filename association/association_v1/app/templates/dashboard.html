@@ -143,12 +143,15 @@
             </div>
         </div>
     </div>
-
+    
     <!-- Onglet Manage Users -->
-    <div class="tab-pane fade" id="pills-users" role="tabpanel" aria-labelledby="pills-users-tab">
-        <!-- Contenu de la gestion des utilisateurs -->
-        <p>Contenu de la gestion des utilisateurs</p>
-         <!-- Onglet Manage Users -->
+   <div class="tab-pane fade" id="pills-users" role="tabpanel" aria-labelledby="pills-users-tab">
+        <div class="card mb-3">
+            <div class="card-header">
+                <h2>Manage Users <i class="fas fa-users"></i></h2>
+            </div>
+            <div class="card-body">
+                <!-- Form for creating a new user -->
         <form method="post" action="{{ url_for('admin.create_user') }}">
                 <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
