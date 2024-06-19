@@ -255,29 +255,477 @@
     </div>
 
     <!-- Onglet Manage Events -->
-    <div class="tab-pane fade" id="pills-events" role="tabpanel" aria-labelledby="pills-events-tab">
-        <!-- Contenu de la gestion des événements -->
-        <p>Contenu de la gestion des événements</p>
-    </div>
+   <!-- Manage Events -->
+<div class="tab-pane fade" id="pills-events" role="tabpanel" aria-labelledby="pills-events-tab">
+    <div class="card mb-3">
+        <div class="card-header">
+            <h2>Manage Events <i class="fas fa-calendar-alt"></i></h2>
+        </div>
+        <div class="card-body">
+            <!-- Formulaire de Création d'Événement -->
+            <form method="post" action="{{ url_for('admin.create_event') }}">
+                <div class="mb-3">
+                    <label for="create-event-name" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="create-event-name" name="name">
+                </div>
+                <div class="mb-3">
+                    <label for="create-event-date" class="form-label">Date (YYYY-MM-DD)</label>
+                    <input type="date" class="form-control" id="create-event-date" name="date">
+                </div>
+                <button type="submit" class="btn btn-primary">Add Event</button>
+            </form>
 
-    <!-- Onglet Manage News -->
-    <div class="tab-pane fade" id="pills-news" role="tabpanel" aria-labelledby="pills-news-tab">
-        <!-- Contenu de la gestion des actualités -->
-        <p>Contenu de la gestion des actualités</p>
-    </div>
+            <div class="table-responsive mt-4">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for event in events.items %}
+                        <tr>
+                            <td>{{ event.name }}</td>
+                            <td>{{ event.date }}</td>
+                            <td>
+                                <!-- Bouton pour ouvrir le modal de mise à jour -->
+                                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#updateEventModal{{ event.id }}">
+                                    Update
+                                </button>
+                                <form method="post" action="{{ url_for('admin.delete_event', event_id=event.id) }}" class="d-inline mt-2">
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
 
-    <!-- Onglet Manage Achievements -->
-    <div class="tab-pane fade" id="pills-achievements" role="tabpanel" aria-labelledby="pills-achievements-tab">
-        <!-- Contenu de la gestion des réalisations -->
-        <p>Contenu de la gestion des réalisations</p>
-    </div>
-
-    <!-- Onglet Manage Media -->
-    <div class="tab-pane fade" id="pills-media" role="tabpanel" aria-labelledby="pills-media-tab">
-        <!-- Contenu de la gestion des médias -->
-        <p>Contenu de la gestion des médias</p>
+                        <!-- Modal pour la mise à jour de l'événement -->
+                        <div class="modal fade" id="updateEventModal{{ event.id }}" tabindex="-1" aria-labelledby="updateEventModalLabel{{ event.id }}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="updateEventModalLabel{{ event.id }}">Update Event</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <form method="post" action="{{ url_for('admin.update_event', event_id=event.id) }}">
+                                        <div class="modal-body">
+                                            <div class="mb-3">
+                                                <label for="update-event-name" class="form-label">Name</label>
+                                                <input type="text" class="form-control" id="update-event-name" name="name" value="{{ event.name }}">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="update-event-date" class="form-label">Date (YYYY-MM-DD)</label>
+                                                <input type="date" class="form-control" id="update-event-date" name="date" value="{{ event.date }}">
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                            <button type="submit" class="btn btn-primary">Update Event</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <nav>
+                <ul class="pagination">
+                    {% if events.has_prev %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('admin.dashboard', page=events.prev_num) }}">Previous</a>
+                    </li>
+                    {% endif %}
+                    {% for page_num in events.iter_pages() %}
+                    <li class="page-item {% if page_num == events.page %}active{% endif %}">
+                        <a class="page-link" href="{{ url_for('admin.dashboard', page=page_num) }}">{{ page_num }}</a>
+                    </li>
+                    {% endfor %}
+                    {% if events.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('admin.dashboard', page=events.next_num) }}">Next</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
     </div>
 </div>
+
+
+    <!-- Onglet Manage News -->
+   <!-- Manage News -->
+<div class="tab-pane fade" id="pills-news" role="tabpanel" aria-labelledby="pills-news-tab">
+    <div class="card mb-3">
+        <div class="card-header">
+            <h2>Manage News <i class="fas fa-newspaper"></i></h2>
+        </div>
+        <div class="card-body">
+            <!-- Formulaire de Création d'Actualité -->
+            <form method="post" action="{{ url_for('admin.create_news') }}">
+                <div class="mb-3">
+                    <label for="create-news-title" class="form-label">Title</label>
+                    <input type="text" class="form-control" id="create-news-title" name="news_title">
+                </div>
+                <div class="mb-3">
+                    <label for="create-news-content" class="form-label">Content</label>
+                    <textarea class="form-control" id="create-news-content" name="news_content"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Add News</button>
+            </form>
+
+            <div class="table-responsive mt-4">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Content</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for news in news_list.items %}
+                        <tr>
+                            <td>{{ news.title }}</td>
+                            <td>{{ news.content }}</td>
+                            <td>
+                                <!-- Bouton pour ouvrir le modal de mise à jour -->
+                                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#updateNewsModal{{ news.id }}">
+                                    Update
+                                </button>
+                                <form method="post" action="{{ url_for('admin.delete_news', news_id=news.id) }}" class="d-inline mt-2">
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+
+                        <!-- Modal pour la mise à jour de l'actualité -->
+                        <div class="modal fade" id="updateNewsModal{{ news.id }}" tabindex="-1" aria-labelledby="updateNewsModalLabel{{ news.id }}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="updateNewsModalLabel{{ news.id }}">Update News</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <form method="post" action="{{ url_for('admin.update_news', news_id=news.id) }}">
+                                        <div class="modal-body">
+                                            <div class="mb-3">
+                                                <label for="update-news-title" class="form-label">Title</label>
+                                                <input type="text" class="form-control" id="update-news-title" name="news_title" value="{{ news.title }}">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="update-news-content" class="form-label">Content</label>
+                                                <textarea class="form-control" id="update-news-content" name="news_content">{{ news.content }}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                            <button type="submit" class="btn btn-primary">Update News</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <nav>
+                <ul class="pagination">
+                    {% if news_list.has_prev %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('admin.dashboard', page=news_list.prev_num) }}">Previous</a>
+                    </li>
+                    {% endif %}
+                    {% for page_num in news_list.iter_pages() %}
+                    <li class="page-item {% if page_num == news_list.page %}active{% endif %}">
+                        <a class="page-link" href="{{ url_for('admin.dashboard', page=page_num) }}">{{ page_num }}</a>
+                    </li>
+                    {% endfor %}
+                    {% if news_list.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('admin.dashboard', page=news_list.next_num) }}">Next</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+    <!-- Manage Achievements -->
+<div class="tab-pane fade" id="pills-achievements" role="tabpanel" aria-labelledby="pills-achievements-tab">
+    <div class="card mb-3">
+        <div class="card-header">
+            <h2>Manage Achievements <i class="fas fa-trophy"></i></h2>
+        </div>
+        <div class="card-body">
+            <!-- Formulaire de Création de Réalisation -->
+            <form method="post" action="{{ url_for('admin.create_achievement') }}">
+                <div class="mb-3">
+                    <label for="create-name" class="form-label">Activity Name</label>
+                    <input type="text" class="form-control" id="create-name" name="name" required>
+                </div>
+                <div class="mb-3">
+                    <label for="create-start_date" class="form-label">Start Date</label>
+                    <input type="date" class="form-control" id="create-start_date" name="start_date" required>
+                </div>
+                <div class="mb-3">
+                    <label for="create-end_date" class="form-label">End Date</label>
+                    <input type="date" class="form-control" id="create-end_date" name="end_date" required>
+                </div>
+                <div class="mb-3">
+                    <label for="create-site" class="form-label">Site</label>
+                    <input type="text" class="form-control" id="create-site" name="site" required>
+                </div>
+                <div class="mb-3">
+                    <label for="create-objectives" class="form-label">Objectives</label>
+                    <textarea class="form-control" id="create-objectives" name="objectives" required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="create-beneficiaries_kind" class="form-label">Beneficiaries Kind</label>
+                    <input type="text" class="form-control" id="create-beneficiaries_kind" name="beneficiaries_kind" required>
+                </div>
+                <div class="mb-3">
+                    <label for="create-beneficiaries_number" class="form-label">Beneficiaries Number</label>
+                    <input type="number" class="form-control" id="create-beneficiaries_number" name="beneficiaries_number" required>
+                </div>
+                <div class="mb-3">
+                    <label for="create-results_obtained" class="form-label">The Results Obtained</label>
+                    <textarea class="form-control" id="create-results_obtained" name="results_obtained" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Achievement</button>
+            </form>
+
+            <div class="table-responsive mt-4">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Activity Name</th>
+                            <th>Date (Start - End)</th>
+                            <th>Site</th>
+                            <th>Objectives</th>
+                            <th>Beneficiaries Kind</th>
+                            <th>Beneficiaries Number</th>
+                            <th>The Results Obtained</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for achievement in achievements.items %}
+                        <tr>
+                            <td>{{ achievement.name }}</td>
+                            <td>{{ achievement.start_date }} - {{ achievement.end_date }}</td>
+                            <td>{{ achievement.site }}</td>
+                            <td>{{ achievement.objectives }}</td>
+                            <td>{{ achievement.beneficiaries_kind }}</td>
+                            <td>{{ achievement.beneficiaries_number }}</td>
+                            <td>{{ achievement.results_obtained }}</td>
+                            <td>
+                                <!-- Bouton pour ouvrir le modal de mise à jour -->
+                                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#updateAchievementModal{{ achievement.id }}">
+                                    Update
+                                </button>
+                                <form method="post" action="{{ url_for('admin.delete_achievement', achievement_id=achievement.id) }}" class="d-inline mt-2">
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+
+                        <!-- Modal pour la mise à jour de la réalisation -->
+                        <div class="modal fade" id="updateAchievementModal{{ achievement.id }}" tabindex="-1" aria-labelledby="updateAchievementModalLabel{{ achievement.id }}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="updateAchievementModalLabel{{ achievement.id }}">Update Achievement</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <form method="post" action="{{ url_for('admin.update_achievement', achievement_id=achievement.id) }}">
+                                        <div class="modal-body">
+                                            <div class="mb-3">
+                                                <label for="update-name" class="form-label">Activity Name</label>
+                                                <input type="text" class="form-control" id="update-name" name="name" value="{{ achievement.name }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="update-start_date" class="form-label">Start Date</label>
+                                                <input type="date" class="form-control" id="update-start_date" name="start_date" value="{{ achievement.start_date }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="update-end_date" class="form-label">End Date</label>
+                                                <input type="date" class="form-control" id="update-end_date" name="end_date" value="{{ achievement.end_date }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="update-site" class="form-label">Site</label>
+                                                <input type="text" class="form-control" id="update-site" name="site" value="{{ achievement.site }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="update-objectives" class="form-label">Objectives</label>
+                                                <textarea class="form-control" id="update-objectives" name="objectives" required>{{ achievement.objectives }}</textarea>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="update-beneficiaries_kind" class="form-label">Beneficiaries Kind</label>
+                                                <input type="text" class="form-control" id="update-beneficiaries_kind" name="beneficiaries_kind" value="{{ achievement.beneficiaries_kind }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="update-beneficiaries_number" class="form-label">Beneficiaries Number</label>
+                                                <input type="number" class="form-control" id="update-beneficiaries_number" name="beneficiaries_number" value="{{ achievement.beneficiaries_number }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="update-results_obtained" class="form-label">The Results Obtained</label>
+                                                <textarea class="form-control" id="update-results_obtained" name="results_obtained" required>{{ achievement.results_obtained }}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                            <button type="submit" class="btn btn-primary">Update Achievement</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <nav>
+                <ul class="pagination">
+                    {% if achievements.has_prev %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('admin.dashboard', page=achievements.prev_num) }}">Previous</a>
+                    </li>
+                    {% endif %}
+                    {% for page_num in achievements.iter_pages() %}
+                    <li class="page-item {% if page_num == achievements.page %}active{% endif %}">
+                        <a class="page-link" href="{{ url_for('admin.dashboard', page=page_num) }}">{{ page_num }}</a>
+                    </li>
+                    {% endfor %}
+                    {% if achievements.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('admin.dashboard', page=achievements.next_num) }}">Next</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+
+  <!-- Manage Media -->
+<div class="tab-pane fade" id="pills-media" role="tabpanel" aria-labelledby="pills-media-tab">
+    <div class="card mb-3">
+        <div class="card-header">
+            <h2>Manage Media <i class="fas fa-images"></i></h2>
+        </div>
+        <div class="card-body">
+            <!-- Formulaire de Création de Média -->
+            <form method="post" action="{{ url_for('admin.create_media') }}">
+                <div class="mb-3">
+                    <label for="create-title" class="form-label">Title</label>
+                    <input type="text" class="form-control" id="create-title" name="title" required>
+                </div>
+                <div class="mb-3">
+                    <label for="create-description" class="form-label">Description</label>
+                    <textarea class="form-control" id="create-description" name="description"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="create-file_url" class="form-label">File URL</label>
+                    <input type="text" class="form-control" id="create-file_url" name="file_url" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Media</button>
+            </form>
+
+            <div class="table-responsive mt-4">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>File URL</th>
+                            <th>Upload Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for media in media_list.items %}
+                        <tr>
+                            <td>{{ media.title }}</td>
+                            <td>{{ media.description }}</td>
+                            <td><a href="{{ media.file_url }}" target="_blank">{{ media.file_url }}</a></td>
+                            <td>{{ media.upload_date }}</td>
+                            <td>
+                                <!-- Bouton pour ouvrir le modal de mise à jour -->
+                                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#updateMediaModal{{ media.id }}">
+                                    Update
+                                </button>
+                                <!-- Formulaire de Suppression de Média -->
+                                <form method="post" action="{{ url_for('admin.delete_media', media_id=media.id) }}" class="d-inline mt-2">
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+
+                        <!-- Modal pour la mise à jour du média -->
+                        <div class="modal fade" id="updateMediaModal{{ media.id }}" tabindex="-1" aria-labelledby="updateMediaModalLabel{{ media.id }}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="updateMediaModalLabel{{ media.id }}">Update Media</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <form method="post" action="{{ url_for('admin.update_media', media_id=media.id) }}">
+                                        <div class="modal-body">
+                                            <div class="mb-3">
+                                                <label for="update-title" class="form-label">Title</label>
+                                                <input type="text" class="form-control" id="update-title" name="title" value="{{ media.title }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="update-description" class="form-label">Description</label>
+                                                <textarea class="form-control" id="update-description" name="description">{{ media.description }}</textarea>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="update-file_url" class="form-label">File URL</label>
+                                                <input type="text" class="form-control" id="update-file_url" name="file_url" value="{{ media.file_url }}" required>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                            <button type="submit" class="btn btn-primary">Update Media</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <nav>
+                <ul class="pagination">
+                    {% if media_list.has_prev %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('admin.dashboard', page=media_list.prev_num) }}">Previous</a>
+                    </li>
+                    {% endif %}
+                    {% for page_num in media_list.iter_pages() %}
+                    <li class="page-item {% if page_num == media_list.page %}active{% endif %}">
+                        <a class="page-link" href="{{ url_for('admin.dashboard', page=page_num) }}">{{ page_num }}</a>
+                    </li>
+                    {% endfor %}
+                    {% if media_list.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('admin.dashboard', page=media_list.next_num) }}">Next</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
 
 
 
@@ -288,335 +736,13 @@
             
 
     
-    <!-- Manage Events -->
-    <div class="tab-pane fade" id="pills-events" role="tabpanel" aria-labelledby="pills-events-tab">
-<div class="card mb-3">
-    <div class="card-header">
-        <h2>Manage Events <i class="fas fa-calendar-alt"></i></h2>
-    </div>
-    <div class="card-body">
-        <form method="post" action="{{ url_for('admin.create_event') }}">
-            <div class="mb-3">
-                <label for="name" class="form-label">Name</label>
-                <input type="text" class="form-control" id="name" name="name">
-            </div>
-            <div class="mb-3">
-                <label for="date" class="form-label">Date</label>
-                <input type="date" class="form-control" id="date" name="date">
-            </div>
-            <button type="submit" class="btn btn-primary">Add Event</button>
-        </form>
-        <div class="table-responsive mt-4">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Date</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for event in events.items %}
-                        <tr>
-                            <td>{{ event.name }}</td>
-                            <td>{{ event.date }}</td>
-                            <td>
-                                <form method="post" action="{{ url_for('admin.update_event', event_id=event.id) }}" class="d-inline">
-                                    <input type="text" name="name" value="{{ event.name }}" class="form-control mb-2">
-                                    <input type="date" name="date" value="{{ event.date }}" class="form-control mb-2">
-                                    <button type="submit" class="btn btn-sm btn-primary">Update</button>
-                                </form>
-                                <form method="post" action="{{ url_for('admin.delete_event', event_id=event.id) }}" class="d-inline mt-2">
-                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                </form>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        <nav>
-            <ul class="pagination">
-                {% if events.has_prev %}
-                    <li class="page-item">
-                        <a class="page-link" href="{{ url_for('admin.dashboard', page=events.prev_num) }}">Previous</a>
-                    </li>
-                {% endif %}
-                {% for page_num in events.iter_pages() %}
-                    <li class="page-item {% if page_num == events.page %}active{% endif %}">
-                        <a class="page-link" href="{{ url_for('admin.dashboard', page=page_num) }}">{{ page_num }}</a>
-                    </li>
-                {% endfor %}
-                {% if events.has_next %}
-                    <li class="page-item">
-                        <a class="page-link" href="{{ url_for('admin.dashboard', page=events.next_num) }}">Next</a>
-                    </li>
-                {% endif %}
-            </ul>
-        </nav>
-    </div>
-</div>
-    </div>
+   
     
-    <!-- Manage News -->
-    <div class="tab-pane fade" id="pills-news" role="tabpanel" aria-labelledby="pills-news-tab">
-<div class="card mb-3">
-    <div class="card-header">
-        <h2>Manage News <i class="fas fa-newspaper"></i></h2>
-    </div>
-    <div class="card-body">
-        <form method="post" action="{{ url_for('admin.create_news') }}">
-            <div class="mb-3">
-                <label for="news_title" class="form-label">Title</label>
-                <input type="text" class="form-control" id="news_title" name="news_title">
-            </div>
-            <div class="mb-3">
-                <label for="news_content" class="form-label">Content</label>
-                <textarea class="form-control" id="news_content" name="news_content"></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Add News</button>
-        </form>
-        <div class="table-responsive mt-4">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Content</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for news in news_list.items %}
-                        <tr>
-                            <td>{{ news.title }}</td>
-                            <td>{{ news.content }}</td>
-                            <td>
-                                <form method="post" action="{{ url_for('admin.update_news', news_id=news.id) }}" class="d-inline">
-                                    <input type="text" name="news_title" value="{{ news.title }}" class="form-control mb-2">
-                                    <textarea name="news_content" class="form-control mb-2">{{ news.content }}</textarea>
-                                    <button type="submit" class="btn btn-sm btn-primary">Update</button>
-                                </form>
-                                <form method="post" action="{{ url_for('admin.delete_news', news_id=news.id) }}" class="d-inline mt-2">
-                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                </form>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        <nav>
-            <ul class="pagination">
-                {% if news_list.has_prev %}
-                    <li class="page-item">
-                        <a class="page-link" href="{{ url_for('admin.dashboard', page=news_list.prev_num) }}">Previous</a>
-                    </li>
-                {% endif %}
-                {% for page_num in news_list.iter_pages() %}
-                    <li class="page-item {% if page_num == news_list.page %}active{% endif %}">
-                        <a class="page-link" href="{{ url_for('admin.dashboard', page=page_num) }}">{{ page_num }}</a>
-                    </li>
-                {% endfor %}
-                {% if news_list.has_next %}
-                    <li class="page-item">
-                        <a class="page-link" href="{{ url_for('admin.dashboard', page=news_list.next_num) }}">Next</a>
-                    </li>
-                {% endif %}
-            </ul>
-        </nav>
-    </div>
-</div>
-    </div>
+   
     
-    <!-- Manage Achievements -->
-    <div class="tab-pane fade" id="pills-achievements" role="tabpanel" aria-labelledby="pills-achievements-tab">
-<div class="card mb-3">
-    <div class="card-header">
-        <h2>Manage Achievements <i class="fas fa-trophy"></i></h2>
-    </div>
-    <div class="card-body">
-        <form method="post" action="{{ url_for('admin.create_achievement') }}">
-            <div class="mb-3">
-                <label for="name" class="form-label">Activity Name</label>
-                <input type="text" class="form-control" id="name" name="name" required>
-            </div>
-            <div class="mb-3">
-                <label for="start_date" class="form-label">Start Date</label>
-                <input type="date" class="form-control" id="start_date" name="start_date" required>
-            </div>
-            <div class="mb-3">
-                <label for="end_date" class="form-label">End Date</label>
-                <input type="date" class="form-control" id="end_date" name="end_date" required>
-            </div>
-            <div class="mb-3">
-                <label for="site" class="form-label">Site</label>
-                <input type="text" class="form-control" id="site" name="site" required>
-            </div>
-            <div class="mb-3">
-                <label for="objectives" class="form-label">Objectives</label>
-                <textarea class="form-control" id="objectives" name="objectives" required></textarea>
-            </div>
-            <div class="mb-3">
-                <label for="beneficiaries_kind" class="form-label">Beneficiaries Kind</label>
-                <input type="text" class="form-control" id="beneficiaries_kind" name="beneficiaries_kind" required>
-            </div>
-            <div class="mb-3">
-                <label for="beneficiaries_number" class="form-label">Beneficiaries Number</label>
-                <input type="number" class="form-control" id="beneficiaries_number" name="beneficiaries_number" required>
-            </div>
-            <div class="mb-3">
-                <label for="results_obtained" class="form-label">The Results Obtained</label>
-                <textarea class="form-control" id="results_obtained" name="results_obtained" required></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Add Achievement</button>
-        </form>
-        <div class="table-responsive mt-4">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Activity Name</th>
-                        <th>Date (Start - End)</th>
-                        <th>Site</th>
-                        <th>Objectives</th>
-                        <th>Beneficiaries Kind</th>
-                        <th>Beneficiaries Number</th>
-                        <th>The Results Obtained</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for achievement in achievements.items %}
-                        <tr>
-                            <td>{{ achievement.name }}</td>
-                            <td>{{ achievement.start_date }} - {{ achievement.end_date }}</td>
-                            <td>{{ achievement.site }}</td>
-                            <td>{{ achievement.objectives }}</td>
-                            <td>{{ achievement.beneficiaries_kind }}</td>
-                            <td>{{ achievement.beneficiaries_number }}</td>
-                            <td>{{ achievement.results_obtained }}</td>
-                            <td>
-                                <form method="post" action="{{ url_for('admin.update_achievement', achievement_id=achievement.id) }}" class="d-inline">
-                                    <input type="text" name="name" value="{{ achievement.name }}" class="form-control mb-2">
-                                    <input type="date" name="start_date" value="{{ achievement.start_date }}" class="form-control mb-2">
-                                    <input type="date" name="end_date" value="{{ achievement.end_date }}" class="form-control mb-2">
-                                    <input type="text" name="site" value="{{ achievement.site }}" class="form-control mb-2">
-                                    <textarea name="objectives" class="form-control mb-2">{{ achievement.objectives }}</textarea>
-                                    <input type="text" name="beneficiaries_kind" value="{{ achievement.beneficiaries_kind }}" class="form-control mb-2">
-                                    <input type="number" name="beneficiaries_number" value="{{ achievement.beneficiaries_number }}" class="form-control mb-2">
-                                    <textarea name="results_obtained" class="form-control mb-2">{{ achievement.results_obtained }}</textarea>
-                                    <button type="submit" class="btn btn-sm btn-primary">Update</button>
-                                </form>
-                                <form method="post" action="{{ url_for('admin.delete_achievement', achievement_id=achievement.id) }}" class="d-inline mt-2">
-                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                </form>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        <nav>
-            <ul class="pagination">
-                {% if achievements.has_prev %}
-                    <li class="page-item">
-                        <a class="page-link" href="{{ url_for('admin.dashboard', page=achievements.prev_num) }}">Previous</a>
-                    </li>
-                {% endif %}
-                {% for page_num in achievements.iter_pages() %}
-                    <li class="page-item {% if page_num == achievements.page %}active{% endif %}">
-                        <a class="page-link" href="{{ url_for('admin.dashboard', page=page_num) }}">{{ page_num }}</a>
-                    </li>
-                {% endfor %}
-                {% if achievements.has_next %}
-                    <li class="page-item">
-                        <a class="page-link" href="{{ url_for('admin.dashboard', page=achievements.next_num) }}">Next</a>
-                    </li>
-                {% endif %}
-            </ul>
-        </nav>
-    </div>
-</div>
-    </div>
+   
     
-    <!-- Manage Media -->
-    <div class="tab-pane fade" id="pills-media" role="tabpanel" aria-labelledby="pills-media-tab">
-<div class="card mb-3">
-    <div class="card-header">
-        <h2>Manage Media <i class="fas fa-images"></i></h2>
-    </div>
-    <div class="card-body">
-        <form method="post" action="{{ url_for('admin.create_media') }}">
-            <div class="mb-3">
-                <label for="title" class="form-label">Title</label>
-                <input type="text" class="form-control" id="title" name="title" required>
-            </div>
-            <div class="mb-3">
-                <label for="description" class="form-label">Description</label>
-                <textarea class="form-control" id="description" name="description"></textarea>
-            </div>
-            <div class="mb-3">
-                <label for="file_url" class="form-label">File URL</label>
-                <input type="text" class="form-control" id="file_url" name="file_url" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Add Media</button>
-        </form>
-        <div class="table-responsive mt-4">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Description</th>
-                        <th>File URL</th>
-                        <th>Upload Date</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for media in media_list.items %}
-                        <tr>
-                            <td>{{ media.title }}</td>
-                            <td>{{ media.description }}</td>
-                            <td><a href="{{ media.file_url }}" target="_blank">{{ media.file_url }}</a></td>
-                            <td>{{ media.upload_date }}</td>
-                            <td>
-                                <form method="post" action="{{ url_for('admin.update_media', media_id=media.id) }}" class="d-inline">
-                                    <input type="text" name="title" value="{{ media.title }}" class="form-control mb-2">
-                                    <textarea name="description" class="form-control mb-2">{{ media.description }}</textarea>
-                                    <input type="text" name="file_url" value="{{ media.file_url }}" class="form-control mb-2">
-                                    <button type="submit" class="btn btn-sm btn-primary">Update</button>
-                                </form>
-                                <form method="post" action="{{ url_for('admin.delete_media', media_id=media.id) }}" class="d-inline mt-2">
-                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                </form>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        <nav>
-            <ul class="pagination">
-                {% if media_list.has_prev %}
-                    <li class="page-item">
-                        <a class="page-link" href="{{ url_for('admin.dashboard', page=media_list.prev_num) }}">Previous</a>
-                    </li>
-                {% endif %}
-                {% for page_num in media_list.iter_pages() %}
-                    <li class="page-item {% if page_num == media_list.page %}active{% endif %}">
-                        <a class="page-link" href="{{ url_for('admin.dashboard', page=page_num) }}">{{ page_num }}</a>
-                    </li>
-                {% endfor %}
-                {% if media_list.has_next %}
-                    <li class="page-item">
-                        <a class="page-link" href="{{ url_for('admin.dashboard', page=media_list.next_num) }}">Next</a>
-                    </li>
-                {% endif %}
-            </ul>
-        </nav>
-    </div>
-</div>
-    </div>
-</div>
+  
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         // Sélectionnez l'onglet en fonction du hash dans l'URL
