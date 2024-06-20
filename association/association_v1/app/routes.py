@@ -14,7 +14,7 @@ news_bp = Blueprint('news', __name__)
 
 @main_bp.before_request
 def before_request():
-    if current_user.is_authenticated:
+    if current_user.is_authenticated and current_user.is_admin:
         g.unread_count = ContactMessage.query.filter_by(is_read=False).count()
     else:
         g.unread_count = 0
@@ -22,6 +22,7 @@ def before_request():
 @main_bp.context_processor
 def inject_unread_count():
     return dict(unread_count=g.get('unread_count', 0))
+
 
 
 @main_bp.route('/about')
@@ -74,8 +75,7 @@ def admin_messages():
     
     page = request.args.get('page', 1, type=int)
     messages = ContactMessage.query.order_by(ContactMessage.sent_at.desc()).paginate(page=page, per_page=10)
-    unread_count = ContactMessage.query.filter_by(is_read=False).count()
-    return render_template('messages.html', messages=messages.items, pagination=messages, unread_count=unread_count)
+    return render_template('messages.html', messages=messages.items, pagination=messages)
 
 
 @main_bp.route('/messages/mark/<int:message_id>', methods=['POST'])
