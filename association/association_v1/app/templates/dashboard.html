@@ -12,22 +12,7 @@
         {% endfor %}
     {% endif %}
 {% endwith %}
- <div class="container mt-4">
-        <!-- Bloc pour afficher les messages flash -->
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                <div class="alert-container">
-                    {% for category, message in messages %}
-                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-                            {{ message }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        {% endwith %}
 
-    </div>
 
 <!-- Navigation Tabs -->
 <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
@@ -53,8 +38,7 @@
 
 <!-- Tab Contents -->
 <div class="tab-content" id="pills-tabContent">
-    <!-- Manage Reports Tab -->
-    <div class="tab-pane fade" id="pills-reports" role="tabpanel" aria-labelledby="pills-reports-tab">
+    <div class="tab-pane fade show active" id="pills-reports" role="tabpanel" aria-labelledby="pills-reports-tab">
         <div class="card mb-3">
             <div class="card-header">
                 <h2>Manage Reports <i class="fas fa-file-alt"></i></h2>
@@ -63,15 +47,15 @@
                 <form id="reports-form" method="post" action="{{ url_for('admin.create_report') }}">
                     <div class="mb-3">
                         <label for="create-title" class="form-label">Title</label>
-                        <input type="text" class="form-control" id="create-title" name="title" required>
+                        <input type="text" class="form-control" id="create-title" name="title">
                     </div>
                     <div class="mb-3">
                         <label for="create-date" class="form-label">Date (YYYY-MM-DD)</label>
-                        <input type="date" class="form-control" id="create-date" name="date" required>
+                        <input type="date" class="form-control" id="create-date" name="date">
                     </div>
                     <div class="mb-3">
                         <label for="create-content" class="form-label">Content</label>
-                        <textarea class="form-control" id="create-content" name="content" required></textarea>
+                        <textarea class="form-control" id="create-content" name="content"></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Add Report</button>
                 </form>
@@ -86,49 +70,53 @@
                             </tr>
                         </thead>
                         <tbody>
-                             {% for event in events.items %}
-                <tr>
-                    <td>{{ event.name }}</td>
-                    <td>{{ event.date }}</td>
-                    <td>
-                        <!-- Bouton pour ouvrir le modal de mise à jour -->
-                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#updateEventModal{{ event.id }}">
-                            Update
-                        </button>
-                        <form method="post" action="{{ url_for('admin.delete_event', event_id=event.id) }}" class="d-inline">
-                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                        </form>
-                    </td>
-                </tr>
+                            {% for report in reports.items %}
+                            <tr>
+                                <td>{{ report.title }}</td>
+                                <td>{{ report.date }}</td>
+                                <td>
+                                    <!-- Bouton pour ouvrir le modal de mise à jour -->
+                                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal{{ report.id }}">
+                                        Update
+                                    </button>
+                                    <form method="post" action="{{ url_for('admin.delete_report', report_id=report.id) }}" class="mt-2">
+                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
 
-                <!-- Modal pour la mise à jour de l'événement -->
-                <div class="modal fade" id="updateEventModal{{ event.id }}" tabindex="-1" aria-labelledby="updateEventModalLabel{{ event.id }}" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="updateEventModalLabel{{ event.id }}">Update Event</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <!-- Modal pour la mise à jour du rapport -->
+                            <div class="modal fade" id="updateModal{{ report.id }}" tabindex="-1" aria-labelledby="updateModalLabel{{ report.id }}" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="updateModalLabel{{ report.id }}">Update Report</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <form method="post" action="{{ url_for('admin.update_report', report_id=report.id) }}">
+                                            <div class="modal-body">
+                                                <div class="mb-3">
+                                                    <label for="update-title" class="form-label">Title</label>
+                                                    <input type="text" class="form-control" id="update-title" name="title" value="{{ report.title }}">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="update-date" class="form-label">Date (YYYY-MM-DD)</label>
+                                                    <input type="date" class="form-control" id="update-date" name="date" value="{{ report.date }}">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="update-content" class="form-label">Content</label>
+                                                    <textarea class="form-control" id="update-content" name="content">{{ report.content }}</textarea>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                <button type="submit" class="btn btn-primary">Update Report</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="modal-body">
-                                <form method="post" action="{{ url_for('admin.update_event', event_id=event.id) }}">
-                                    <div class="mb-3">
-                                        <label for="update-name-{{ event.id }}" class="form-label">Name</label>
-                                        <input type="text" class="form-control" id="update-name-{{ event.id }}" name="name" value="{{ event.name }}">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="update-date-{{ event.id }}" class="form-label">Date</label>
-                                        <input type="date" class="form-control" id="update-date-{{ event.id }}" name="date" value="{{ event.date.strftime('%Y-%m-%d') }}">
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                        <button type="submit" class="btn btn-primary">Update Event</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>
@@ -136,17 +124,17 @@
                     <ul class="pagination">
                         {% if reports.has_prev %}
                         <li class="page-item">
-                            <a class="page-link" href="{{ url_for('admin.dashboard', page_reports=reports.prev_num) }}" data-target="#pills-reports">Previous</a>
+                            <a class="page-link" href="{{ url_for('admin.dashboard', page=reports.prev_num) }}">Previous</a>
                         </li>
                         {% endif %}
                         {% for page_num in reports.iter_pages() %}
                         <li class="page-item {% if page_num == reports.page %}active{% endif %}">
-                            <a class="page-link" href="{{ url_for('admin.dashboard', page_reports=page_num) }}" data-target="#pills-reports">{{ page_num }}</a>
+                            <a class="page-link" href="{{ url_for('admin.dashboard', page=page_num) }}">{{ page_num }}</a>
                         </li>
                         {% endfor %}
                         {% if reports.has_next %}
                         <li class="page-item">
-                            <a class="page-link" href="{{ url_for('admin.dashboard', page_reports=reports.next_num) }}" data-target="#pills-reports">Next</a>
+                            <a class="page-link" href="{{ url_for('admin.dashboard', page=reports.next_num) }}">Next</a>
                         </li>
                         {% endif %}
                     </ul>
