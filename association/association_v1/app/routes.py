@@ -236,8 +236,8 @@ def update_user(user_id):
             user.set_password(new_password)  # Update password if provided
         
         db.session.commit()
-        flash('User updated successfully.')
-    
+        flash('User updated successfully.', 'success')
+        
     return redirect(url_for('admin.dashboard'))
 
 
