@@ -29,8 +29,7 @@
             {% for item in news %}
                 <div class="col-md-4 mb-4">
                     <div class="card">
-                        <img src="{{ item.image_url }}" class="card-img-top" alt="{{ item.title }}">
-                        <div class="card-body">
+                    <img src="{{ item.image_url if item.image_url else url_for('static', filename='img/news.png') }}" class="card-img-top" alt="{{ item.title }}">                        <div class="card-body">
                             <h5 class="card-title">{{ item.title }}</h5>
                             <p class="card-text">{{ item.content }}</p>
                         </div>
