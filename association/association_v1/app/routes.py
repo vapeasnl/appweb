@@ -141,7 +141,7 @@ def logout():
 @profile_bp.route('/profile')
 @login_required
 def profile():
-    return render_template('profile.html', user=current_user, unread_count=g.unread_count)
+    return render_template('profile.html', user=current_user)
 
 @profile_bp.route('/manage_profile', methods=['GET', 'POST'])
 @login_required
