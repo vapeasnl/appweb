@@ -737,89 +737,26 @@
 </div>
     </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   
-   
-
-   
-
-
-   
-
-   
-
-
-
-
-
-
-
-    
-
-
-
-            
-
-    
-   
-    
-   
-    
-   
-    
-  
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Sélectionnez l'onglet en fonction du hash dans l'URL
-        var hash = window.location.hash;
-        if (hash) {
-            var tab = document.querySelector('a[href="' + hash + '"]');
-            if (tab) {
-                var tabInstance = new bootstrap.Tab(tab);
-                tabInstance.show();
+ 
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Check if there's a stored tab state
+            var storedTab = localStorage.getItem('activeTab');
+            if (storedTab) {
+                var triggerEl = document.querySelector(`#pills-tab button[data-bs-target="${storedTab}"]`);
+                var tab = new bootstrap.Tab(triggerEl);
+                tab.show();
             }
-        }
 
-        // Ajoutez un gestionnaire d'événements pour les changements d'onglets
-        var tabLinks = document.querySelectorAll('a[data-bs-toggle="pill"]');
-        tabLinks.forEach(function(tabLink) {
-            tabLink.addEventListener('shown.bs.tab', function(event) {
-                window.location.hash = event.target.hash;
+            // Store the active tab state on tab change
+            var tabTriggerEls = document.querySelectorAll('#pills-tab button[data-bs-toggle="pill"]');
+            tabTriggerEls.forEach(function (tabTriggerEl) {
+                tabTriggerEl.addEventListener('show.bs.tab', function (event) {
+                    var target = event.target.getAttribute('data-bs-target');
+                    localStorage.setItem('activeTab', target);
+                });
             });
         });
-    });
-</script>
+    </script>
 
 {% endblock %}
