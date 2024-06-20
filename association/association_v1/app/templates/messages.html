@@ -1,34 +1,67 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Contact Messages</h1>
+<h1>Messages</h1>
 
-<div class="table-responsive">
+<div class="table-responsive mt-4">
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Message</th>
-                <th>Date Sent</th>
+                <th>Sender Name</th>
+                <th>Sender Email</th>
+                <th>Subject</th>
+                <th>Content</th>
+                <th>Sent At</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             {% for message in messages %}
-                <tr class="{% if not message.is_read %}table-warning{% endif %}">
-                    <td>{{ message.name }}</td>
-                    <td>{{ message.email }}</td>
-                    <td>{{ message.message }}</td>
-                    <td>{{ message.date_sent }}</td>
-                    <td>
-                        {% if not message.is_read %}
-                            <a href="{{ url_for('admin.mark_message_read', message_id=message.id) }}" class="btn btn-sm btn-success">Mark as Read</a>
+            <tr>
+                <td>{{ message.sender_name }}</td>
+                <td>{{ message.sender_email }}</td>
+                <td>{{ message.subject }}</td>
+                <td>{{ message.content }}</td>
+                <td>{{ message.sent_at }}</td>
+                <td>
+                    <!-- Mark as read/unread -->
+                    <form method="post" action="{{ url_for('admin.mark_message', message_id=message.id) }}" class="d-inline">
+                        {% if message.is_read %}
+                        <button type="submit" class="btn btn-sm btn-secondary">Mark as Unread</button>
+                        {% else %}
+                        <button type="submit" class="btn btn-sm btn-primary">Mark as Read</button>
                         {% endif %}
-                    </td>
-                </tr>
+                    </form>
+                    <!-- Delete message -->
+                    <form method="post" action="{{ url_for('admin.delete_message', message_id=message.id) }}" class="d-inline">
+                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
             {% endfor %}
         </tbody>
     </table>
 </div>
+
+<!-- Pagination -->
+<nav>
+    <ul class="pagination">
+        {% if pagination.has_prev %}
+        <li class="page-item">
+            <a class="page-link" href="{{ url_for('admin_messages', page=pagination.prev_num) }}">Previous</a>
+        </li>
+        {% endif %}
+        {% for page_num in pagination.iter_pages() %}
+        <li class="page-item {% if page_num == pagination.page %}active{% endif %}">
+            <a class="page-link" href="{{ url_for('admin_messages', page=page_num) }}">{{ page_num }}</a>
+        </li>
+        {% endfor %}
+        {% if pagination.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="{{ url_for('admin_messages', page=pagination.next_num) }}">Next</a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+
 {% endblock %}
