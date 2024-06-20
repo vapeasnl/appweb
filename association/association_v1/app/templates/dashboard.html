@@ -628,6 +628,21 @@
         <div class="card-header">
             <h2>Manage Media <i class="fas fa-images"></i></h2>
         </div>
+        <form method="post" action="{{ url_for('admin.create_media') }}">
+    <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input type="text" class="form-control" id="title" name="title" required>
+    </div>
+    <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea class="form-control" id="description" name="description"></textarea>
+    </div>
+    <div class="mb-3">
+        <label for="file_url" class="form-label">File URL</label>
+        <input type="text" class="form-control" id="file_url" name="file_url">
+    </div>
+    <button type="submit" class="btn btn-primary">Add Media</button>
+</form>
         <div class="card-body">
             <!-- Tableau des médias -->
             <div class="table-responsive">
