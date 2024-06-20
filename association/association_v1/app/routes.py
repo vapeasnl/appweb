@@ -23,14 +23,14 @@ def inject_unread_count():
     return dict(unread_count=g.get('unread_count', 0))
 
 
-@admin_bp.route.before_request
+@admin_bp.before_request
 def before_request():
     if current_user.is_authenticated:
         g.unread_count = ContactMessage.query.filter_by(is_read=False).count()
     else:
         g.unread_count = 0
 
-@admin_bp.route.context_processor
+@admin_bp.context_processor
 def inject_unread_count():
     return dict(unread_count=g.get('unread_count', 0))
 
