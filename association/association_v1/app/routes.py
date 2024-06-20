@@ -400,7 +400,7 @@ def add_news():
 
     return render_template('add_news.html')
 
-@news_bp.route('/news/edit/<int:id>', methods=['GET', 'POST'])
+@news_bp.route('/news/edit/<int:id>', methods=['GET', 'POST'], endpoint='edit_news')
 @login_required
 def edit_news(id):
     news = News.query.get_or_404(id)
