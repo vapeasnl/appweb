@@ -23,21 +23,27 @@
         </ul>
     </div>
 
-    <div class="container mb-5">
-        <h2 class="mb-4">Dernières actualités</h2>
-        <div class="row">
-            {% for item in news %}
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                    <img src="{{ item.image_url if item.image_url else url_for('static', filename='img/news.png') }}" class="card-img-top" alt="{{ item.title }}">                        <div class="card-body">
-                            <h5 class="card-title">{{ item.title }}</h5>
-                            <p class="card-text">{{ item.content }}</p>
-                        </div>
+  <div class="container mb-5">
+    <h2 class="mb-4">Dernières actualités</h2>
+    <div class="row">
+        {% for item in news %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="{{ item.image_url if item.image_url else url_for('static', filename='img/news.png') }}" class="card-img-top" alt="{{ item.title }}">                    <div class="card-body">
+                        <h5 class="card-title">{{ item.title }}</h5>
+                        <p class="card-text">
+                            <span class="short-text">{{ item.content[:50] }}...</span>
+                            <span class="full-text d-none">{{ item.content }}</span>
+                            <button class="btn btn-link p-0 read-more">Read more</button>
+                            <button class="btn btn-link p-0 read-less d-none">Read less</button>
+                        </p>
                     </div>
                 </div>
-            {% endfor %}
-        </div>
+            </div>
+        {% endfor %}
     </div>
+</div>
+
 
     <div class="container">
         <h2 class="mb-4">Autres informations</h2>
@@ -48,4 +54,31 @@
             <p class="mb-0">Pour en savoir plus, contactez-nous à info@association.com</p>
         </div>
     </div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var readMoreButtons = document.querySelectorAll('.read-more');
+    var readLessButtons = document.querySelectorAll('.read-less');
+
+    readMoreButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            var cardBody = button.closest('.card-body');
+            cardBody.querySelector('.short-text').classList.add('d-none');
+            cardBody.querySelector('.full-text').classList.remove('d-none');
+            button.classList.add('d-none');
+            cardBody.querySelector('.read-less').classList.remove('d-none');
+        });
+    });
+
+    readLessButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            var cardBody = button.closest('.card-body');
+            cardBody.querySelector('.short-text').classList.remove('d-none');
+            cardBody.querySelector('.full-text').classList.add('d-none');
+            button.classList.add('d-none');
+            cardBody.querySelector('.read-more').classList.remove('d-none');
+        });
+    });
+});
+</script>
+
 {% endblock %}
