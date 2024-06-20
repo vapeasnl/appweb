@@ -28,10 +28,19 @@ def partners():
 def help():
     return render_template('help.html')
 
-@main_bp.route('/contact')
+@app.route('/contact', methods=['GET', 'POST'])
 def contact():
+    if request.method == 'POST':
+        name = request.form['name']
+        email = request.form['email']
+        message = request.form['message']
+        contact_message = ContactMessage(name=name, email=email, message=message)
+        db.session.add(contact_message)
+        db.session.commit()
+        flash('Your message has been sent successfully.', 'success')
+        return redirect(url_for('main.contact'))
     return render_template('contact.html')
-
+    
 @main_bp.route('/')
 def home():
     events = Event.query.all()
