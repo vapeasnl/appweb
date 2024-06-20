@@ -320,4 +320,438 @@
                                         <div class="modal-body">
                                             <form method="post" action="{{ url_for('admin.update_event', event_id=event.id) }}">
                                                 <div class="mb-3">
-             
+                                                    <label for="name" class="form-label">Name</label>
+                                                    <input type="text" class="form-control" id="name" name="name" value="{{ event.name }}">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="date" class="form-label">Date</label>
+                                                    <input type="date" class="form-control" id="date" name="date" value="{{ event.date }}">
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                    <button type="submit" class="btn btn-primary">Update Event</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Pagination for events -->
+                <nav>
+                    <ul class="pagination">
+                        {% if events.has_prev %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('admin.dashboard', page_events=events.prev_num) }}" data-target="#pills-events">Previous</a>
+                        </li>
+                        {% endif %}
+                        {% for page_num in events.iter_pages() %}
+                        <li class="page-item {% if page_num == events.page %}active{% endif %}">
+                            <a class="page-link" href="{{ url_for('admin.dashboard', page_events=page_num) }}" data-target="#pills-events">{{ page_num }}</a>
+                        </li>
+                        {% endfor %}
+                        {% if events.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('admin.dashboard', page_events=events.next_num) }}" data-target="#pills-events">Next</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Onglet Manage News -->
+    <div class="tab-pane fade" id="pills-news" role="tabpanel" aria-labelledby="pills-news-tab">
+        <div class="card mb-3">
+            <div class="card-header">
+                <h2>Manage News <i class="fas fa-newspaper"></i></h2>
+            </div>
+            <div class="card-body">
+                <form id="news-form" method="post" action="{{ url_for('admin.create_news') }}">
+                    <div class="mb-3">
+                        <label for="news_title" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="news_title" name="news_title">
+                    </div>
+                    <div class="mb-3">
+                        <label for="news_content" class="form-label">Content</label>
+                        <textarea class="form-control" id="news_content" name="news_content"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add News</button>
+                </form>
+                <div class="table-responsive mt-4">
+                    <table id="news-table" class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Content</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for news in news_list.items %}
+                            <tr>
+                                <td>{{ news.title }}</td>
+                                <td>{{ news.content }}</td>
+                                <td>
+                                    <!-- Update News Modal Trigger -->
+                                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#updateNewsModal{{ news.id }}">
+                                        Update
+                                    </button>
+                                    
+                                    <!-- Delete News Form -->
+                                    <form method="post" action="{{ url_for('admin.delete_news', news_id=news.id) }}" class="d-inline">
+                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            
+                            <!-- Update News Modal -->
+                            <div class="modal fade" id="updateNewsModal{{ news.id }}" tabindex="-1" aria-labelledby="updateNewsModalLabel{{ news.id }}" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="updateNewsModalLabel{{ news.id }}">Update News</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="post" action="{{ url_for('admin.update_news', news_id=news.id) }}">
+                                                <div class="mb-3">
+                                                    <label for="news_title" class="form-label">Title</label>
+                                                    <input type="text" class="form-control" id="news_title" name="news_title" value="{{ news.title }}">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="news_content" class="form-label">Content</label>
+                                                    <textarea class="form-control" id="news_content" name="news_content">{{ news.content }}</textarea>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                    <button type="submit" class="btn btn-primary">Update News</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Pagination for news -->
+                <nav>
+                    <ul class="pagination">
+                        {% if news_list.has_prev %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('admin.dashboard', page_news=news_list.prev_num) }}" data-target="#pills-news">Previous</a>
+                        </li>
+                        {% endif %}
+                        {% for page_num in news_list.iter_pages() %}
+                        <li class="page-item {% if page_num == news_list.page %}active{% endif %}">
+                            <a class="page-link" href="{{ url_for('admin.dashboard', page_news=page_num) }}" data-target="#pills-news">{{ page_num }}</a>
+                        </li>
+                        {% endfor %}
+                        {% if news_list.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('admin.dashboard', page_news=news_list.next_num) }}" data-target="#pills-news">Next</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Onglet Manage Achievements -->
+    <div class="tab-pane fade" id="pills-achievements" role="tabpanel" aria-labelledby="pills-achievements-tab">
+        <div class="card mb-3">
+            <div class="card-header">
+                <h2>Manage Achievements <i class="fas fa-trophy"></i></h2>
+            </div>
+            <div class="card-body">
+                <form id="achievements-form" method="post" action="{{ url_for('admin.create_achievement') }}">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Activity Name</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="start_date" class="form-label">Start Date</label>
+                        <input type="date" class="form-control" id="start_date" name="start_date" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="end_date" class="form-label">End Date</label>
+                        <input type="date" class="form-control" id="end_date" name="end_date" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="site" class="form-label">Site</label>
+                        <input type="text" class="form-control" id="site" name="site" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="objectives" class="form-label">Objectives</label>
+                        <textarea class="form-control" id="objectives" name="objectives" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="beneficiaries_kind" class="form-label">Beneficiaries Kind</label>
+                        <input type="text" class="form-control" id="beneficiaries_kind" name="beneficiaries_kind" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="beneficiaries_number" class="form-label">Beneficiaries Number</label>
+                        <input type="number" class="form-control" id="beneficiaries_number" name="beneficiaries_number" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="results_obtained" class="form-label">The Results Obtained</label>
+                        <textarea class="form-control" id="results_obtained" name="results_obtained" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Achievement</button>
+                </form>
+                <div class="table-responsive mt-4">
+                    <table id="achievements-table" class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Activity Name</th>
+                                <th>Date (Start - End)</th>
+                                <th>Site</th>
+                                <th>Objectives</th>
+                                <th>Beneficiaries Kind</th>
+                                <th>Beneficiaries Number</th>
+                                <th>The Results Obtained</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for achievement in achievements.items %}
+                            <tr>
+                                <td>{{ achievement.name }}</td>
+                                <td>{{ achievement.start_date }} - {{ achievement.end_date }}</td>
+                                <td>{{ achievement.site }}</td>
+                                <td>{{ achievement.objectives }}</td>
+                                <td>{{ achievement.beneficiaries_kind }}</td>
+                                <td>{{ achievement.beneficiaries_number }}</td>
+                                <td>{{ achievement.results_obtained }}</td>
+                                <td>
+                                    <!-- Update Achievement Modal Trigger -->
+                                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#updateAchievementModal{{ achievement.id }}">
+                                        Update
+                                    </button>
+                                    
+                                    <!-- Delete Achievement Form -->
+                                    <form method="post" action="{{ url_for('admin.delete_achievement', achievement_id=achievement.id) }}" class="d-inline">
+                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            
+                            <!-- Update Achievement Modal -->
+                            <div class="modal fade" id="updateAchievementModal{{ achievement.id }}" tabindex="-1" aria-labelledby="updateAchievementModalLabel{{ achievement.id }}" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="updateAchievementModalLabel{{ achievement.id }}">Update Achievement</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="post" action="{{ url_for('admin.update_achievement', achievement_id=achievement.id) }}">
+                                                <div class="mb-3">
+                                                    <label for="name" class="form-label">Activity Name</label>
+                                                    <input type="text" class="form-control" id="name" name="name" value="{{ achievement.name }}">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="start_date" class="form-label">Start Date</label>
+                                                    <input type="date" class="form-control" id="start_date" name="start_date" value="{{ achievement.start_date }}">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="end_date" class="form-label">End Date</label>
+                                                    <input type="date" class="form-control" id="end_date" name="end_date" value="{{ achievement.end_date }}">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="site" class="form-label">Site</label>
+                                                    <input type="text" class="form-control" id="site" name="site" value="{{ achievement.site }}">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="objectives" class="form-label">Objectives</label>
+                                                    <textarea class="form-control" id="objectives" name="objectives">{{ achievement.objectives }}</textarea>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="beneficiaries_kind" class="form-label">Beneficiaries Kind</label>
+                                                    <input type="text" class="form-control" id="beneficiaries_kind" name="beneficiaries_kind" value="{{ achievement.beneficiaries_kind }}">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="beneficiaries_number" class="form-label">Beneficiaries Number</label>
+                                                    <input type="number" class="form-control" id="beneficiaries_number" name="beneficiaries_number" value="{{ achievement.beneficiaries_number }}">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="results_obtained" class="form-label">The Results Obtained</label>
+                                                    <textarea class="form-control" id="results_obtained" name="results_obtained">{{ achievement.results_obtained }}</textarea>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                    <button type="submit" class="btn btn-primary">Update Achievement</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Pagination for achievements -->
+                <nav>
+                    <ul class="pagination">
+                        {% if achievements.has_prev %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('admin.dashboard', page_achievements=achievements.prev_num) }}" data-target="#pills-achievements">Previous</a>
+                        </li>
+                        {% endif %}
+                        {% for page_num in achievements.iter_pages() %}
+                        <li class="page-item {% if page_num == achievements.page %}active{% endif %}">
+                            <a class="page-link" href="{{ url_for('admin.dashboard', page_achievements=page_num) }}" data-target="#pills-achievements">{{ page_num }}</a>
+                        </li>
+                        {% endfor %}
+                        {% if achievements.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('admin.dashboard', page_achievements=achievements.next_num) }}" data-target="#pills-achievements">Next</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Onglet Manage Media -->
+    <div class="tab-pane fade" id="pills-media" role="tabpanel" aria-labelledby="pills-media-tab">
+        <div class="card mb-3">
+            <div class="card-header">
+                <h2>Manage Media <i class="fas fa-images"></i></h2>
+            </div>
+            <div class="card-body">
+                <form id="media-form" method="post" action="{{ url_for('admin.create_media') }}" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="title" name="title" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" name="description"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="file" class="form-label">File</label>
+                        <input type="file" class="form-control" id="file" name="file" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Media</button>
+                </form>
+                <div class="table-responsive mt-4">
+                    <table id="media-table" class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Description</th>
+                                <th>File</th>
+                                <th>Upload Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for media in media_list.items %}
+                            <tr>
+                                <td>{{ media.title }}</td>
+                                <td>{{ media.description }}</td>
+                                <td><a href="{{ media.file_url }}" target="_blank">{{ media.file_url }}</a></td>
+                                <td>{{ media.upload_date }}</td>
+                                <td>
+                                    <!-- Update Media Modal Trigger -->
+                                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#updateMediaModal{{ media.id }}">
+                                        Update
+                                    </button>
+                                    
+                                    <!-- Delete Media Form -->
+                                    <form method="post" action="{{ url_for('admin.delete_media', media_id=media.id) }}" class="d-inline">
+                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            
+                            <!-- Update Media Modal -->
+                            <div class="modal fade" id="updateMediaModal{{ media.id }}" tabindex="-1" aria-labelledby="updateMediaModalLabel{{ media.id }}" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="updateMediaModalLabel{{ media.id }}">Update Media</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="post" action="{{ url_for('admin.update_media', media_id=media.id) }}">
+                                                <div class="mb-3">
+                                                    <label for="title" class="form-label">Title</label>
+                                                    <input type="text" class="form-control" id="title" name="title" value="{{ media.title }}">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="description" class="form-label">Description</label>
+                                                    <textarea class="form-control" id="description" name="description">{{ media.description }}</textarea>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="file_url" class="form-label">File URL</label>
+                                                    <input type="text" class="form-control" id="file_url" name="file_url" value="{{ media.file_url }}">
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                    <button type="submit" class="btn btn-primary">Update Media</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Pagination for media -->
+                <nav>
+                    <ul class="pagination">
+                        {% if media_list.has_prev %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('admin.dashboard', page_media=media_list.prev_num) }}" data-target="#pills-media">Previous</a>
+                        </li>
+                        {% endif %}
+                        {% for page_num in media_list.iter_pages() %}
+                        <li class="page-item {% if page_num == media_list.page %}active{% endif %}">
+                            <a class="page-link" href="{{ url_for('admin.dashboard', page_media=page_num) }}" data-target="#pills-media">{{ page_num }}</a>
+                        </li>
+                        {% endfor %}
+                        {% if media_list.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('admin.dashboard', page_media=media_list.next_num) }}" data-target="#pills-media">Next</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Check if there's a stored tab state
+            var storedTab = localStorage.getItem('activeTab');
+            if (storedTab) {
+                var triggerEl = document.querySelector(`#pills-tab button[data-bs-target="${storedTab}"]`);
+                var tab = new bootstrap.Tab(triggerEl);
+                tab.show();
+            }
+
+            // Store the active tab state on tab change
+            var tabTriggerEls = document.querySelectorAll('#pills-tab button[data-bs-toggle="pill"]');
+            tabTriggerEls.forEach(function (tabTriggerEl) {
+                tabTriggerEl.addEventListener('show.bs.tab', function (event) {
+                    var target = event.target.getAttribute('data-bs-target');
+                    localStorage.setItem('activeTab', target);
+                });
+            });
+        });
+    </script>
+{% endblock %}
