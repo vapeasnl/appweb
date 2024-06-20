@@ -28,7 +28,7 @@ def partners():
 def help():
     return render_template('help.html')
 
-@app.route('/contact', methods=['GET', 'POST'])
+@main_bp.route('/contact', methods=['GET', 'POST'])
 def contact():
     if request.method == 'POST':
         name = request.form['name']
