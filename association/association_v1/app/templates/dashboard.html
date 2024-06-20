@@ -47,11 +47,11 @@
                 <form id="reports-form" method="post" action="{{ url_for('admin.create_report') }}">
                     <div class="mb-3">
                         <label for="create-title" class="form-label">Title</label>
-                        <input type="text" class="form-control" id="create-title" name="title"  required>
+                        <input type="text" class="form-control" id="create-title" name="title">
                     </div>
                     <div class="mb-3">
                         <label for="create-date" class="form-label">Date (YYYY-MM-DD)</label>
-                        <input type="date" class="form-control" id="create-date" name="date"  required>
+                        <input type="date" class="form-control" id="create-date" name="date">
                     </div>
                     <div class="mb-3">
                         <label for="create-content" class="form-label">Content</label>
@@ -97,11 +97,11 @@
                                             <div class="modal-body">
                                                 <div class="mb-3">
                                                     <label for="update-title" class="form-label">Title</label>
-                                                    <input type="text" class="form-control" id="update-title" name="title" value="{{ report.title }}" required>
+                                                    <input type="text" class="form-control" id="update-title" name="title" value="{{ report.title }}">
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="update-date" class="form-label">Date (YYYY-MM-DD)</label>
-                                                    <input type="date" class="form-control" id="update-date" name="date" value="{{ report.date }}" required>
+                                                    <input type="date" class="form-control" id="update-date" name="date" value="{{ report.date }}">
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="update-content" class="form-label">Content</label>
@@ -154,18 +154,18 @@
                 <form id="users-form" method="post" action="{{ url_for('admin.create_user') }}">
                     <div class="mb-3">
                         <label for="username" class="form-label">Username</label>
-                        <input type="text" class="form-control" id="username" name="username" required>
+                        <input type="text" class="form-control" id="username" name="username">
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" required>
+                        <input type="email" class="form-control" id="email" name="email">
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
+                        <input type="password" class="form-control" id="password" name="password">
                     </div>
                     <div class="mb-3 form-check">
-                        <input type="checkbox" class="form-check-input" id="is_admin" name="is_admin" required>
+                        <input type="checkbox" class="form-check-input" id="is_admin" name="is_admin">
                         <label class="form-check-label" for="is_admin">Admin</label>
                     </div>
                     <button type="submit" class="btn btn-primary">Add User</button>
@@ -213,18 +213,18 @@
                                             <form method="post" action="{{ url_for('admin.update_user', user_id=user.id) }}">
                                                 <div class="mb-3">
                                                     <label for="username" class="form-label">Username</label>
-                                                    <input type="text" class="form-control" id="username" name="username" value="{{ user.username }}" required>
+                                                    <input type="text" class="form-control" id="username" name="username" value="{{ user.username }}">
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="email" class="form-label">Email</label>
-                                                    <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" required>
+                                                    <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}">
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="password" class="form-label">New Password</label>
-                                                    <input type="password" class="form-control" id="password" name="password" required>
+                                                    <input type="password" class="form-control" id="password" name="password">
                                                 </div>
                                                 <div class="mb-3 form-check">
-                                                    <input type="checkbox" class="form-check-input" id="is_admin" name="is_admin" {% if user.is_admin %} checked {% endif %} required>
+                                                    <input type="checkbox" class="form-check-input" id="is_admin" name="is_admin" {% if user.is_admin %} checked {% endif %}>
                                                     <label class="form-check-label" for="is_admin">Admin</label>
                                                 </div>
                                                 <div class="modal-footer">
@@ -274,11 +274,11 @@
                 <form id="events-form" method="post" action="{{ url_for('admin.create_event') }}">
                     <div class="mb-3">
                         <label for="name" class="form-label">Name</label>
-                        <input type="text" class="form-control" id="name" name="name" required>
+                        <input type="text" class="form-control" id="name" name="name">
                     </div>
                     <div class="mb-3">
                         <label for="date" class="form-label">Date</label>
-                        <input type="date" class="form-control" id="date" name="date" required>
+                        <input type="date" class="form-control" id="date" name="date">
                     </div>
                     <button type="submit" class="btn btn-primary">Add Event</button>
                 </form>
@@ -321,11 +321,11 @@
                                             <form method="post" action="{{ url_for('admin.update_event', event_id=event.id) }}">
                                                 <div class="mb-3">
                                                     <label for="name" class="form-label">Name</label>
-                                                    <input type="text" class="form-control" id="name" name="name" value="{{ event.name }}" required>
+                                                    <input type="text" class="form-control" id="name" name="name" value="{{ event.name }}">
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="date" class="form-label">Date</label>
-                                                    <input type="date" class="form-control" id="date" name="date" value="{{ event.date }}" required>
+                                                    <input type="date" class="form-control" id="date" name="date" value="{{ event.date }}">
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -374,7 +374,7 @@
                 <form id="news-form" method="post" action="{{ url_for('admin.create_news') }}">
                     <div class="mb-3">
                         <label for="news_title" class="form-label">Title</label>
-                        <input type="text" class="form-control" id="news_title" name="news_title" required>
+                        <input type="text" class="form-control" id="news_title" name="news_title">
                     </div>
                     <div class="mb-3">
                         <label for="news_content" class="form-label">Content</label>
@@ -421,7 +421,7 @@
                                             <form method="post" action="{{ url_for('admin.update_news', news_id=news.id) }}">
                                                 <div class="mb-3">
                                                     <label for="news_title" class="form-label">Title</label>
-                                                    <input type="text" class="form-control" id="news_title" name="news_title" value="{{ news.title }}" required>
+                                                    <input type="text" class="form-control" id="news_title" name="news_title" value="{{ news.title }}">
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="news_content" class="form-label">Content</label>
@@ -555,19 +555,19 @@
                                             <form method="post" action="{{ url_for('admin.update_achievement', achievement_id=achievement.id) }}">
                                                 <div class="mb-3">
                                                     <label for="name" class="form-label">Activity Name</label>
-                                                    <input type="text" class="form-control" id="name" name="name" value="{{ achievement.name }}" required>
+                                                    <input type="text" class="form-control" id="name" name="name" value="{{ achievement.name }}">
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="start_date" class="form-label">Start Date</label>
-                                                    <input type="date" class="form-control" id="start_date" name="start_date" value="{{ achievement.start_date }}" required>
+                                                    <input type="date" class="form-control" id="start_date" name="start_date" value="{{ achievement.start_date }}">
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="end_date" class="form-label">End Date</label>
-                                                    <input type="date" class="form-control" id="end_date" name="end_date" value="{{ achievement.end_date }}" required>
+                                                    <input type="date" class="form-control" id="end_date" name="end_date" value="{{ achievement.end_date }}">
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="site" class="form-label">Site</label>
-                                                    <input type="text" class="form-control" id="site" name="site" value="{{ achievement.site }}" required>
+                                                    <input type="text" class="form-control" id="site" name="site" value="{{ achievement.site }}">
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="objectives" class="form-label">Objectives</label>
@@ -575,11 +575,11 @@
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="beneficiaries_kind" class="form-label">Beneficiaries Kind</label>
-                                                    <input type="text" class="form-control" id="beneficiaries_kind" name="beneficiaries_kind" value="{{ achievement.beneficiaries_kind }}" required>
+                                                    <input type="text" class="form-control" id="beneficiaries_kind" name="beneficiaries_kind" value="{{ achievement.beneficiaries_kind }}">
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="beneficiaries_number" class="form-label">Beneficiaries Number</label>
-                                                    <input type="number" class="form-control" id="beneficiaries_number" name="beneficiaries_number" value="{{ achievement.beneficiaries_number }}" required>
+                                                    <input type="number" class="form-control" id="beneficiaries_number" name="beneficiaries_number" value="{{ achievement.beneficiaries_number }}">
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="results_obtained" class="form-label">The Results Obtained</label>
@@ -622,32 +622,30 @@
         </div>
     </div>
 
-     <!-- Onglet Manage Media -->
+<!-- Onglet Manage Media -->
 <div class="tab-pane fade" id="pills-media" role="tabpanel" aria-labelledby="pills-media-tab">
     <div class="card mb-3">
         <div class="card-header">
             <h2>Manage Media <i class="fas fa-images"></i></h2>
         </div>
+        <form method="post" action="{{ url_for('admin.create_media') }}">
+    <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input type="text" class="form-control" id="title" name="title" required>
+    </div>
+    <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea class="form-control" id="description" name="description"></textarea>
+    </div>
+    <div class="mb-3">
+        <label for="file_url" class="form-label">File URL</label>
+        <input type="text" class="form-control" id="file_url" name="file_url">
+    </div>
+    <button type="submit" class="btn btn-primary">Add Media</button>
+</form>
         <div class="card-body">
-            <form method="post" action="{{ url_for('admin.create_media') }}" enctype="multipart/form-data">
-                <div class="mb-3">
-                    <label for="title" class="form-label">Title</label>
-                    <input type="text" class="form-control" id="title" name="title" required>
-                </div>
-                <div class="mb-3">
-                    <label for="description" class="form-label">Description</label>
-                    <textarea class="form-control" id="description" name="description"></textarea>
-                </div>
-                <div class="mb-3">
-                    <label for="file" class="form-label">File Upload</label>
-                    <div class="input-group">
-                        <input type="file" class="form-control" id="file" name="file" accept="image/*, video/*, .pdf" required>
-                        <button class="btn btn-outline-secondary" type="button" id="fileUploadButton">Upload</button>
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-primary">Add Media</button>
-            </form>
-            <div class="table-responsive mt-4">
+            <!-- Tableau des médias -->
+            <div class="table-responsive">
                 <table class="table table-bordered">
                     <thead>
                         <tr>
@@ -666,23 +664,55 @@
                                 <td><a href="{{ media.file_url }}" target="_blank">{{ media.file_url }}</a></td>
                                 <td>{{ media.upload_date }}</td>
                                 <td>
-                                    <form method="post" action="{{ url_for('admin.update_media', media_id=media.id) }}" class="d-inline">
-                                        <input type="text" name="title" value="{{ media.title }}" class="form-control mb-2" required>
-                                        <textarea name="description" class="form-control mb-2">{{ media.description }}</textarea>
-                                        <input type="text" name="file_url" value="{{ media.file_url }}" class="form-control mb-2" required>
-                                        <button type="submit" class="btn btn-sm btn-primary">Update</button>
-                                    </form>
-                                    <form method="post" action="{{ url_for('admin.delete_media', media_id=media.id) }}" class="d-inline mt-2">
+                                    <!-- Bouton pour ouvrir le modal de mise à jour -->
+                                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#updateMediaModal{{ media.id }}">
+                                        Update
+                                    </button>
+                                    <!-- Formulaire pour supprimer le média -->
+                                    <form method="post" action="{{ url_for('admin.delete_media', media_id=media.id) }}" class="d-inline">
                                         <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                                     </form>
                                 </td>
                             </tr>
+
+                            <!-- Modal de mise à jour du média -->
+                            <div class="modal fade" id="updateMediaModal{{ media.id }}" tabindex="-1" aria-labelledby="updateMediaModalLabel{{ media.id }}" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="updateMediaModalLabel{{ media.id }}">Update Media</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="post" action="{{ url_for('admin.update_media', media_id=media.id) }}">
+                                                <div class="mb-3">
+                                                    <label for="update-title" class="form-label">Title</label>
+                                                    <input type="text" class="form-control" id="update-title" name="title" value="{{ media.title }}">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="update-description" class="form-label">Description</label>
+                                                    <textarea class="form-control" id="update-description" name="description">{{ media.description }}</textarea>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="update-file-url" class="form-label">File URL</label>
+                                                    <input type="text" class="form-control" id="update-file-url" name="file_url" value="{{ media.file_url }}">
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                    <button type="submit" class="btn btn-primary">Update Media</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         {% endfor %}
                     </tbody>
                 </table>
             </div>
-            <nav>
-                <ul class="pagination">
+            <!-- Pagination -->
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
                     {% if media_list.has_prev %}
                         <li class="page-item">
                             <a class="page-link" href="{{ url_for('admin.create_media', page=media_list.prev_num) }}">Previous</a>

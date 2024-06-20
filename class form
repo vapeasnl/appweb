@@ -1,0 +1,73 @@
+
+class MediaForm(FlaskForm):
+    title = StringField('Title', validators=[InputRequired()])
+    description = TextAreaField('Description')
+    file_url = StringField('File URL')
+    submit = SubmitField('Add Media')
+
+class EventForm(FlaskForm):
+    name = StringField('Name', validators=[InputRequired()])
+    date = DateField('Date (YYYY-MM-DD)', format='%Y-%m-%d', validators=[InputRequired()])
+
+    def validate_date(form, field):
+        try:
+            datetime.strptime(field.data, '%Y-%m-%d')
+        except ValueError:
+            raise ValidationError('Invalid date format. Please use YYYY-MM-DD format.')
+
+    submit = SubmitField('Add Event')
+
+class ReportForm(FlaskForm):
+    title = StringField('Title', validators=[InputRequired()])
+    date = DateField('Date (YYYY-MM-DD)', format='%Y-%m-%d', validators=[InputRequired()])
+
+    def validate_date(form, field):
+        try:
+            datetime.strptime(field.data, '%Y-%m-%d')
+        except ValueError:
+            raise ValidationError('Invalid date format. Please use YYYY-MM-DD format.')
+
+    content = TextAreaField('Content', validators=[InputRequired()])
+    submit = SubmitField('Add Report')
+
+class NewsForm(FlaskForm):
+    title = StringField('Title', validators=[InputRequired()])
+    content = TextAreaField('Content', validators=[InputRequired()])
+    submit = SubmitField('Add News')
+
+class AchievementForm(FlaskForm):
+    name = StringField('Name', validators=[InputRequired()])
+    start_date = DateField('Start Date (YYYY-MM-DD)', format='%Y-%m-%d', validators=[InputRequired()])
+
+    def validate_start_date(form, field):
+        try:
+            datetime.strptime(field.data, '%Y-%m-%d')
+        except ValueError:
+            raise ValidationError('Invalid date format. Please use YYYY-MM-DD format.')
+
+    end_date = DateField('End Date (YYYY-MM-DD)', format='%Y-%m-%d', validators=[InputRequired()])
+
+    def validate_end_date(form, field):
+        try:
+            datetime.strptime(field.data, '%Y-%m-%d')
+        except ValueError:
+            raise ValidationError('Invalid date format. Please use YYYY-MM-DD format.')
+
+    site = StringField('Site', validators=[InputRequired()])
+    objectives = TextAreaField('Objectives', validators=[InputRequired()])
+    beneficiaries_kind = StringField('Beneficiaries Kind', validators=[InputRequired()])
+    beneficiaries_number = IntegerField('Number of Beneficiaries', validators=[InputRequired()])
+    results_obtained = TextAreaField('Results Obtained', validators=[InputRequired()])
+    submit = SubmitField('Add Achievement')
+
+class UserForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired(), Length(min=2, max=100)])
+    email = StringField('Email', validators=[DataRequired(), Email(), Length(max=100)])
+    password = PasswordField('Password', validators=[DataRequired(), Length(min=6, max=100)])
+    name = StringField('Name', validators=[Optional(), Length(max=100)])
+    address = StringField('Address', validators=[Optional(), Length(max=200)])
+    postal_address = StringField('Postal Address', validators=[Optional(), Length(max=200)])
+    date_of_birth = DateField('Date of Birth (YYYY-MM-DD)', format='%Y-%m-%d', validators=[Optional()])
+    marital_status = StringField('Marital Status', validators=[Optional(), Length(max=50)])
+    is_admin = BooleanField('Is Admin')
+    submit = SubmitField('Submit')

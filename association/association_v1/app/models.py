@@ -4,6 +4,8 @@ from datetime import datetime
 from . import db, login_manager
 
 
+
+
 class User(db.Model, UserMixin):
     __tablename__ = 'user'
 
@@ -79,3 +81,6 @@ class ContactMessage(db.Model):
 
     def formatted_sent_at(self):
         return self.sent_at.strftime('%Y-%m-%d %H:%M:%S')
+
+
+
