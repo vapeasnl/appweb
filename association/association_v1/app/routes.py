@@ -206,32 +206,32 @@ def dashboard():
 
 
 # Report routes
-@admin_bp.route('/reports', methods=['POST'])
+@admin_bp.route('/reports/create', methods=['POST'])
 @login_required
 def create_report():
     if not current_user.is_admin:
+        flash('You do not have permission to create reports.', 'error')
         return redirect(url_for('main.home'))
 
-    title = request.form['title']
-    date_str = request.form['date']
-    content = request.form['content']
+    title = request.form.get('title')
+    date = request.form.get('date')
+    content = request.form.get('content')
 
-    if not title or not date_str or not content:
-        flash('All fields are required.', 'danger')
+    if not title or not date or not content:
+        flash('Title, date, and content are required.', 'error')
         return redirect(url_for('admin.dashboard'))
 
     try:
-        date = datetime.strptime(date_str, '%Y-%m-%d')
-    except ValueError:
-        flash('Invalid date format. Please use YYYY-MM-DD.', 'danger')
-        return redirect(url_for('admin.dashboard'))
+        report = Report(title=title, date=date, content=content)
+        db.session.add(report)
+        db.session.commit()
+        flash('Report added successfully.', 'success')
+    except Exception as e:
+        flash(f'Failed to add report. Error: {str(e)}', 'error')
+        db.session.rollback()
 
-    report = Report(title=title, date=date, content=content)
-    db.session.add(report)
-    db.session.commit()
-
-    flash('Report created successfully!', 'success')
     return redirect(url_for('admin.dashboard'))
+
 @admin_bp.route('/reports/<int:report_id>', methods=['POST'])
 @login_required
 def update_report(report_id):
@@ -282,8 +282,14 @@ def create_event():
     if not current_user.is_admin:
         flash('You do not have permission to create events.', 'error')
         return redirect(url_for('main.home'))
-    name = request.form['name']
-    date_str = request.form['date']
+
+    name = request.form.get('name')
+    date_str = request.form.get('date')
+
+    if not name or not date_str:
+        flash('Name and date are required fields.', 'error')
+        return redirect(url_for('admin.dashboard'))
+
     try:
         date = datetime.strptime(date_str, '%Y-%m-%d')
         new_event = Event(name=name, date=date)
@@ -292,6 +298,8 @@ def create_event():
         flash('New event added successfully.', 'success')
     except ValueError:
         flash('Invalid date format. Please use YYYY-MM-DD format.', 'error')
+        return redirect(url_for('admin.dashboard'))
+
     return redirect(url_for('admin.dashboard'))
 
 @admin_bp.route('/events/<int:event_id>/update', methods=['POST'])
@@ -328,14 +336,31 @@ def create_user():
     if not current_user.is_admin:
         flash('You do not have permission to create users.', 'error')
         return redirect(url_for('main.home'))
-    username = request.form['username']
-    email = request.form['email']
-    password = request.form['password']
-    is_admin = request.form.get('is_admin', False)
+    
+    username = request.form.get('username')
+    email = request.form.get('email')
+    password = request.form.get('password')
+    is_admin = request.form.get('is_admin') == 'on'
+
+    # Vérification des champs requis
+    if not username or not email or not password:
+        flash('Username, email, and password are required fields.', 'error')
+        return redirect(url_for('admin.dashboard'))
+
+    # Vérification de l'unicité de l'email
+    existing_user = User.query.filter_by(email=email).first()
+    if existing_user:
+        flash('Email address is already in use. Please use a different email.', 'error')
+        return redirect(url_for('admin.dashboard'))
+
+    # Création du nouvel utilisateur
     new_user = User(username=username, email=email, is_admin=is_admin)
     new_user.set_password(password)
+    
+    # Ajout à la base de données
     db.session.add(new_user)
     db.session.commit()
+
     flash('New user added successfully.', 'success')
     return redirect(url_for('admin.dashboard'))
 
@@ -454,11 +479,13 @@ def create_news():
     title = request.form.get('news_title')
     content = request.form.get('news_content')
 
+    # Vérification des champs requis
     if not title or not content:
         flash('Title and content are required.', 'error')
         return redirect(url_for('admin.dashboard'))
 
     try:
+        # Création de la nouvelle
         news = News(title=title, content=content)
         db.session.add(news)
         db.session.commit()
@@ -484,20 +511,29 @@ def achievements():
 @login_required
 def create_achievement():
     if not current_user.is_admin:
+        flash('You do not have permission to create achievements.', 'error')
         return redirect(url_for('main.home'))
 
     name = request.form['name']
-    start_date = request.form['start_date']
-    end_date = request.form['end_date']
+    start_date_str = request.form['start_date']
+    end_date_str = request.form['end_date']
     site = request.form['site']
     objectives = request.form['objectives']
     beneficiaries_kind = request.form['beneficiaries_kind']
     beneficiaries_number = request.form['beneficiaries_number']
     results_obtained = request.form['results_obtained']
 
+    # Vérification des champs requis
+    if not name or not start_date_str or not end_date_str or not site or not objectives:
+        flash('All fields are required.', 'error')
+        return redirect(url_for('admin.dashboard'))
+
     try:
-        start_date = datetime.strptime(start_date, '%Y-%m-%d')
-        end_date = datetime.strptime(end_date, '%Y-%m-%d')
+        # Conversion des dates
+        start_date = datetime.strptime(start_date_str, '%Y-%m-%d')
+        end_date = datetime.strptime(end_date_str, '%Y-%m-%d')
+
+        # Création de la nouvelle réalisation
         new_achievement = Achievement(
             name=name, start_date=start_date, end_date=end_date, site=site,
             objectives=objectives, beneficiaries_kind=beneficiaries_kind,
@@ -506,10 +542,12 @@ def create_achievement():
         db.session.add(new_achievement)
         db.session.commit()
         flash('New achievement added successfully.', 'success')
+
     except ValueError:
         flash('Invalid date format. Please use YYYY-MM-DD format.', 'error')
     except Exception as e:
         flash(f'An error occurred: {str(e)}', 'error')
+        db.session.rollback()
 
     return redirect(url_for('admin.dashboard'))
 
@@ -547,14 +585,29 @@ def delete_achievement(achievement_id):
 @login_required
 def create_media():
     if not current_user.is_admin:
+        flash('You do not have permission to create media.', 'error')
         return redirect(url_for('main.home'))
-    title = request.form['title']
-    description = request.form['description']
-    file_url = request.form['file_url']
-    new_media = Media(title=title, description=description, file_url=file_url)
-    db.session.add(new_media)
-    db.session.commit()
-    flash('New media added successfully.')
+
+    # Récupération des données du formulaire
+    title = request.form.get('title')
+    description = request.form.get('description')
+    file_url = request.form.get('file_url')
+
+    # Vérification des champs requis
+    if not title or not description or not file_url:
+        flash('Title, description, and file URL are required.', 'error')
+        return redirect(url_for('admin.dashboard'))
+
+    try:
+        # Création d'une nouvelle instance de Media
+        new_media = Media(title=title, description=description, file_url=file_url)
+        db.session.add(new_media)
+        db.session.commit()
+        flash('New media added successfully.', 'success')
+    except Exception as e:
+        flash(f'Failed to add media. Error: {str(e)}', 'error')
+        db.session.rollback()
+
     return redirect(url_for('admin.dashboard'))
 
 @admin_bp.route('/media/<int:media_id>/update', methods=['POST'])
