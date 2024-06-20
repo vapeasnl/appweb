@@ -275,7 +275,6 @@ def delete_report(report_id):
         db.session.commit()
     return redirect(url_for('admin.dashboard'))
 
-# Event routes
 @admin_bp.route('/events', methods=['POST'])
 @login_required
 def create_event():
@@ -292,13 +291,18 @@ def create_event():
 
     try:
         date = datetime.strptime(date_str, '%Y-%m-%d')
+    except ValueError:
+        flash('Invalid date format. Please use YYYY-MM-DD format.', 'error')
+        return redirect(url_for('admin.dashboard'))
+
+    try:
         new_event = Event(name=name, date=date)
         db.session.add(new_event)
         db.session.commit()
         flash('New event added successfully.', 'success')
-    except ValueError:
-        flash('Invalid date format. Please use YYYY-MM-DD format.', 'error')
-        return redirect(url_for('admin.dashboard'))
+    except Exception as e:
+        flash(f'Failed to add event. Error: {str(e)}', 'error')
+        db.session.rollback()
 
     return redirect(url_for('admin.dashboard'))
 
