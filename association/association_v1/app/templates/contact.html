@@ -1,9 +1,19 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>Contact us</h1>
-    <p>Do you have any questions or would like to contact us? Contact us using the form below or via our contact details.</p>
-   <form method="post" action="{{ url_for('main.contact') }}">
+<h1>Contact Us</h1>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<form method="post" action="{{ url_for('contact') }}">
     <div class="mb-3">
         <label for="name" class="form-label">Name</label>
         <input type="text" class="form-control" id="name" name="name" required>
@@ -13,10 +23,13 @@
         <input type="email" class="form-control" id="email" name="email" required>
     </div>
     <div class="mb-3">
-        <label for="message" class="form-label">Message</label>
-        <textarea class="form-control" id="message" name="message" rows="3" required></textarea>
+        <label for="subject" class="form-label">Subject</label>
+        <input type="text" class="form-control" id="subject" name="subject" required>
     </div>
-    <button type="submit" class="btn btn-primary">Send</button>
+    <div class="mb-3">
+        <label for="content" class="form-label">Message</label>
+        <textarea class="form-control" id="content" name="content" rows="5" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Send Message</button>
 </form>
-    <h2>Model de l'association:</h2> <ul> <li>Nom: Oisis association for sustainable development</li> <li>Email: OASD@association.com</li> <li>Adresse: adresse postale</li> <li>Téléphone: 0614550116</li> </ul>
 {% endblock %}
