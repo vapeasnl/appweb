@@ -303,82 +303,69 @@
 
 
   <header>
-    <div class="px-3 py-2 text-bg-dark border-bottom">
-      <div class="container">
-        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-          <a href="/" class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none">
-            <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg>
-          </a>
-
-          <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
-
-            <li>
-              <a href="{{ url_for('main.home') }}" class="nav-link text-secondary">
-                <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#home"/></svg>
-                Home
-              </a>
-            </li>
-
-            
-            <li>
-              <a href="{{ url_for('main.view_media') }}" class="nav-link text-white">
-                <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#film"/></svg>
-                Media
-              </a>
-            </li>
-
-		 <li>
-              <a href="{{ url_for('main.achievements') }}" class="nav-link text-white">
-                <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#trophy"/></svg>
-                Achievement
-              </a>
-            </li>
-	    
-	    <li>
-              <a href="{{ url_for('main.contact') }}" class="nav-link text-white">
-                <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#envelope"/></svg>
-                Contact us
-              </a>
-            </li>
-
-		 <li>
-              <a href="{{ url_for('main.activities') }}" class="nav-link text-white">
-                <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#activity"/></svg>
-                Activity
-              </a>
-            </li>
-
-		 <li>
-              <a href="{{ url_for('main.partners') }}" class="nav-link text-white">
-                <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#table"/></svg>
-                Sponsors
-              </a>
-            </li>
-
-	    <li>
-              <a href="{{ url_for('main.help') }}" class="nav-link text-white">
-                <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#help"/></svg>
-                Help us
-              </a>
-            </li>
-
-                {% if current_user.is_authenticated %}
-
-            <li>
-              <a href="{{ url_for('profile.manage_profile') }}" class="nav-link text-white">
-                <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#grid"/></svg>
-                Manage Profile
-              </a>
-            </li>
-
-            <li>
-              <a href="{{ url_for('profile.profile') }}" class="nav-link text-white">
-                <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#people-circle"/></svg>
-                Profile
-              </a>
-            </li>
-
-                   {% if current_user.is_admin %}
+        <div class="px-3 py-2 text-bg-dark border-bottom">
+            <div class="container">
+                <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                    <a href="/" class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none">
+                        <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg>
+                    </a>
+                    <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
+                        <li>
+                            <a href="{{ url_for('main.home') }}" class="nav-link text-secondary">
+                                <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#home"/></svg>
+                                Home
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('main.view_media') }}" class="nav-link text-white">
+                                <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#film"/></svg>
+                                Media
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('main.achievements') }}" class="nav-link text-white">
+                                <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#trophy"/></svg>
+                                Achievement
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('main.contact') }}" class="nav-link text-white">
+                                <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#envelope"/></svg>
+                                Contact us
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('main.activities') }}" class="nav-link text-white">
+                                <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#activity"/></svg>
+                                Activity
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('main.partners') }}" class="nav-link text-white">
+                                <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#table"/></svg>
+                                Sponsors
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('main.help') }}" class="nav-link text-white">
+                                <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#help"/></svg>
+                                Help us
+                            </a>
+                        </li>
+                        {% if current_user.is_authenticated %}
+                            <li>
+                                <a href="{{ url_for('profile.manage_profile') }}" class="nav-link text-white">
+                                    <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#grid"/></svg>
+                                    Manage Profile
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ url_for('profile.profile') }}" class="nav-link text-white">
+                                    <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#people-circle"/></svg>
+                                    Profile
+                                </a>
+                            </li>
+                            {% if current_user.is_admin %}
                                 <li>
                                     <a href="{{ url_for('admin.dashboard') }}" class="nav-link text-white">
                                         <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#speedometer2"/></svg>
@@ -397,42 +384,29 @@
                                     </a>
                                 </li>
                             {% endif %}
-	   <li>
-              <a href="{{ url_for('auth.logout') }}" class="nav-link text-white">
-                <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#logout"/></svg>
-                Logout
-              </a>
-            </li>
-
-                {% else %}
-	    <li>
-              <a href="{{ url_for('auth.login') }}" class="nav-link text-white">
-                <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#login"/></svg>
-                Login
-              </a>
-            </li>
-
-	    {% endif %}
-
-	    
-
-          </ul>
+                            <li>
+                                <a href="{{ url_for('auth.logout') }}" class="nav-link text-white">
+                                    <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#logout"/></svg>
+                                    Logout
+                                </a>
+                            </li>
+                        {% else %}
+                            <li>
+                                <a href="{{ url_for('auth.login') }}" class="nav-link text-white">
+                                    <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#login"/></svg>
+                                    Login
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-    <div class="container mt-4">
-        {% block content %}{% endblock %}
-    </div>
-    <div class="px-3 py-2 border-bottom mb-3">
-      <div class="container d-flex flex-wrap justify-content-center">
-        <form class="col-12 col-lg-auto mb-2 mb-lg-0 me-lg-auto" role="search">
-          <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
-        </form>
-
+        <div class="container mt-4">
+            {% block content %}{% endblock %}
+        </div>
         
-      </div>
-    </div>
-  </header>
+    </header>
 
 <script>
     $(document).ready(function(){
