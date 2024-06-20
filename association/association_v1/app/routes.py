@@ -139,7 +139,7 @@ def logout():
 @profile_bp.route('/profile')
 @login_required
 def profile():
-    return render_template('profile.html', user=current_user)
+    return render_template('profile.html', user=current_user, unread_count=g.unread_count)
 
 @profile_bp.route('/manage_profile', methods=['GET', 'POST'])
 @login_required
@@ -154,7 +154,7 @@ def manage_profile():
         db.session.commit()
         flash('Profile updated successfully.')
         return redirect(url_for('profile.profile'))
-    return render_template('manage_profile.html', user=current_user)
+    return render_template('manage_profile.html', user=current_user, unread_count=g.unread_count)
 
 @admin_bp.route('/dashboard')
 @login_required
@@ -176,7 +176,7 @@ def dashboard():
     achievements = Achievement.query.paginate(page=page_achievements, per_page=10)
     media_list = Media.query.paginate(page=page_media, per_page=10)
 
-    return render_template('dashboard.html', reports=reports, users=users, events=events, news_list=news_list, achievements=achievements, media_list=media_list)
+    return render_template('dashboard.html', reports=reports, users=users, events=events, news_list=news_list, achievements=achievements, media_list=media_list, unread_count=g.unread_count)
 
 
 # Report routes
