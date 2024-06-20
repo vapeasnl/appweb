@@ -210,14 +210,27 @@ def dashboard():
 def create_report():
     if not current_user.is_admin:
         return redirect(url_for('main.home'))
+
     title = request.form['title']
-    date = request.form['date']
+    date_str = request.form['date']
     content = request.form['content']
+
+    if not title or not date_str or not content:
+        flash('All fields are required.', 'danger')
+        return redirect(url_for('admin.dashboard'))
+
+    try:
+        date = datetime.strptime(date_str, '%Y-%m-%d')
+    except ValueError:
+        flash('Invalid date format. Please use YYYY-MM-DD.', 'danger')
+        return redirect(url_for('admin.dashboard'))
+
     report = Report(title=title, date=date, content=content)
     db.session.add(report)
     db.session.commit()
-    return redirect(url_for('admin.dashboard'))
 
+    flash('Report created successfully!', 'success')
+    return redirect(url_for('admin.dashboard'))
 @admin_bp.route('/reports/<int:report_id>', methods=['POST'])
 @login_required
 def update_report(report_id):
