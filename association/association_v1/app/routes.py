@@ -610,18 +610,31 @@ def create_media():
 
     return redirect(url_for('admin.dashboard'))
 
-@admin_bp.route('/media/<int:media_id>/update', methods=['POST'])
+@admin_bp.route('/media/update/<int:media_id>', methods=['POST'])
 @login_required
 def update_media(media_id):
     if not current_user.is_admin:
+        flash('You do not have permission to update media.', 'error')
         return redirect(url_for('main.home'))
-    media = Media.query.get(media_id)
-    if media:
-        media.title = request.form['title']
-        media.description = request.form['description']
-        media.file_url = request.form['file_url']
+
+    # Récupération du média à mettre à jour
+    media = Media.query.get_or_404(media_id)
+
+    # Mise à jour des champs du média
+    media.title = request.form.get('title')
+    media.description = request.form.get('description')
+    media.file_url = request.form.get('file_url')
+
+    try:
+        # Commit des changements dans la base de données
         db.session.commit()
+        flash('Media updated successfully.', 'success')
+    except Exception as e:
+        flash(f'Failed to update media. Error: {str(e)}', 'error')
+        db.session.rollback()
+
     return redirect(url_for('admin.dashboard'))
+
 
 @admin_bp.route('/media/<int:media_id>/delete', methods=['POST'])
 @login_required
