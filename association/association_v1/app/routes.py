@@ -450,8 +450,14 @@ def create_news():
     if not current_user.is_admin:
         flash('You do not have permission to create news.', 'error')
         return redirect(url_for('main.home'))
-    title = request.form['news_title']
-    content = request.form['news_content']
+    
+    title = request.form.get('news_title')
+    content = request.form.get('news_content')
+    
+    if not title or not content:
+        flash('Title and content are required.', 'error')
+        return redirect(url_for('admin.dashboard'))
+    
     news = News(title=title, content=content)
     db.session.add(news)
     db.session.commit()
