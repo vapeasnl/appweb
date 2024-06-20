@@ -1,0 +1,81 @@
+<!-- Onglet Manage Media -->
+<div class="tab-pane fade" id="pills-media" role="tabpanel" aria-labelledby="pills-media-tab">
+    <div class="card mb-3">
+        <div class="card-header">
+            <h2>Manage Media <i class="fas fa-images"></i></h2>
+        </div>
+        <div class="card-body">
+            <form method="post" action="{{ url_for('admin.create_media') }}" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="title" class="form-label">Title</label>
+                    <input type="text" class="form-control" id="title" name="title" required>
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea class="form-control" id="description" name="description"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="file" class="form-label">File Upload</label>
+                    <div class="input-group">
+                        <input type="file" class="form-control" id="file" name="file" accept="image/*, video/*, .pdf">
+                        <button class="btn btn-outline-secondary" type="button" id="fileUploadButton">Upload</button>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Media</button>
+            </form>
+            <div class="table-responsive mt-4">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>File URL</th>
+                            <th>Upload Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for media in media_list.items %}
+                            <tr>
+                                <td>{{ media.title }}</td>
+                                <td>{{ media.description }}</td>
+                                <td><a href="{{ media.file_url }}" target="_blank">{{ media.file_url }}</a></td>
+                                <td>{{ media.upload_date }}</td>
+                                <td>
+                                    <form method="post" action="{{ url_for('admin.update_media', media_id=media.id) }}" class="d-inline">
+                                        <input type="text" name="title" value="{{ media.title }}" class="form-control mb-2">
+                                        <textarea name="description" class="form-control mb-2">{{ media.description }}</textarea>
+                                        <input type="text" name="file_url" value="{{ media.file_url }}" class="form-control mb-2">
+                                        <button type="submit" class="btn btn-sm btn-primary">Update</button>
+                                    </form>
+                                    <form method="post" action="{{ url_for('admin.delete_media', media_id=media.id) }}" class="d-inline mt-2">
+                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <nav>
+                <ul class="pagination">
+                    {% if media_list.has_prev %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('admin.manage_media', page=media_list.prev_num) }}">Previous</a>
+                        </li>
+                    {% endif %}
+                    {% for page_num in media_list.iter_pages() %}
+                        <li class="page-item {% if page_num == media_list.page %}active{% endif %}">
+                            <a class="page-link" href="{{ url_for('admin.manage_media', page=page_num) }}">{{ page_num }}</a>
+                        </li>
+                    {% endfor %}
+                    {% if media_list.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('admin.manage_media', page=media_list.next_num) }}">Next</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
