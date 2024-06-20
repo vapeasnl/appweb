@@ -62,7 +62,9 @@ def admin_messages():
     
     page = request.args.get('page', 1, type=int)
     messages = ContactMessage.query.order_by(ContactMessage.sent_at.desc()).paginate(page=page, per_page=10)
-    return render_template('messages.html', messages=messages.items, pagination=messages)
+    unread_count = ContactMessage.query.filter_by(is_read=False).count()
+    return render_template('messages.html', messages=messages.items, pagination=messages, unread_count=unread_count)
+
 
 @app.route('messages/mark/<int:message_id>', methods=['POST'])
 @login_required
