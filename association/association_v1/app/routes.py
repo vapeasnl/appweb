@@ -40,7 +40,29 @@ def contact():
         flash('Your message has been sent successfully.', 'success')
         return redirect(url_for('main.contact'))
     return render_template('contact.html')
-    
+
+
+@admin_bp.route('/admin/messages')
+@login_required
+def admin_messages():
+    if not current_user.is_admin:
+        flash('You do not have access to this page.', 'danger')
+        return redirect(url_for('main.home'))
+    messages = ContactMessage.query.order_by(ContactMessage.date_sent.desc()).all()
+    return render_template('messages.html', messages=messages)
+
+@admin_bp.route('/admin/messages/<int:message_id>/mark_read')
+@login_required
+def mark_message_read(message_id):
+    if not current_user.is_admin:
+        flash('You do not have access to this page.', 'danger')
+        return redirect(url_for('main.home'))
+    message = ContactMessage.query.get_or_404(message_id)
+    message.is_read = True
+    db.session.commit()
+    flash('Message marked as read.', 'success')
+    return redirect(url_for('admin.admin_messages'))
+
 @main_bp.route('/')
 def home():
     events = Event.query.all()
