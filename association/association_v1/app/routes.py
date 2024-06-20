@@ -450,20 +450,25 @@ def create_news():
     if not current_user.is_admin:
         flash('You do not have permission to create news.', 'error')
         return redirect(url_for('main.home'))
-    
+
     title = request.form.get('news_title')
     content = request.form.get('news_content')
-    
+
     if not title or not content:
         flash('Title and content are required.', 'error')
         return redirect(url_for('admin.dashboard'))
-    
-    news = News(title=title, content=content)
-    db.session.add(news)
-    db.session.commit()
-    flash('News added successfully.', 'success')
-    return redirect(url_for('admin.dashboard'))
 
+    try:
+        news = News(title=title, content=content)
+        db.session.add(news)
+        db.session.commit()
+        flash('News added successfully.', 'success')
+    except Exception as e:
+        flash(f'Failed to add news. Error: {str(e)}', 'error')
+        db.session.rollback()
+
+    return redirect(url_for('admin.dashboard'))
+    
 # Achievement routes
 @main_bp.route('/achievements', methods=['GET', 'POST'])
 def achievements():
