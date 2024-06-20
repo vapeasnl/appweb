@@ -28,48 +28,61 @@ def partners():
 def help():
     return render_template('help.html')
 
-@main_bp.route('/contact', methods=['GET', 'POST'])
+@app.route('/contact', methods=['GET', 'POST'])
 def contact():
     if request.method == 'POST':
-        name = request.form['name']
-        email = request.form['email']
-        message = request.form['message']
-        contact_message = ContactMessage(name=name, email=email, message=message)
-        db.session.add(contact_message)
+        sender_name = request.form['name']
+        sender_email = request.form['email']
+        subject = request.form['subject']
+        content = request.form['content']
+        
+        new_message = ContactMessage(
+            sender_name=sender_name,
+            sender_email=sender_email,
+            subject=subject,
+            content=content,
+            sent_at=datetime.utcnow()
+        )
+        
+        db.session.add(new_message)
         db.session.commit()
-        flash('Your message has been sent successfully.', 'success')
-        return redirect(url_for('main.contact'))
+        
+        flash('Your message has been sent successfully!', 'success')
+        return redirect(url_for('contact'))
+    
     return render_template('contact.html')
 
-
-@admin_bp.route('/admin/messages')
+# Route pour afficher les messages pour l'administrateur
+@app.route('messages', methods=['GET'])
 @login_required
 def admin_messages():
     if not current_user.is_admin:
         flash('You do not have access to this page.', 'danger')
         return redirect(url_for('main.home'))
-    messages = ContactMessage.query.order_by(ContactMessage.date_sent.desc()).all()
-    return render_template('messages.html', messages=messages)
+    
+    page = request.args.get('page', 1, type=int)
+    messages = ContactMessage.query.order_by(ContactMessage.sent_at.desc()).paginate(page=page, per_page=10)
+    return render_template('messages.html', messages=messages.items, pagination=messages)
 
 @app.route('messages/mark/<int:message_id>', methods=['POST'])
 @login_required
 def admin_mark_message(message_id):
     if not current_user.is_admin:
-        flash('Access denied.', 'danger')
+        flash('You do not have access to this page.', 'danger')
         return redirect(url_for('main.home'))
-
+    
     message = ContactMessage.query.get_or_404(message_id)
     message.is_read = not message.is_read
     db.session.commit()
     return redirect(url_for('admin_messages'))
 
-@app.route('delete/<int:message_id>', methods=['POST'])
+@app.route('messages/delete/<int:message_id>', methods=['POST'])
 @login_required
 def admin_delete_message(message_id):
     if not current_user.is_admin:
-        flash('Access denied.', 'danger')
+        flash('You do not have access to this page.', 'danger')
         return redirect(url_for('main.home'))
-
+    
     message = ContactMessage.query.get_or_404(message_id)
     db.session.delete(message)
     db.session.commit()
