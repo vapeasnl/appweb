@@ -400,18 +400,6 @@ def add_news():
 
     return render_template('add_news.html')
 
-@news_bp.route('/news/edit/<int:id>', methods=['GET', 'POST'], endpoint='edit_news')
-@login_required
-def edit_news(id):
-    news = News.query.get_or_404(id)
-    if request.method == 'POST':
-        news.title = request.form['title']
-        news.content = request.form['content']
-        news.image_url = request.form['image_url']
-        db.session.commit()
-        flash('News updated successfully.', 'success')
-        return redirect(url_for('news.view_news'))
-    return render_template('edit_news.html', news=news)
 
 @news_bp.route('/news/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
