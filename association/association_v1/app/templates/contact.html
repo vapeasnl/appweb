@@ -3,14 +3,20 @@
 {% block content %}
     <h1>Contact us</h1>
     <p>Do you have any questions or would like to contact us? Contact us using the form below or via our contact details.</p>
-    <form action="/submit_contact" method="post"> <label for="name">Name:</label><br> <input type="text" id="name" name="name"><br><br>
- 
-<label for="email">Email:</label><br>
-<input type="email" id="email" name="email"><br><br>
-
-<label for="message">Message:</label><br>
-<textarea id="message" name="message" rows="4" cols="50"></textarea><br><br>
-
-<input type="submit" value="Submit">
-</form> <h2>Model de l'association:</h2> <ul> <li>Nom: Oisis association for sustainable development</li> <li>Email: OASD@association.com</li> <li>Adresse: adresse postale</li> <li>Téléphone: 0614550116</li> </ul>
+   <form method="post" action="{{ url_for('main.contact') }}">
+    <div class="mb-3">
+        <label for="name" class="form-label">Name</label>
+        <input type="text" class="form-control" id="name" name="name" required>
+    </div>
+    <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-control" id="email" name="email" required>
+    </div>
+    <div class="mb-3">
+        <label for="message" class="form-label">Message</label>
+        <textarea class="form-control" id="message" name="message" rows="3" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Send</button>
+</form>
+    <h2>Model de l'association:</h2> <ul> <li>Nom: Oisis association for sustainable development</li> <li>Email: OASD@association.com</li> <li>Adresse: adresse postale</li> <li>Téléphone: 0614550116</li> </ul>
 {% endblock %}
