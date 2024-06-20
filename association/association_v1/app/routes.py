@@ -384,14 +384,20 @@ def view_news():
 @login_required
 def add_news():
     if request.method == 'POST':
-        title = request.form['title']
-        content = request.form['content']
-        image_url = request.form['image_url']
+        title = request.form.get('title')
+        content = request.form.get('content')
+        image_url = request.form.get('image_url')
+
+        if not title or not content or not image_url:
+            flash('Please fill out all fields.', 'danger')
+            return redirect(url_for('news.add_news'))
+
         news = News(title=title, content=content, image_url=image_url)
         db.session.add(news)
         db.session.commit()
         flash('News added successfully.', 'success')
         return redirect(url_for('news.view_news'))
+
     return render_template('add_news.html')
 
 @news_bp.route('/news/edit/<int:id>', methods=['GET', 'POST'])
@@ -407,14 +413,21 @@ def edit_news(id):
         return redirect(url_for('news.view_news'))
     return render_template('edit_news.html', news=news)
 
-@news_bp.route('/news/delete/<int:id>', methods=['POST'])
+@news_bp.route('/news/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
-def delete_news(id):
+def edit_news(id):
     news = News.query.get_or_404(id)
-    db.session.delete(news)
-    db.session.commit()
-    flash('News deleted successfully.', 'success')
-    return redirect(url_for('news.view_news'))
+    
+    if request.method == 'POST':
+        news.title = request.form['title']
+        news.content = request.form['content']
+        news.image_url = request.form['image_url']
+        db.session.commit()
+        flash('News updated successfully.', 'success')
+        return redirect(url_for('news.view_news'))
+
+    # Pré-remplir les champs du formulaire avec les données actuelles de l'actualité
+    return render_template('edit_news.html', news=news)
 
 @admin_bp.route('/news/<int:news_id>/update', methods=['POST'])
 @login_required
