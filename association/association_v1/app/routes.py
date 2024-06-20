@@ -28,7 +28,7 @@ def partners():
 def help():
     return render_template('help.html')
 
-@app.route('/contact', methods=['GET', 'POST'])
+@main_bp.route('/contact', methods=['GET', 'POST'])
 def contact():
     if request.method == 'POST':
         sender_name = request.form['name']
@@ -53,7 +53,7 @@ def contact():
     return render_template('contact.html')
 
 # Route pour afficher les messages pour l'administrateur
-@app.route('messages', methods=['GET'])
+@main_bp.route('/messages', methods=['GET'])
 @login_required
 def admin_messages():
     if not current_user.is_admin:
@@ -66,7 +66,7 @@ def admin_messages():
     return render_template('messages.html', messages=messages.items, pagination=messages, unread_count=unread_count)
 
 
-@app.route('messages/mark/<int:message_id>', methods=['POST'])
+@main_bp.route('/messages/mark/<int:message_id>', methods=['POST'])
 @login_required
 def admin_mark_message(message_id):
     if not current_user.is_admin:
@@ -78,7 +78,7 @@ def admin_mark_message(message_id):
     db.session.commit()
     return redirect(url_for('admin_messages'))
 
-@app.route('messages/delete/<int:message_id>', methods=['POST'])
+@main_bp.route('/messages/delete/<int:message_id>', methods=['POST'])
 @login_required
 def admin_delete_message(message_id):
     if not current_user.is_admin:
