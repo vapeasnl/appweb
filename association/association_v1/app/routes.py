@@ -15,7 +15,7 @@ news_bp = Blueprint('news', __name__)
 @main_bp.before_request
 def before_request():
     if current_user.is_authenticated:
-        g.unread_count = ContactMessage.query.filter_by(recipient_id=current_user.id, is_read=False).count()
+        g.unread_count = ContactMessage.query.filter_by(is_read=False).count()
     else:
         g.unread_count = 0
 
