@@ -21,7 +21,9 @@ def before_request():
 
 @main_bp.context_processor
 def inject_unread_count():
-    return dict(unread_count=g.get('unread_count', 0))
+    if 'unread_count' in g:
+        return dict(unread_count=g.unread_count)
+    return {}
 
 
 
