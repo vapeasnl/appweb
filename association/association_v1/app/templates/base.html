@@ -292,7 +292,10 @@
 <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0z"/>
   <path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708z"/>
   </symbol>
-
+<symbol id="inbox" viewBox="0 0 16 16">
+  <path d="M4.98 1a.5.5 0 0 0-.39.188L1.54 5H6a.5.5 0 0 1 .5.5 1.5 1.5 0 0 0 3 0A.5.5 0 0 1 10 5h4.46l-3.05-3.812A.5.5 0 0 0 11.02 1zM3.81.563A1.5 1.5 0 0 1 4.98 0h6.04a1.5 1.5 0 0 1 1.17.563l3.7 4.625a.5.5 0 0 1 .106.374l-.39 3.124A1.5 1.5 0 0 1 14.117 10H1.883A1.5 1.5 0 0 1 .394 8.686l-.39-3.124a.5.5 0 0 1 .106-.374zM.125 11.17A.5.5 0 0 1 .5 11H6a.5.5 0 0 1 .5.5 1.5 1.5 0 0 0 3 0 .5.5 0 0 1 .5-.5h5.5a.5.5 0 0 1 .496.562l-.39 3.124A1.5 1.5 0 0 1 14.117 16H1.883a1.5 1.5 0 0 1-1.489-1.314l-.39-3.124a.5.5 0 0 1 .121-.393z"/>
+</symbol>
+	
 </svg>
 
 
@@ -384,6 +387,15 @@
               </a>
             </li>
 
+		  <li>
+              <a href="{{ url_for('admin.admin_messages') }}" class="nav-link text-white">
+                <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#inbox"/></svg>
+                Messages
+                <span id="unread-badge" class="badge badge-danger" style="display: none;">0</span>
+              </a>
+            </li>
+
+
                     {% endif %}
 
 	   <li>
@@ -423,6 +435,26 @@
     </div>
   </header>
 
+<script>
+    $(document).ready(function(){
+        function updateUnreadBadge() {
+            $.ajax({
+                url: "{{ url_for('admin.unread_messages_count') }}",
+                type: "GET",
+                success: function(data) {
+                    if(data.unread_count > 0) {
+                        $("#unread-badge").text(data.unread_count).show();
+                    } else {
+                        $("#unread-badge").hide();
+                    }
+                }
+            });
+        }
+
+        updateUnreadBadge();
+        setInterval(updateUnreadBadge, 60000); // Check every minute
+    });
+</script>
 
 </div>
 
