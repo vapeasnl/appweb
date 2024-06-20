@@ -91,18 +91,23 @@ def manage_profile():
 def dashboard():
     if not current_user.is_admin:
         return redirect(url_for('main.home'))
+    
+    page_reports = request.args.get('page_reports', 1, type=int)
+    page_users = request.args.get('page_users', 1, type=int)
+    page_events = request.args.get('page_events', 1, type=int)
+    page_news = request.args.get('page_news', 1, type=int)
+    page_achievements = request.args.get('page_achievements', 1, type=int)
+    page_media = request.args.get('page_media', 1, type=int)
+    
+    reports = Report.query.paginate(page=page_reports, per_page=10)
+    users = User.query.paginate(page=page_users, per_page=10)
+    events = Event.query.paginate(page=page_events, per_page=10)
+    news_list = News.query.paginate(page=page_news, per_page=10)
+    achievements = Achievement.query.paginate(page=page_achievements, per_page=10)
+    media_list = Media.query.paginate(page=page_media, per_page=10)
 
-    page = request.args.get('page', 1, type=int)
-    per_page = 5
+    return render_template('admin/dashboard.html', reports=reports, users=users, events=events, news_list=news_list, achievements=achievements, media_list=media_list)
 
-    reports = Report.query.paginate(page=page, per_page=per_page, error_out=False)
-    users = User.query.paginate(page=page, per_page=per_page, error_out=False)
-    events = Event.query.paginate(page=page, per_page=per_page, error_out=False)
-    news_list = News.query.paginate(page=page, per_page=per_page, error_out=False)
-    achievements = Achievement.query.paginate(page=page, per_page=per_page, error_out=False)
-    media_list = Media.query.paginate(page=page, per_page=per_page, error_out=False)
-
-    return render_template('dashboard.html', reports=reports, users=users, events=events, news_list=news_list, achievements=achievements, media_list=media_list)
 
 # Report routes
 @admin_bp.route('/reports', methods=['POST'])
