@@ -13,7 +13,7 @@
     {% endif %}
 {% endwith %}
 
-<form method="post" action="{{ url_for('contact') }}">
+<form method="post" action="{{ url_for('main.contact') }}">
     <div class="mb-3">
         <label for="name" class="form-label">Name</label>
         <input type="text" class="form-control" id="name" name="name" required>

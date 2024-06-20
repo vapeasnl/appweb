@@ -48,7 +48,7 @@ def contact():
         db.session.commit()
         
         flash('Your message has been sent successfully!', 'success')
-        return redirect(url_for('contact'))
+        return redirect(url_for('main.contact'))
     
     return render_template('contact.html')
 
@@ -76,7 +76,7 @@ def admin_mark_message(message_id):
     message = ContactMessage.query.get_or_404(message_id)
     message.is_read = not message.is_read
     db.session.commit()
-    return redirect(url_for('admin_messages'))
+    return redirect(url_for('main.admin_messages'))
 
 @main_bp.route('/messages/delete/<int:message_id>', methods=['POST'])
 @login_required
@@ -88,7 +88,7 @@ def admin_delete_message(message_id):
     message = ContactMessage.query.get_or_404(message_id)
     db.session.delete(message)
     db.session.commit()
-    return redirect(url_for('admin_messages'))
+    return redirect(url_for('main.admin_messages'))
 
 @main_bp.route('/')
 def home():

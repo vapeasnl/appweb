@@ -388,7 +388,7 @@
             </li>
 
 		  <li>
-              <a href="{{ url_for('admin.admin_messages') }}" class="nav-link text-white">
+              <a href="{{ url_for('main.admin_messages') }}" class="nav-link text-white">
                 <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#inbox"/></svg>
                 Messages
                 <span id="unread-badge" class="badge badge-danger" style="display: none;">0</span>
@@ -439,7 +439,7 @@
     $(document).ready(function(){
         function updateUnreadBadge() {
             $.ajax({
-                url: "{{ url_for('admin.unread_messages_count') }}",
+                url: "{{ url_for('main.admin_messages') }}",
                 type: "GET",
                 success: function(data) {
                     if(data.unread_count > 0) {
