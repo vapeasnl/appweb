@@ -12,6 +12,18 @@ news_bp = Blueprint('news', __name__)
 
 # Static routes
 
+@main_bp.before_request
+def before_request():
+    if current_user.is_authenticated:
+        g.unread_count = ContactMessage.query.filter_by(recipient_id=current_user.id, is_read=False).count()
+    else:
+        g.unread_count = 0
+
+@main_bp.context_processor
+def inject_unread_count():
+    return dict(unread_count=g.get('unread_count', 0))
+
+
 @main_bp.route('/about')
 def about():
     return render_template('about.html')
@@ -156,7 +168,7 @@ def dashboard():
     page_news = request.args.get('page_news', 1, type=int)
     page_achievements = request.args.get('page_achievements', 1, type=int)
     page_media = request.args.get('page_media', 1, type=int)
-    unread_count = 8 
+
     reports = Report.query.paginate(page=page_reports, per_page=10)
     users = User.query.paginate(page=page_users, per_page=10)
     events = Event.query.paginate(page=page_events, per_page=10)
@@ -164,7 +176,7 @@ def dashboard():
     achievements = Achievement.query.paginate(page=page_achievements, per_page=10)
     media_list = Media.query.paginate(page=page_media, per_page=10)
 
-    return render_template('dashboard.html', reports=reports, users=users, events=events, news_list=news_list, achievements=achievements, media_list=media_list, unread_count=unread_count)
+    return render_template('dashboard.html', reports=reports, users=users, events=events, news_list=news_list, achievements=achievements, media_list=media_list)
 
 
 # Report routes
