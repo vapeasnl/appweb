@@ -378,32 +378,25 @@
               </a>
             </li>
 
-                    {% if current_user.is_admin %}
-
-	    <li>
-              <a href="{{ url_for('admin.dashboard') }}" class="nav-link text-white">
-                <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#speedometer2"/></svg>
-                Dashboard
-              </a>
-            </li>
-
-		  <li>
-        <li class="nav-item position-relative">
-          <a href="{{ url_for('main.admin_messages') }}" class="nav-link text-white">
-              <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#inbox"></use></svg>
-              Messages
-              {% if unread_count > 0 %}
-              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                  {{ unread_count }}
-              </span>
-              {% endif %}
-          </a>
-      </li>
-      
-
-
-                    {% endif %}
-
+                   {% if current_user.is_admin %}
+                                <li>
+                                    <a href="{{ url_for('admin.dashboard') }}" class="nav-link text-white">
+                                        <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#speedometer2"/></svg>
+                                        Dashboard
+                                    </a>
+                                </li>
+                                <li class="nav-item position-relative">
+                                    <a href="{{ url_for('main.admin_messages') }}" class="nav-link text-white">
+                                        <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#inbox"></use></svg>
+                                        Messages
+                                        {% if unread_count > 0 %}
+                                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                                {{ unread_count }}
+                                            </span>
+                                        {% endif %}
+                                    </a>
+                                </li>
+                            {% endif %}
 	   <li>
               <a href="{{ url_for('auth.logout') }}" class="nav-link text-white">
                 <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#logout"/></svg>
