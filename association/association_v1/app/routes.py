@@ -11,6 +11,17 @@ profile_bp = Blueprint('profile', __name__)
 news_bp = Blueprint('news', __name__)
 
 # Static routes
+@profile_bp.before_request
+def before_request():
+    if current_user.is_authenticated:
+        g.unread_count = ContactMessage.query.filter_by(recipient_id=current_user.id, is_read=False).count()
+    else:
+        g.unread_count = 0
+
+@profile_bp.context_processor
+def inject_unread_count():
+    return dict(unread_count=g.get('unread_count', 0))
+
 
 @main_bp.before_request
 def before_request():
