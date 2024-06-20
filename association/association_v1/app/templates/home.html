@@ -10,18 +10,18 @@
     </div>
 
     <div class="container mb-5">
-        <h2 class="mb-4">Prochains événements</h2>
-        <ul class="list-group">
-            {% for event in events %}
-                <li class="list-group-item">
-                    {{ event.name }} - {{ event.date }}
-                    <form method="post" action="{{ url_for('main.attend_event', event_id=event.id) }}" class="d-inline">
-                        <button type="submit" class="btn btn-primary btn-sm">Marquer la présence</button>
-                    </form>
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
+    <h2 class="mb-4">Prochains événements</h2>
+    <ul class="list-group">
+        {% for event in events %}
+            <li class="list-group-item">
+                {{ event.name }} - {{ event.date }}
+                <form method="post" action="{{ url_for('main.attend_event', event_id=event.id) }}" class="d-inline">
+                    <button type="submit" class="btn btn-primary btn-sm">Marquer la présence</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
 
   <div class="container mb-5">
     <h2 class="mb-4">Dernières actualités</h2>
