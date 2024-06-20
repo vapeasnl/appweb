@@ -106,7 +106,7 @@ def dashboard():
     achievements = Achievement.query.paginate(page=page_achievements, per_page=10)
     media_list = Media.query.paginate(page=page_media, per_page=10)
 
-    return render_template('admin/dashboard.html', reports=reports, users=users, events=events, news_list=news_list, achievements=achievements, media_list=media_list)
+    return render_template('dashboard.html', reports=reports, users=users, events=events, news_list=news_list, achievements=achievements, media_list=media_list)
 
 
 # Report routes
@@ -171,6 +171,7 @@ def delete_report(report_id):
 @login_required
 def create_event():
     if not current_user.is_admin:
+        flash('You do not have permission to create events.', 'error')
         return redirect(url_for('main.home'))
     name = request.form['name']
     date_str = request.form['date']
@@ -179,32 +180,36 @@ def create_event():
         new_event = Event(name=name, date=date)
         db.session.add(new_event)
         db.session.commit()
-        flash('New event added successfully.')
+        flash('New event added successfully.', 'success')
     except ValueError:
-        flash('Invalid date format. Please use YYYY-MM-DD format.')
+        flash('Invalid date format. Please use YYYY-MM-DD format.', 'error')
     return redirect(url_for('admin.dashboard'))
 
 @admin_bp.route('/events/<int:event_id>/update', methods=['POST'])
 @login_required
 def update_event(event_id):
     if not current_user.is_admin:
+        flash('You do not have permission to update events.', 'error')
         return redirect(url_for('main.home'))
     event = Event.query.get(event_id)
     if event:
         event.name = request.form['name']
         event.date = request.form['date']
         db.session.commit()
+        flash('Event updated successfully.', 'success')
     return redirect(url_for('admin.dashboard'))
 
 @admin_bp.route('/events/<int:event_id>/delete', methods=['POST'])
 @login_required
 def delete_event(event_id):
     if not current_user.is_admin:
+        flash('You do not have permission to delete events.', 'error')
         return redirect(url_for('main.home'))
     event = Event.query.get(event_id)
     if event:
         db.session.delete(event)
         db.session.commit()
+        flash('Event deleted successfully.', 'success')
     return redirect(url_for('admin.dashboard'))
 
 # User routes
@@ -212,6 +217,7 @@ def delete_event(event_id):
 @login_required
 def create_user():
     if not current_user.is_admin:
+        flash('You do not have permission to create users.', 'error')
         return redirect(url_for('main.home'))
     username = request.form['username']
     email = request.form['email']
@@ -221,13 +227,14 @@ def create_user():
     new_user.set_password(password)
     db.session.add(new_user)
     db.session.commit()
-    flash('New user added successfully.')
+    flash('New user added successfully.', 'success')
     return redirect(url_for('admin.dashboard'))
 
 @admin_bp.route('/users/<int:user_id>/update', methods=['POST'])
 @login_required
 def update_user(user_id):
     if not current_user.is_admin:
+        flash('You do not have permission to update users.', 'error')
         return redirect(url_for('main.home'))
 
     user = User.query.get(user_id)
@@ -245,16 +252,17 @@ def update_user(user_id):
         
     return redirect(url_for('admin.dashboard'))
 
-
 @admin_bp.route('/users/<int:user_id>/delete', methods=['POST'])
 @login_required
 def delete_user(user_id):
     if not current_user.is_admin:
+        flash('You do not have permission to delete users.', 'error')
         return redirect(url_for('main.home'))
     user = User.query.get(user_id)
     if user:
         db.session.delete(user)
         db.session.commit()
+        flash('User deleted successfully.', 'success')
     return redirect(url_for('admin.dashboard'))
 
 # News routes
@@ -303,6 +311,7 @@ def delete_news(id):
 @login_required
 def update_news(news_id):
     if not current_user.is_admin:
+        flash('You do not have permission to update news.', 'error')
         return redirect(url_for('main.home'))
     news = News.query.get(news_id)
     if news:
@@ -316,6 +325,7 @@ def update_news(news_id):
 @login_required
 def delete_news(news_id):
     if not current_user.is_admin:
+        flash('You do not have permission to delete news.', 'error')
         return redirect(url_for('main.home'))
     news = News.query.get(news_id)
     if news:
@@ -328,6 +338,7 @@ def delete_news(news_id):
 @login_required
 def create_news():
     if not current_user.is_admin:
+        flash('You do not have permission to create news.', 'error')
         return redirect(url_for('main.home'))
     title = request.form['news_title']
     content = request.form['news_content']
