@@ -12,6 +12,23 @@
         {% endfor %}
     {% endif %}
 {% endwith %}
+ <div class="container mt-4">
+        <!-- Bloc pour afficher les messages flash -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="alert-container">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </div>
 
 <!-- Navigation Tabs -->
 <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
@@ -47,11 +64,11 @@
                 <form id="reports-form" method="post" action="{{ url_for('admin.create_report') }}">
                     <div class="mb-3">
                         <label for="create-title" class="form-label">Title</label>
-                        <input type="text" class="form-control" id="create-title" name="title">
+                        <input type="text" class="form-control" id="create-title" name="title" required>
                     </div>
                     <div class="mb-3">
                         <label for="create-date" class="form-label">Date (YYYY-MM-DD)</label>
-                        <input type="date" class="form-control" id="create-date" name="date">
+                        <input type="date" class="form-control" id="create-date" name="date" required>
                     </div>
                     <div class="mb-3">
                         <label for="create-content" class="form-label">Content</label>
@@ -721,4 +738,5 @@
             });
         });
     </script>
+    <script src="path/to/bootstrap.bundle.min.js"></script>
 {% endblock %}
