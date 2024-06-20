@@ -22,18 +22,16 @@
                 <td>{{ message.sender_email }}</td>
                 <td>{{ message.subject }}</td>
                 <td>{{ message.content }}</td>
-                <td>{{ message.sent_at }}</td>
+                <td>{{ message.sent_at.strftime('%Y-%m-%d %H:%M:%S') }}</td> <!-- Formatage de la date -->
                 <td>
-                    <!-- Mark as read/unread -->
-                    <form method="post" action="{{ url_for('admin.mark_message', message_id=message.id) }}" class="d-inline">
+                    <form method="post" action="{{ url_for('admin_mark_message', message_id=message.id) }}" class="d-inline">
                         {% if message.is_read %}
                         <button type="submit" class="btn btn-sm btn-secondary">Mark as Unread</button>
                         {% else %}
                         <button type="submit" class="btn btn-sm btn-primary">Mark as Read</button>
                         {% endif %}
                     </form>
-                    <!-- Delete message -->
-                    <form method="post" action="{{ url_for('admin.delete_message', message_id=message.id) }}" class="d-inline">
+                    <form method="post" action="{{ url_for('admin_delete_message', message_id=message.id) }}" class="d-inline">
                         <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                     </form>
                 </td>
@@ -43,7 +41,6 @@
     </table>
 </div>
 
-<!-- Pagination -->
 <nav>
     <ul class="pagination">
         {% if pagination.has_prev %}
