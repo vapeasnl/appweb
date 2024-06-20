@@ -129,9 +129,10 @@ def admin_delete_message(message_id):
 
 @main_bp.route('/')
 def home():
-    events = Event.query.all()
+    # Récupérer uniquement les événements futurs
+    upcoming_events = Event.query.filter(Event.date >= datetime.utcnow()).order_by(Event.date.asc()).all()
     news = News.query.order_by(News.date.desc()).all()
-    return render_template('home.html', events=events, news=news)
+    return render_template('home.html', events=upcoming_events, news=news)
 
 @main_bp.route('/events/<int:event_id>/attend', methods=['POST'])
 @login_required
