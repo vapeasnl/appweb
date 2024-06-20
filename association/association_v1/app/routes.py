@@ -106,7 +106,7 @@ def dashboard():
     achievements = Achievement.query.paginate(page=page_achievements, per_page=10)
     media_list = Media.query.paginate(page=page_media, per_page=10)
 
-    return render_template('admin/dashboard.html', reports=reports, users=users, events=events, news_list=news_list, achievements=achievements, media_list=media_list)
+    return render_template('dashboard.html', reports=reports, users=users, events=events, news_list=news_list, achievements=achievements, media_list=media_list)
 
 
 # Report routes
