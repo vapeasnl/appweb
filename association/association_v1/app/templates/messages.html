@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Contact Messages</h1>
+
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Message</th>
+                <th>Date Sent</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for message in messages %}
+                <tr class="{% if not message.is_read %}table-warning{% endif %}">
+                    <td>{{ message.name }}</td>
+                    <td>{{ message.email }}</td>
+                    <td>{{ message.message }}</td>
+                    <td>{{ message.date_sent }}</td>
+                    <td>
+                        {% if not message.is_read %}
+                            <a href="{{ url_for('admin.mark_message_read', message_id=message.id) }}" class="btn btn-sm btn-success">Mark as Read</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
