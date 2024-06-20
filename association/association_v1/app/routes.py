@@ -156,7 +156,7 @@ def dashboard():
     page_news = request.args.get('page_news', 1, type=int)
     page_achievements = request.args.get('page_achievements', 1, type=int)
     page_media = request.args.get('page_media', 1, type=int)
-    
+    unread_count = 5 
     reports = Report.query.paginate(page=page_reports, per_page=10)
     users = User.query.paginate(page=page_users, per_page=10)
     events = Event.query.paginate(page=page_events, per_page=10)
@@ -164,7 +164,7 @@ def dashboard():
     achievements = Achievement.query.paginate(page=page_achievements, per_page=10)
     media_list = Media.query.paginate(page=page_media, per_page=10)
 
-    return render_template('dashboard.html', reports=reports, users=users, events=events, news_list=news_list, achievements=achievements, media_list=media_list)
+    return render_template('dashboard.html', reports=reports, users=users, events=events, news_list=news_list, achievements=achievements, media_list=media_list, unread_count=unread_count)
 
 
 # Report routes
