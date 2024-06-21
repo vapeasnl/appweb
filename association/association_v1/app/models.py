@@ -99,3 +99,6 @@ class Event(db.Model):
 
     def __repr__(self):
         return f"<Event {self.name}>"
+
+
+
