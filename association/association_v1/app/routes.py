@@ -3,6 +3,8 @@ from flask_login import login_user, logout_user, login_required, current_user
 from .models import db, User, Association, News, Event, Report, Achievement, Media, ContactMessage
 from datetime import datetime
 from sqlalchemy import func
+import os
+
 
 main_bp = Blueprint('main', __name__)
 auth_bp = Blueprint('auth', __name__)
@@ -694,4 +696,58 @@ def admin_attendance():
     events = Event.query.all()
     return render_template('admin_attendance.html', events=events)
 
+app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = 'path/to/your/upload/folder'  # Set your upload folder path
+app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif', 'pdf', 'mp4', 'mov'}
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
+
+@admin_bp.route('/media', methods=['POST'])
+@login_required
+def create_media():
+    if not current_user.is_admin:
+        return redirect(url_for('main.home'))
+
+    title = request.form['title']
+    description = request.form['description']
+    file = request.files['file']
+
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        file_url = url_for('static', filename=os.path.join('uploads', filename))
+        
+        new_media = Media(title=title, description=description, file_url=file_url)
+        db.session.add(new_media)
+        db.session.commit()
+        flash('New media added successfully.', 'success')
+    else:
+        flash('Invalid file type or no file uploaded.', 'error')
+
+    return redirect(url_for('admin.dashboard'))
+
+if not os.path.exists(app.config['UPLOAD_FOLDER']):
+    os.makedirs(app.config['UPLOAD_FOLDER'])
+
+@main_bp.route('/attend_event/<int:event_id>', methods=['POST'])
+@login_required
+def attend_event(event_id):
+    event = Event.query.get_or_404(event_id)
     
+    if current_user.is_authenticated:
+        name = current_user.name
+        email = current_user.email
+        phone = current_user.phone
+    else:
+        name = request.form['name']
+        email = request.form['email']
+        phone = request.form['phone']
+    
+    attendance = Attendance(event_id=event_id, name=name, email=email, phone=phone)
+    db.session.add(attendance)
+    db.session.commit()
+    
+    flash('Your attendance has been marked.', 'success')
+    return redirect(url_for('main.home'))
+
