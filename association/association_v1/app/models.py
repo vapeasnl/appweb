@@ -63,6 +63,8 @@ class Event(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), nullable=False)
     date = db.Column(db.DateTime, nullable=False)
+    attendances = db.relationship('Attendance', back_populates='event')
+
 
 class Report(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -81,6 +83,14 @@ class ContactMessage(db.Model):
 
     def formatted_sent_at(self):
         return self.sent_at.strftime('%Y-%m-%d %H:%M:%S')
+
+class Attendance(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    event_id = db.Column(db.Integer, db.ForeignKey('event.id'), nullable=False)
+    name = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(100), nullable=False)
+    phone = db.Column(db.String(20), nullable=False)
+    event = db.relationship('Event', back_populates='attendances')
 
 
 
