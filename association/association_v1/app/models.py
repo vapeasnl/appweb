@@ -20,6 +20,8 @@ class User(db.Model, UserMixin):
     marital_status = db.Column(db.String(50), nullable=True)
     is_admin = db.Column(db.Boolean, default=False)
 
+    events = db.relationship('Event', secondary='user_event', backref='attendees')
+
     def set_password(self, password):
         self.password = password
 
