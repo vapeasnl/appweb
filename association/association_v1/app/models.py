@@ -86,16 +86,17 @@ class ContactMessage(db.Model):
         return self.sent_at.strftime('%Y-%m-%d %H:%M:%S')
         
 class Attendance(db.Model):
+    __tablename__ = 'attendance'
+
     id = db.Column(db.Integer, primary_key=True)
     event_id = db.Column(db.Integer, db.ForeignKey('event.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), nullable=False)
     phone = db.Column(db.String(20), nullable=False)
 
-    event = db.relationship('Event', backref=db.backref('attendances', lazy=True))
-
     def __repr__(self):
-        return f"<Attendance {self.name} - Event: {self.event.name}>"
+        return f"<Attendance {self.name} - Event: {self.event_id}>"
 
 
 class Event(db.Model):
