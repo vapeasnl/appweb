@@ -2,109 +2,99 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <head><script src="../assets/js/color-modes.js"></script>
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Hugo 0.122.0">
-
-    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sidebars/">
-
-    
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
-
-<link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
-
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
-      }
-
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
+        /* Styles spécifiques pour les cartes */
+        .card {
+            transition: transform 0.2s ease-in-out;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
         }
-      }
 
-      .b-example-divider {
-        width: 100%;
-        height: 3rem;
-        background-color: rgba(0, 0, 0, .1);
-        border: solid rgba(0, 0, 0, .15);
-        border-width: 1px 0;
-        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
-      }
+        .card:hover {
+            transform: translateY(-5px);
+        }
 
-      .b-example-vr {
-        flex-shrink: 0;
-        width: 1.5rem;
-        height: 100vh;
-      }
+        .card-body {
+            padding: 1.25rem;
+        }
 
-      .bi {
-        vertical-align: -.125em;
-        fill: currentColor;
-      }
+        .card-title {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+        }
 
-      .nav-scroller {
-        position: relative;
-        z-index: 2;
-        height: 2.75rem;
-        overflow-y: hidden;
-      }
+        .card-text {
+            color: #6c757d;
+        }
 
-      .nav-scroller .nav {
-        display: flex;
-        flex-wrap: nowrap;
-        padding-bottom: 1rem;
-        margin-top: -1px;
-        overflow-x: auto;
-        text-align: center;
-        white-space: nowrap;
-        -webkit-overflow-scrolling: touch;
-      }
+        /* Styles généraux */
+        .b-example-divider {
+            width: 100%;
+            height: 3rem;
+            background-color: rgba(0, 0, 0, .1);
+            border: solid rgba(0, 0, 0, .15);
+            border-width: 1px 0;
+            box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+        }
 
-      .btn-bd-primary {
-        --bd-violet-bg: #712cf9;
-        --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+        .b-example-vr {
+            flex-shrink: 0;
+            width: 1.5rem;
+            height: 100vh;
+        }
 
-        --bs-btn-font-weight: 600;
-        --bs-btn-color: var(--bs-white);
-        --bs-btn-bg: var(--bd-violet-bg);
-        --bs-btn-border-color: var(--bd-violet-bg);
-        --bs-btn-hover-color: var(--bs-white);
-        --bs-btn-hover-bg: #6528e0;
-        --bs-btn-hover-border-color: #6528e0;
-        --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
-        --bs-btn-active-color: var(--bs-btn-hover-color);
-        --bs-btn-active-bg: #5a23c8;
-        --bs-btn-active-border-color: #5a23c8;
-      }
+        .bi {
+            vertical-align: -.125em;
+            fill: currentColor;
+        }
 
-      .bd-mode-toggle {
-        z-index: 1500;
-      }
+        .nav-scroller {
+            position: relative;
+            z-index: 2;
+            height: 2.75rem;
+            overflow-y: hidden;
+        }
 
-      .bd-mode-toggle .dropdown-menu .active .bi {
-        display: block !important;
-      }
+        .nav-scroller .nav {
+            display: flex;
+            flex-wrap: nowrap;
+            padding-bottom: 1rem;
+            margin-top: -1px;
+            overflow-x: auto;
+            text-align: center;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .btn-bd-primary {
+            --bd-violet-bg: #712cf9;
+            --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+
+            --bs-btn-font-weight: 600;
+            --bs-btn-color: var(--bs-white);
+            --bs-btn-bg: var(--bd-violet-bg);
+            --bs-btn-border-color: var(--bd-violet-bg);
+            --bs-btn-hover-color: var(--bs-white);
+            --bs-btn-hover-bg: #6528e0;
+            --bs-btn-hover-border-color: #6528e0;
+            --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+            --bs-btn-active-color: var(--bs-btn-hover-color);
+            --bs-btn-active-bg: #5a23c8;
+            --bs-btn-active-border-color: #5a23c8;
+        }
+
+        .bd-mode-toggle {
+            z-index: 1500;
+        }
+
+        .bd-mode-toggle .dropdown-menu .active .bi {
+            display: block !important;
+        }
     </style>
 
     
-    <!-- Custom styles for this template -->
-    <link href="sidebars.css" rel="stylesheet">
-  </head>
-  <body>
-    
-  <div class="b-example-divider b-example-vr"></div>
-
 <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
   <symbol id="bootstrap" viewBox="0 0 118 94">
     <title>Bootstrap</title>
@@ -157,6 +147,7 @@
  </symbol>
 </svg>
 
+<h1>Dashboard</h1>
 
 {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
@@ -167,12 +158,7 @@
         {% endfor %}
     {% endif %}
 {% endwith %}
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sidebars/">
-    <link href="sidebars.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
-
+    
     <main class="d-flex flex-nowrap">
         <div class="b-example-divider b-example-vr"></div>
 
@@ -228,78 +214,78 @@
         </div>
         <div class="b-example-divider b-example-vr"></div>
         <div class="container-fluid p-4">
-           <!-- Section Help -->
-<div id="help" class="content-section">
-    <div class="container">
-        <h3 class="mb-4">WELCOME TO DASHBOARD</h3>
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="card bg-light mb-4">
-                    <div class="card-body">
-                        <h5 class="card-title">Manage Reports</h5>
-                        <p class="card-text">Use this section to create, update, and delete reports. Each report includes a title, date, and content.</p>
+            <!-- Section Help -->
+            <div id="help" class="content-section">
+                <div class="container">
+                    <h3 class="mb-4">WELCOME TO DASHBOARD</h3>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="card bg-light mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title">Manage Reports</h5>
+                                    <p class="card-text">Use this section to create, update, and delete reports. Each report includes a title, date, and content.</p>
+                                </div>
+                            </div>
+                            <div class="card bg-light mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title">Manage Events</h5>
+                                    <p class="card-text">This section allows you to manage upcoming events. You can add, update, or delete events and mark attendance.</p>
+                                </div>
+                            </div>
+                            <div class="card bg-light mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title">Manage Users</h5>
+                                    <p class="card-text">In this section, you can manage user accounts. Create new users, update user details, and manage admin rights.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card bg-light mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title">Manage News</h5>
+                                    <p class="card-text">Use this section to post news articles. Add new articles, update existing ones, and delete old articles.</p>
+                                </div>
+                            </div>
+                            <div class="card bg-light mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title">Manage Achievements</h5>
+                                    <p class="card-text">This section is for tracking achievements. Record new achievements, update details, and manage related information.</p>
+                                </div>
+                            </div>
+                            <div class="card bg-light mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title">Manage Media</h5>
+                                    <p class="card-text">Upload and manage media files such as images and videos. Ensure all files are properly labeled and organized.</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="card bg-light mb-4">
-                    <div class="card-body">
-                        <h5 class="card-title">Manage Events</h5>
-                        <p class="card-text">This section allows you to manage upcoming events. You can add, update, or delete events and mark attendance.</p>
-                    </div>
-                </div>
-                <div class="card bg-light mb-4">
-                    <div class="card-body">
-                        <h5 class="card-title">Manage Users</h5>
-                        <p class="card-text">In this section, you can manage user accounts. Create new users, update user details, and manage admin rights.</p>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="card bg-light mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title">Statistics</h5>
+                                    <p class="card-text">View and analyze various statistics related to events, user activity, and more. Use this section to get insights and make data-driven decisions.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card bg-light mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title">Attendance Events</h5>
+                                    <p class="card-text">Track attendance for events. See who is attending and manage attendee details.</p>
+                                </div>
+                            </div>
+                            <div class="card bg-light mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title">Support</h5>
+                                    <p class="card-text">If you have any questions or need further assistance, please contact support.</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6">
-                <div class="card bg-light mb-4">
-                    <div class="card-body">
-                        <h5 class="card-title">Manage News</h5>
-                        <p class="card-text">Use this section to post news articles. Add new articles, update existing ones, and delete old articles.</p>
-                    </div>
-                </div>
-                <div class="card bg-light mb-4">
-                    <div class="card-body">
-                        <h5 class="card-title">Manage Achievements</h5>
-                        <p class="card-text">This section is for tracking achievements. Record new achievements, update details, and manage related information.</p>
-                    </div>
-                </div>
-                <div class="card bg-light mb-4">
-                    <div class="card-body">
-                        <h5 class="card-title">Manage Media</h5>
-                        <p class="card-text">Upload and manage media files such as images and videos. Ensure all files are properly labeled and organized.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="card bg-light mb-4">
-                    <div class="card-body">
-                        <h5 class="card-title">Statistics</h5>
-                        <p class="card-text">View and analyze various statistics related to events, user activity, and more. Use this section to get insights and make data-driven decisions.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="card bg-light mb-4">
-                    <div class="card-body">
-                        <h5 class="card-title">Attendance Events</h5>
-                        <p class="card-text">Track attendance for events. See who is attending and manage attendee details.</p>
-                    </div>
-                </div>
-                <div class="card bg-light mb-4">
-                    <div class="card-body">
-                        <h5 class="card-title">Support</h5>
-                        <p class="card-text">If you have any questions or need further assistance, please contact support.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
             <div id="reports" class="content-section d-none">
             <div class="card mb-3">
@@ -882,26 +868,26 @@
     </div>
 
 
-        <div class="tab-pane fade" id="pills-media" role="tabpanel" aria-labelledby="pills-media-tab">
+          <div id="media" class="content-section d-none">
     <div class="card mb-3">
         <div class="card-header">
             <h2>Manage Media <i class="fas fa-images"></i></h2>
         </div>
-        <form method="post" action="{{ url_for('admin.create_media') }}" enctype="multipart/form-data">
-            <div class="mb-3">
-                <label for="title" class="form-label">Title</label>
-                <input type="text" class="form-control" id="title" name="title" required>
-            </div>
-            <div class="mb-3">
-                <label for="description" class="form-label">Description</label>
-                <textarea class="form-control" id="description" name="description"></textarea>
-            </div>
-            <div class="mb-3">
-                <label for="file" class="form-label">File Upload</label>
-                <input type="file" class="form-control" id="file" name="file" accept="image/*, video/*, .pdf" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Add Media</button>
-        </form>
+        <form method="post" action="{{ url_for('admin.create_media') }}">
+    <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input type="text" class="form-control" id="title" name="title" required>
+    </div>
+    <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea class="form-control" id="description" name="description" required></textarea>
+    </div>
+    <div class="mb-3">
+        <label for="file_url" class="form-label">File URL</label>
+        <input type="text" class="form-control" id="file_url" name="file_url" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Add Media</button>
+</form>
         <div class="card-body">
             <!-- Tableau des médias -->
             <div class="table-responsive">
@@ -946,15 +932,15 @@
                                             <form method="post" action="{{ url_for('admin.update_media', media_id=media.id) }}">
                                                 <div class="mb-3">
                                                     <label for="update-title" class="form-label">Title</label>
-                                                    <input type="text" class="form-control" id="update-title" name="title" value="{{ media.title }}">
+                                                    <input type="text" class="form-control" id="update-title" name="title" value="{{ media.title }}" required>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="update-description" class="form-label">Description</label>
-                                                    <textarea class="form-control" id="update-description" name="description">{{ media.description }}</textarea>
+                                                    <textarea class="form-control" id="update-description" name="description" required>{{ media.description }}</textarea>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="update-file-url" class="form-label">File URL</label>
-                                                    <input type="text" class="form-control" id="update-file-url" name="file_url" value="{{ media.file_url }}">
+                                                    <input type="text" class="form-control" id="update-file-url" name="file_url" value="{{ media.file_url }}" required>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -993,71 +979,88 @@
     </div>
 </div>
 
-
- <div id="statistics" class="content-section d-none">
-            <h3>Statistics</h3>
-            <canvas id="myChart" width="400" height="200"></canvas>
-            <script>
-                const ctx = document.getElementById('myChart').getContext('2d');
-                const myChart = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: {{ event_names|tojson }},
-                        datasets: [{
-                            label: 'Attendance',
-                            data: {{ attendance_counts|tojson }},
-                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                            borderColor: 'rgba(54, 162, 235, 1)',
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
-                        }
-                    }
-                });
-            </script>
-        </div>
-
-
-         <div id="attendance" class="content-section d-none">
-            <h3>Attendance Events</h3>
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Event</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Phone</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for attendance in attendances %}
-                        <tr>
-                            <td>{{ attendance.event.name }}</td>
-                            <td>{{ attendance.name }}</td>
-                            <td>{{ attendance.email }}</td>
-                            <td>{{ attendance.phone }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        </div>
-    
-  <div class="b-example-divider b-example-vr"></div>
-
  
-  <div class="b-example-divider b-example-vr"></div>
-</main>
-<script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
+          <div id="statistics" class="content-section d-none">
+    <h3>Statistics</h3>
+    <canvas id="myChart" width="400" height="200"></canvas>
+    <script>
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: {{ event_names|tojson }},
+                datasets: [{
+                    label: 'Attendance',
+                    data: {{ attendance_counts|tojson }},
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</div>
 
-    <script src="sidebars.js"></script></body>
- </body>
+          <div id="attendance" class="content-section d-none">
+    <h3>Attendance Events</h3>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Event</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for attendance in attendances %}
+                <tr>
+                    <td>{{ attendance.event.name }}</td>
+                    <td>{{ attendance.name }}</td>
+                    <td>{{ attendance.email }}</td>
+                    <td>{{ attendance.phone }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+        </div>
+    </main>
+
+    <!-- Scripts JavaScript -->
+    <script>
+        function showSection(event, sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.add('d-none');
+            });
+            document.getElementById(sectionId).classList.remove('d-none');
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+        }
+
+        // Afficher la section "help" par défaut lors du chargement de la page
+        document.addEventListener('DOMContentLoaded', function() {
+            showSection(null, 'help');
+        });
+    </script>
+        <script src="path/to/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="sidebars.js"></script>
+  </body>
 {% endblock %}
