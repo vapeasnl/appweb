@@ -22,6 +22,7 @@ class User(db.Model, UserMixin):
     postal_address = db.Column(db.String(200), nullable=True)
     date_of_birth = db.Column(db.Date, nullable=True)
     marital_status = db.Column(db.String(50), nullable=True)
+    phone = db.Column(db.String(20))
     is_admin = db.Column(db.Boolean, default=False)
 
     events = db.relationship('Event', secondary='user_event', backref='attendees')
