@@ -21,9 +21,6 @@ def before_request():
     else:
         g.unread_count = 0
 
-@app.route('/')
-def index():
-    return render_template('index.html')
 
 
 
