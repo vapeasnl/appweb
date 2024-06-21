@@ -706,9 +706,17 @@ def create_media():
     if not current_user.is_admin:
         return redirect(url_for('main.home'))
 
-    title = request.form['title']
-    description = request.form['description']
-    file = request.files['file']
+    title = request.form.get('title')
+    description = request.form.get('description')
+    file = request.files.get('file')
+
+    if not (title and description and file):
+        flash('Please fill out all fields.', 'error')
+        return redirect(url_for('admin.dashboard'))
+
+    if file.filename == '':
+        flash('No selected file.', 'error')
+        return redirect(url_for('admin.dashboard'))
 
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
@@ -716,15 +724,14 @@ def create_media():
         file_url = url_for('static', filename=os.path.join('uploads', filename))
         
         new_media = Media(title=title, description=description, file_url=file_url)
-        db.session.add(new_media)
-        db.session.commit()
-        flash('New media added successfully.', 'success')
+        try:
+            db.session.add(new_media)
+            db.session.commit()
+            flash('New media added successfully.', 'success')
+        except Exception as e:
+            flash(f'Failed to add media. Error: {str(e)}', 'error')
+            db.session.rollback()
     else:
         flash('Invalid file type or no file uploaded.', 'error')
 
     return redirect(url_for('admin.dashboard'))
-
-if not os.path.exists(app.config['UPLOAD_FOLDER']):
-    os.makedirs(app.config['UPLOAD_FOLDER'])
-
-
