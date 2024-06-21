@@ -2,6 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
+import os
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -23,5 +24,6 @@ def create_app():
     app.register_blueprint(profile_bp)
     app.register_blueprint(news_bp)
 
+    app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static', 'uploads')
     return app
 
