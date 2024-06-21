@@ -868,26 +868,26 @@
     </div>
 
 
-          <div id="media" class="content-section d-none">
+        <div class="tab-pane fade" id="pills-media" role="tabpanel" aria-labelledby="pills-media-tab">
     <div class="card mb-3">
         <div class="card-header">
             <h2>Manage Media <i class="fas fa-images"></i></h2>
         </div>
-        <form method="post" action="{{ url_for('admin.create_media') }}">
-    <div class="mb-3">
-        <label for="title" class="form-label">Title</label>
-        <input type="text" class="form-control" id="title" name="title" required>
-    </div>
-    <div class="mb-3">
-        <label for="description" class="form-label">Description</label>
-        <textarea class="form-control" id="description" name="description" required></textarea>
-    </div>
-    <div class="mb-3">
-        <label for="file_url" class="form-label">File URL</label>
-        <input type="text" class="form-control" id="file_url" name="file_url" required>
-    </div>
-    <button type="submit" class="btn btn-primary">Add Media</button>
-</form>
+        <form method="post" action="{{ url_for('admin.create_media') }}" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" class="form-control" id="title" name="title" required>
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea class="form-control" id="description" name="description"></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="file" class="form-label">File Upload</label>
+                <input type="file" class="form-control" id="file" name="file" accept="image/*, video/*, .pdf" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Media</button>
+        </form>
         <div class="card-body">
             <!-- Tableau des médias -->
             <div class="table-responsive">
@@ -932,15 +932,15 @@
                                             <form method="post" action="{{ url_for('admin.update_media', media_id=media.id) }}">
                                                 <div class="mb-3">
                                                     <label for="update-title" class="form-label">Title</label>
-                                                    <input type="text" class="form-control" id="update-title" name="title" value="{{ media.title }}" required>
+                                                    <input type="text" class="form-control" id="update-title" name="title" value="{{ media.title }}">
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="update-description" class="form-label">Description</label>
-                                                    <textarea class="form-control" id="update-description" name="description" required>{{ media.description }}</textarea>
+                                                    <textarea class="form-control" id="update-description" name="description">{{ media.description }}</textarea>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="update-file-url" class="form-label">File URL</label>
-                                                    <input type="text" class="form-control" id="update-file-url" name="file_url" value="{{ media.file_url }}" required>
+                                                    <input type="text" class="form-control" id="update-file-url" name="file_url" value="{{ media.file_url }}">
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -978,6 +978,7 @@
         </div>
     </div>
 </div>
+
 
  
           <div id="statistics" class="content-section d-none">
