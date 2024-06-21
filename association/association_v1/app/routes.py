@@ -204,28 +204,12 @@ def dashboard():
     achievements = Achievement.query.paginate(page=page_achievements, per_page=10)
     media_list = Media.query.paginate(page=page_media, per_page=10)
 
-    # Get attendance data
-    attendances = db.session.query(Attendance).all()  # Assuming you have an Attendance model
+    attendances = Attendance.query.all()  # Vous devrez peut-être filtrer cela par événement si nécessaire
 
-    # Get statistics data
     event_names = [event.name for event in events.items]
-    attendance_counts = [db.session.query(Attendance).filter_by(event_id=event.id).count() for event in events.items]
+    attendance_counts = [len(event.attendances) for event in events.items]
 
-    return render_template(
-        'dashboard.html', 
-        reports=reports, 
-        users=users, 
-        events=events, 
-        news_list=news_list, 
-        achievements=achievements, 
-        media_list=media_list, 
-        attendances=attendances, 
-        event_names=event_names, 
-        attendance_counts=attendance_counts, 
-        unread_count=g.unread_count
-    )
-
-
+    return render_template('dashboard.html', reports=reports, users=users, events=events, news_list=news_list, achievements=achievements, media_list=media_list, attendances=attendances, event_names=event_names, attendance_counts=attendance_counts, unread_count=g.unread_count)
 # Report routes
 @admin_bp.route('/reports/create', methods=['POST'])
 @login_required
