@@ -682,4 +682,16 @@ def attend_event(event_id):
 def event_attendance():
     events = Event.query.all()
     return render_template('event_attendance.html', events=events)
+
+
+@admin_bp.route('/attendance')
+@login_required
+def admin_attendance():
+    if not current_user.is_admin:
+        flash('You do not have access to this page.', 'danger')
+        return redirect(url_for('main.home'))
+    
+    events = Event.query.all()
+    return render_template('admin_attendance.html', events=events)
+
     
