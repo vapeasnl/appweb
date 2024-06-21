@@ -16,11 +16,53 @@
             <li class="list-group-item">
                 {{ event.name }} - {{ event.date }}
                 <form method="post" action="{{ url_for('main.attend_event', event_id=event.id) }}" class="d-inline">
-                    <button type="submit" class="btn btn-primary btn-sm">Marquer la présence</button>
+                    {% if current_user.is_authenticated %}
+                        <input type="hidden" name="name" value="{{ current_user.name }}">
+                        <input type="hidden" name="email" value="{{ current_user.email }}">
+                        <input type="hidden" name="phone" value="{{ current_user.phone }}">
+                        <button type="submit" class="btn btn-primary btn-sm">Marquer la présence</button>
+                    {% else %}
+                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#attendanceModal{{ event.id }}">
+                            Marquer la présence
+                        </button>
+                    {% endif %}
                 </form>
             </li>
         {% endfor %}
     </ul>
+</div>
+
+<!-- Modal for attendance -->
+{% for event in events %}
+<div class="modal fade" id="attendanceModal{{ event.id }}" tabindex="-1" aria-labelledby="attendanceModalLabel{{ event.id }}" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="attendanceModalLabel{{ event.id }}">Marquer la présence pour {{ event.name }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post" action="{{ url_for('main.attend_event', event_id=event.id) }}">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Nom</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Téléphone</label>
+                        <input type="text" class="form-control" id="phone" name="phone" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                    <button type="submit" class="btn btn-primary">Marquer la présence</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
   <div class="container mb-5">
