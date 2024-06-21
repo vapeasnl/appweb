@@ -137,6 +137,7 @@ def home():
     news = News.query.order_by(News.date.desc()).all()
     return render_template('home.html', events=upcoming_events, news=news)
 
+
 @main_bp.route('/events/<int:event_id>/attend', methods=['POST'])
 @login_required
 def attend_event(event_id):
@@ -144,7 +145,7 @@ def attend_event(event_id):
     if event:
         current_user.attend(event)
         db.session.commit()
-        flash('You have marked your attendance for the event.')
+        flash('You have marked your attendance for the event.', 'success')
     return redirect(url_for('main.home'))
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
@@ -678,7 +679,7 @@ def view_media():
 
 
 @main_bp.route('/attend_event/<int:event_id>', methods=['POST'])
-def attend_event(event_id):
+def attend_event_form(event_id):
     event = Event.query.get_or_404(event_id)
     
     if current_user.is_authenticated:
@@ -696,6 +697,7 @@ def attend_event(event_id):
     
     flash('Your attendance has been marked successfully.', 'success')
     return redirect(url_for('main.event_attendance'))
+
 
 # Ensure you have an event_attendance.html template or update the redirect accordingly.
 @main_bp.route('/event_attendance')
