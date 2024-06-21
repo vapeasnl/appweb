@@ -872,35 +872,37 @@
     </div>
 
 
-          <div id="media" class="content-section d-none">
+        <div id="media" class="content-section d-none">
     <div class="card mb-3">
         <div class="card-header">
             <h2>Manage Media <i class="fas fa-images"></i></h2>
         </div>
-        <form method="post" action="{{ url_for('admin.create_media') }}">
-    <div class="mb-3">
-        <label for="title" class="form-label">Title</label>
-        <input type="text" class="form-control" id="title" name="title" required>
-    </div>
-    <div class="mb-3">
-        <label for="description" class="form-label">Description</label>
-        <textarea class="form-control" id="description" name="description" required></textarea>
-    </div>
-    <div class="mb-3">
-        <label for="file_url" class="form-label">File URL</label>
-        <input type="text" class="form-control" id="file_url" name="file_url" required>
-    </div>
-    <button type="submit" class="btn btn-primary">Add Media</button>
-</form>
         <div class="card-body">
+            <form method="post" action="{{ url_for('admin.create_media') }}" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="title" class="form-label">Title</label>
+                    <input type="text" class="form-control" id="title" name="title" required>
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea class="form-control" id="description" name="description" required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="media_file" class="form-label">Upload Media File</label>
+                    <input type="file" class="form-control" id="media_file" name="media_file" required>
+                    <small class="form-text text-muted">Supported formats: JPG, JPEG, PNG, GIF, MP4, etc.</small>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Media</button>
+            </form>
+            
             <!-- Tableau des médias -->
-            <div class="table-responsive">
+            <div class="table-responsive mt-4">
                 <table class="table table-bordered">
                     <thead>
                         <tr>
                             <th>Title</th>
                             <th>Description</th>
-                            <th>File URL</th>
+                            <th>File</th>
                             <th>Upload Date</th>
                             <th>Actions</th>
                         </tr>
@@ -910,7 +912,13 @@
                             <tr>
                                 <td>{{ media.title }}</td>
                                 <td>{{ media.description }}</td>
-                                <td><a href="{{ media.file_url }}" target="_blank">{{ media.file_url }}</a></td>
+                                <td>
+                                    {% if media.media_url %}
+                                        <a href="{{ media.media_url }}" target="_blank">{{ media.media_url }}</a>
+                                    {% else %}
+                                        N/A
+                                    {% endif %}
+                                </td>
                                 <td>{{ media.upload_date }}</td>
                                 <td>
                                     <!-- Bouton pour ouvrir le modal de mise à jour -->
@@ -943,8 +951,8 @@
                                                     <textarea class="form-control" id="update-description" name="description" required>{{ media.description }}</textarea>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="update-file-url" class="form-label">File URL</label>
-                                                    <input type="text" class="form-control" id="update-file-url" name="file_url" value="{{ media.file_url }}" required>
+                                                    <label for="update-media-file" class="form-label">File URL</label>
+                                                    <input type="text" class="form-control" id="update-media-file" name="file_url" value="{{ media.file_url }}" required>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -982,6 +990,7 @@
         </div>
     </div>
 </div>
+
 
  
           <div id="statistics" class="content-section d-none">
