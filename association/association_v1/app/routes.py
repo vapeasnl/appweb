@@ -741,4 +741,4 @@ def create_media():
     else:
         flash('Invalid file type or no file uploaded.', 'error')
 
-    return redirect(url_for('admin.dashboard', page=request.args.get('page', 1)))
+    return redirect(url_for('admin.dashboard', tab=request.args.get('tab', 'media')))
