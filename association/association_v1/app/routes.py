@@ -160,13 +160,13 @@ def register_attendance(event_id):
 @main_bp.route('/events/<int:event_id>/attend', methods=['POST'])
 @login_required
 def attend_event(event_id):
-    event = Event.query.get(event_id)
+    event = Event.query.get_or_404(event_id)
     if event:
-        current_user.attend(event)
+        new_attendance = Attendance(event_id=event.id, user_id=current_user.id)
+        db.session.add(new_attendance)
         db.session.commit()
         flash('You have marked your attendance for the event.', 'success')
     return redirect(url_for('main.home'))
-
 @main_bp.route('/attend_event/<int:event_id>', methods=['POST'])
 def attend_event_form(event_id):
     event = Event.query.get_or_404(event_id)
