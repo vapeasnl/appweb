@@ -91,7 +91,7 @@ class Attendance(db.Model):
     name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), nullable=False)
     phone = db.Column(db.String(20), nullable=False)
-    event = db.relationship('Event', back_populates='attendances')
+    event = db.relationship('Event', backref=db.backref('attendances', lazy=True))
 
 
 
