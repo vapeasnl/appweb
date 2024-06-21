@@ -1009,31 +1009,31 @@
         </div>
 
 
-        <div id="attendance" class="content-section d-none">
-    <h3>Attendance Events</h3>
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Event</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for attendance in attendances %}
-                <tr>
-                    <td>{{ attendance.event.name }}</td>
-                    <td>{{ attendance.name }}</td>
-                    <td>{{ attendance.email }}</td>
-                    <td>{{ attendance.phone }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-</div>
+         <div id="attendance" class="content-section d-none">
+            <h3>Attendance Events</h3>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Event</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for attendance in attendances %}
+                        <tr>
+                            <td>{{ attendance.event.name }}</td>
+                            <td>{{ attendance.name }}</td>
+                            <td>{{ attendance.email }}</td>
+                            <td>{{ attendance.phone }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
         </div>
     </main>
