@@ -704,7 +704,10 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'path/to/your/upload/folder'  # Set your upload folder path
 app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif', 'pdf', 'mp4', 'mov'}
 
-
+@main_bp.route('/media', methods=['GET'])
+def view_media():
+    media_list = Media.query.all()
+    return render_template('media.html', media_list=media_list)
 
 
 def allowed_file(filename):
