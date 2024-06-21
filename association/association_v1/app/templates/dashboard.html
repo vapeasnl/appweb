@@ -879,21 +879,21 @@
         </div>
         <div class="card-body">
             <form method="post" action="{{ url_for('admin.create_media') }}" enctype="multipart/form-data">
-                <div class="mb-3">
-                    <label for="title" class="form-label">Title</label>
-                    <input type="text" class="form-control" id="title" name="title" required>
-                </div>
-                <div class="mb-3">
-                    <label for="description" class="form-label">Description</label>
-                    <textarea class="form-control" id="description" name="description" required></textarea>
-                </div>
-                <div class="mb-3">
-                    <label for="media_file" class="form-label">Upload Media File</label>
-                    <input type="file" class="form-control" id="media_file" name="media_file" required>
-                    <small class="form-text text-muted">Supported formats: JPG, JPEG, PNG, GIF, MP4, etc.</small>
-                </div>
-                <button type="submit" class="btn btn-primary">Add Media</button>
-            </form>
+    <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input type="text" class="form-control" id="title" name="title" required>
+    </div>
+    <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea class="form-control" id="description" name="description" required></textarea>
+    </div>
+    <div class="mb-3">
+        <label for="file" class="form-label">File</label>
+        <input type="file" class="form-control" id="file" name="file" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Add Media</button>
+</form>
+
             
             <!-- Tableau des médias -->
             <div class="table-responsive mt-4">
