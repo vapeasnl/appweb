@@ -701,28 +701,20 @@ app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif', 'pdf', 'mp4', '
 
 
 
-def allowed_file(filename):
+ef allowed_file(filename):
     ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'pdf', 'mp4', 'mov'}
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@admin_bp.route('/media', methods=['POST'])
+@app.route('/media', methods=['POST'])
 @login_required
 def create_media():
     if not current_user.is_admin:
         flash('You do not have permission to add media.', 'error')
         return redirect(url_for('main.home'))
 
-    title = request.form.get('title')
-    description = request.form.get('description')
-    file = request.files.get('file')
-
-    # Debugging information
-    if not title:
-        flash('Title is missing.', 'error')
-    if not description:
-        flash('Description is missing.', 'error')
-    if not file:
-        flash('File is missing.', 'error')
+    title = request.form['title']
+    description = request.form['description']
+    file = request.files['file']
 
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
@@ -734,6 +726,7 @@ def create_media():
             db.session.add(new_media)
             db.session.commit()
             flash(f'New media added successfully. File saved to {file_path}', 'success')
+            print(f'File saved to {file_path}')
         except Exception as e:
             flash(f'Failed to save file. Error: {str(e)}', 'error')
             db.session.rollback()
