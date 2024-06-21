@@ -1,6 +1,152 @@
+
 {% extends 'base.html' %}
 
 {% block content %}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <style>
+        /* Styles spécifiques pour les cartes */
+        .card {
+            transition: transform 0.2s ease-in-out;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-body {
+            padding: 1.25rem;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .card-text {
+            color: #6c757d;
+        }
+
+        /* Styles généraux */
+        .b-example-divider {
+            width: 100%;
+            height: 3rem;
+            background-color: rgba(0, 0, 0, .1);
+            border: solid rgba(0, 0, 0, .15);
+            border-width: 1px 0;
+            box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+        }
+
+        .b-example-vr {
+            flex-shrink: 0;
+            width: 1.5rem;
+            height: 100vh;
+        }
+
+        .bi {
+            vertical-align: -.125em;
+            fill: currentColor;
+        }
+
+        .nav-scroller {
+            position: relative;
+            z-index: 2;
+            height: 2.75rem;
+            overflow-y: hidden;
+        }
+
+        .nav-scroller .nav {
+            display: flex;
+            flex-wrap: nowrap;
+            padding-bottom: 1rem;
+            margin-top: -1px;
+            overflow-x: auto;
+            text-align: center;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .btn-bd-primary {
+            --bd-violet-bg: #712cf9;
+            --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+
+            --bs-btn-font-weight: 600;
+            --bs-btn-color: var(--bs-white);
+            --bs-btn-bg: var(--bd-violet-bg);
+            --bs-btn-border-color: var(--bd-violet-bg);
+            --bs-btn-hover-color: var(--bs-white);
+            --bs-btn-hover-bg: #6528e0;
+            --bs-btn-hover-border-color: #6528e0;
+            --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+            --bs-btn-active-color: var(--bs-btn-hover-color);
+            --bs-btn-active-bg: #5a23c8;
+            --bs-btn-active-border-color: #5a23c8;
+        }
+
+        .bd-mode-toggle {
+            z-index: 1500;
+        }
+
+        .bd-mode-toggle .dropdown-menu .active .bi {
+            display: block !important;
+        }
+    </style>
+
+    
+<svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+  <symbol id="bootstrap" viewBox="0 0 118 94">
+    <title>Bootstrap</title>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M24.509 0c-6.733 0-11.715 5.893-11.492 12.284.214 6.14-.064 14.092-2.066 20.577C8.943 39.365 5.547 43.485 0 44.014v5.972c5.547.529 8.943 4.649 10.951 11.153 2.002 6.485 2.28 14.437 2.066 20.577C12.794 88.106 17.776 94 24.51 94H93.5c6.733 0 11.714-5.893 11.491-12.284-.214-6.14.064-14.092 2.066-20.577 2.009-6.504 5.396-10.624 10.943-11.153v-5.972c-5.547-.529-8.934-4.649-10.943-11.153-2.002-6.484-2.28-14.437-2.066-20.577C105.214 5.894 100.233 0 93.5 0H24.508zM80 57.863C80 66.663 73.436 72 62.543 72H44a2 2 0 01-2-2V24a2 2 0 012-2h18.437c9.083 0 15.044 4.92 15.044 12.474 0 5.302-4.01 10.049-9.119 10.88v.277C75.317 46.394 80 51.21 80 57.863zM60.521 28.34H49.948v14.934h8.905c6.884 0 10.68-2.772 10.68-7.727 0-4.643-3.264-7.207-9.012-7.207zM49.948 49.2v16.458H60.91c7.167 0 10.964-2.876 10.964-8.281 0-5.406-3.903-8.178-11.425-8.178H49.948z"></path>
+  </symbol>
+  <symbol id="home" viewBox="0 0 16 16">
+    <path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4H2.5z"/>
+  </symbol>
+  <symbol id="speedometer2" viewBox="0 0 16 16">
+    <path d="M8 4a.5.5 0 0 1 .5.5V6a.5.5 0 0 1-1 0V4.5A.5.5 0 0 1 8 4zM3.732 5.732a.5.5 0 0 1 .707 0l.915.914a.5.5 0 1 1-.708.708l-.914-.915a.5.5 0 0 1 0-.707zM2 10a.5.5 0 0 1 .5-.5h1.586a.5.5 0 0 1 0 1H2.5A.5.5 0 0 1 2 10zm9.5 0a.5.5 0 0 1 .5-.5h1.5a.5.5 0 0 1 0 1H12a.5.5 0 0 1-.5-.5zm.754-4.246a.389.389 0 0 0-.527-.02L7.547 9.31a.91.91 0 1 0 1.302 1.258l3.434-4.297a.389.389 0 0 0-.029-.518z"/>
+    <path fill-rule="evenodd" d="M0 10a8 8 0 1 1 15.547 2.661c-.442 1.253-1.845 1.602-2.932 1.25C11.309 13.488 9.475 13 8 13c-1.474 0-3.31.488-4.615.911-1.087.352-2.49.003-2.932-1.25A7.988 7.988 0 0 1 0 10zm8-7a7 7 0 0 0-6.603 9.329c.203.575.923.876 1.68.63C4.397 12.533 6.358 12 8 12s3.604.532 4.923.96c.757.245 1.477-.056 1.68-.631A7 7 0 0 0 8 3z"/>
+  </symbol>
+  <symbol id="table" viewBox="0 0 16 16">
+    <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm15 2h-4v3h4V4zm0 4h-4v3h4V8zm0 4h-4v3h3a1 1 0 0 0 1-1v-2zm-5 3v-3H6v3h4zm-5 0v-3H1v2a1 1 0 0 0 1 1h3zm-4-4h4V8H1v3zm0-4h4V4H1v3zm5-3v3h4V4H6zm4 4H6v3h4V8z"/>
+  </symbol>
+  <symbol id="trophy" viewBox="0 0 16 16">
+     <path d="M2.5.5A.5.5 0 0 1 3 0h10a.5.5 0 0 1 .5.5q0 .807-.034 1.536a3 3 0 1 1-1.133 5.89c-.79 1.865-1.878 2.777-2.833 3.011v2.173l1.425.356c.194.048.377.135.537.255L13.3 15.1a.5.5 0 0 1-.3.9H3a.5.5 0 0 1-.3-.9l1.838-1.379c.16-.12.343-.207.537-.255L6.5 13.11v-2.173c-.955-.234-2.043-1.146-2.833-3.012a3 3 0 1 1-1.132-5.89A33 33 0 0 1 2.5.5m.099 2.54a2 2 0 0 0 .72 3.935c-.333-1.05-.588-2.346-.72-3.935m10.083 3.935a2 2 0 0 0 .72-3.935c-.133 1.59-.388 2.885-.72 3.935M3.504 1q.01.775.056 1.469c.13 2.028.457 3.546.87 4.667C5.294 9.48 6.484 10 7 10a.5.5 0 0 1 .5.5v2.61a1 1 0 0 1-.757.97l-1.426.356a.5.5 0 0 0-.179.085L4.5 15h7l-.638-.479a.5.5 0 0 0-.18-.085l-1.425-.356a1 1 0 0 1-.757-.97V10.5A.5.5 0 0 1 9 10c.516 0 1.706-.52 2.57-2.864.413-1.12.74-2.64.87-4.667q.045-.694.056-1.469z"/>
+  </symbol>
+  <symbol id="grid" viewBox="0 0 16 16">
+    <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zM2.5 2a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zm6.5.5A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zM1 10.5A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zm6.5.5A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3z"/>
+  </symbol>
+  <symbol id="film" viewBox="0 0 16 16">
+  <path d="M0 1a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1zm4 0v6h8V1zm8 8H4v6h8zM1 1v2h2V1zm2 3H1v2h2zM1 7v2h2V7zm2 3H1v2h2zm-2 3v2h2v-2zM15 1h-2v2h2zm-2 3v2h2V4zm2 3h-2v2h2zm-2 3v2h2v-2zm2 3h-2v2h2z"/>
+  </symbol>
+  <symbol id="user" viewBox="0 0 16 16">
+  <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"/>
+  </symbol>
+  <symbol id="calendar" viewBox="0 0 16 16">
+ <path d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm-3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm-5 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5z"/>
+  <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
+  </symbol>
+  <symbol id="newspaper" viewBox="0 0 16 16">
+ <path d="M0 2.5A1.5 1.5 0 0 1 1.5 1h11A1.5 1.5 0 0 1 14 2.5v10.528c0 .3-.05.654-.238.972h.738a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 1 1 0v9a1.5 1.5 0 0 1-1.5 1.5H1.497A1.497 1.497 0 0 1 0 13.5zM12 14c.37 0 .654-.211.853-.441.092-.106.147-.279.147-.531V2.5a.5.5 0 0 0-.5-.5h-11a.5.5 0 0 0-.5.5v11c0 .278.223.5.497.5z"/>
+  <path d="M2 3h10v2H2zm0 3h4v3H2zm0 4h4v1H2zm0 2h4v1H2zm5-6h2v1H7zm3 0h2v1h-2zM7 8h2v1H7zm3 0h2v1h-2zm-3 2h2v1H7zm3 0h2v1h-2zm-3 2h2v1H7zm3 0h2v1h-2z"/>
+  </symbol>
+  <symbol id="checklist" viewBox="0 0 16 16">
+ <path d="M9.5 0a.5.5 0 0 1 .5.5.5.5 0 0 0 .5.5.5.5 0 0 1 .5.5V2a.5.5 0 0 1-.5.5h-5A.5.5 0 0 1 5 2v-.5a.5.5 0 0 1 .5-.5.5.5 0 0 0 .5-.5.5.5 0 0 1 .5-.5z"/>
+  <path d="M3 2.5a.5.5 0 0 1 .5-.5H4a.5.5 0 0 0 0-1h-.5A1.5 1.5 0 0 0 2 2.5v12A1.5 1.5 0 0 0 3.5 16h9a1.5 1.5 0 0 0 1.5-1.5v-12A1.5 1.5 0 0 0 12.5 1H12a.5.5 0 0 0 0 1h.5a.5.5 0 0 1 .5.5v12a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5z"/>
+  <path d="M10.854 7.854a.5.5 0 0 0-.708-.708L7.5 9.793 6.354 8.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0z"/>
+  </symbol>
+  <symbol id="stats" viewBox="0 0 16 16">
+   <path fill-rule="evenodd" d="M6 2a.5.5 0 0 1 .47.33L10 12.036l1.53-4.208A.5.5 0 0 1 12 7.5h3.5a.5.5 0 0 1 0 1h-3.15l-1.88 5.17a.5.5 0 0 1-.94 0L6 3.964 4.47 8.171A.5.5 0 0 1 4 8.5H.5a.5.5 0 0 1 0-1h3.15l1.88-5.17A.5.5 0 0 1 6 2"/>
+ </symbol>
+  <symbol id="people" viewBox="0 0 16 16">
+  <path d="M8 3a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
+  <path d="m5.93 6.704-.846 8.451a.768.768 0 0 0 1.523.203l.81-4.865a.59.59 0 0 1 1.165 0l.81 4.865a.768.768 0 0 0 1.523-.203l-.845-8.451A1.5 1.5 0 0 1 10.5 5.5L13 2.284a.796.796 0 0 0-1.239-.998L9.634 3.84a.7.7 0 0 1-.33.235c-.23.074-.665.176-1.304.176-.64 0-1.074-.102-1.305-.176a.7.7 0 0 1-.329-.235L4.239 1.286a.796.796 0 0 0-1.24.998l2.5 3.216c.317.316.475.758.43 1.204Z"/>
+ </symbol>
+  <symbol id="support" viewBox="0 0 16 16">
+  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.496 6.033h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286a.237.237 0 0 0 .241.247m2.325 6.443c.61 0 1.029-.394 1.029-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94 0 .533.425.927 1.01.927z"/>
+ </symbol>
+</svg>
+
 <h1>Dashboard</h1>
 
 {% with messages = get_flashed_messages(with_categories=true) %}
@@ -12,50 +158,153 @@
         {% endfor %}
     {% endif %}
 {% endwith %}
+    
+    <main class="d-flex flex-nowrap">
+        <div class="b-example-divider b-example-vr"></div>
 
-
-<!-- Navigation Tabs -->
-<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" id="pills-reports-tab" data-bs-toggle="pill" data-bs-target="#pills-reports" type="button" role="tab" aria-controls="pills-reports" aria-selected="false">Manage Reports</button>
-    </li>
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" id="pills-users-tab" data-bs-toggle="pill" data-bs-target="#pills-users" type="button" role="tab" aria-controls="pills-users" aria-selected="false">Manage Users</button>
-    </li>
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" id="pills-events-tab" data-bs-toggle="pill" data-bs-target="#pills-events" type="button" role="tab" aria-controls="pills-events" aria-selected="false">Manage Events</button>
-    </li>
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" id="pills-news-tab" data-bs-toggle="pill" data-bs-target="#pills-news" type="button" role="tab" aria-controls="pills-news" aria-selected="false">Manage News</button>
-    </li>
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" id="pills-achievements-tab" data-bs-toggle="pill" data-bs-target="#pills-achievements" type="button" role="tab" aria-controls="pills-achievements" aria-selected="false">Manage Achievements</button>
-    </li>
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" id="pills-media-tab" data-bs-toggle="pill" data-bs-target="#pills-media" type="button" role="tab" aria-controls="pills-media" aria-selected="false">Manage Media</button>
-    </li>
-</ul>
-
-<!-- Tab Contents -->
-<div class="tab-content" id="pills-tabContent">
-    <div class="tab-pane fade show active" id="pills-reports" role="tabpanel" aria-labelledby="pills-reports-tab">
-        <div class="card mb-3">
-            <div class="card-header">
-                <h2>Manage Reports <i class="fas fa-file-alt"></i></h2>
+        <div class="d-flex flex-column flex-shrink-0 bg-body-tertiary" style="width: 4.5rem;">
+            <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
+                <li>
+                    <a class="nav-link active py-3 border-bottom rounded-0" title="Help" data-bs-toggle="tooltip" data-bs-placement="right" onclick="showSection(event, 'help')">
+                        <svg class="bi pe-none" width="24" height="24" role="img" aria-label="Help"><use xlink:href="#speedometer2" /></svg>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link py-3 border-bottom rounded-0" title="Manage Reports" data-bs-toggle="tooltip" data-bs-placement="right" onclick="showSection(event, 'reports')">
+                        <svg class="bi pe-none" width="24" height="24" role="img" aria-label="Reports"><use xlink:href="#checklist" /></svg>
+                    </a>
+                </li>
+                <li>
+                    <a class="nav-link py-3 border-bottom rounded-0" title="Manage Events" data-bs-toggle="tooltip" data-bs-placement="right" onclick="showSection(event, 'events')">
+                        <svg class="bi pe-none" width="24" height="24" role="img" aria-label="Events"><use xlink:href="#calendar" /></svg>
+                    </a>
+                </li>
+                <li>
+                    <a class="nav-link py-3 border-bottom rounded-0" title="Manage Users" data-bs-toggle="tooltip" data-bs-placement="right" onclick="showSection(event, 'users')">
+                        <svg class="bi pe-none" width="24" height="24" role="img" aria-label="Users"><use xlink:href="#user" /></svg>
+                    </a>
+                </li>
+                <li>
+                    <a class="nav-link py-3 border-bottom rounded-0" title="Manage News" data-bs-toggle="tooltip" data-bs-placement="right" onclick="showSection(event, 'news')">
+                        <svg class="bi pe-none" width="24" height="24" role="img" aria-label="News"><use xlink:href="#newspaper" /></svg>
+                    </a>
+                </li>
+                <li>
+                    <a class="nav-link py-3 border-bottom rounded-0" title="Manage Achievements" data-bs-toggle="tooltip" data-bs-placement="right" onclick="showSection(event, 'achievements')">
+                        <svg class="bi pe-none" width="24" height="24" role="img" aria-label="Achievements"><use xlink:href="#trophy" /></svg>
+                    </a>
+                </li>
+                <li>
+                    <a class="nav-link py-3 border-bottom rounded-0" title="Manage Media" data-bs-toggle="tooltip" data-bs-placement="right" onclick="showSection(event, 'media')">
+                        <svg class="bi pe-none" width="24" height="24" role="img" aria-label="Media"><use xlink:href="#film" /></svg>
+                    </a>
+                </li>
+                <li>
+                    <a class="nav-link py-3 border-bottom rounded-0" title="Statistics" data-bs-toggle="tooltip" data-bs-placement="right" onclick="showSection(event, 'statistics')">
+                        <svg class="bi pe-none" width="24" height="24" role="img" aria-label="Statistics"><use xlink:href="#stats" /></svg>
+                    </a>
+                </li>
+                <li>
+                    <a class="nav-link py-3 border-bottom rounded-0" title="Attendance Events" data-bs-toggle="tooltip" data-bs-placement="right" onclick="showSection(event, 'attendance')">
+                        <svg class="bi pe-none" width="24" height="24" role="img" aria-label="Attendance Events"><use xlink:href="#people" /></svg>
+                    </a>
+                </li>
+               
+            </ul>
+        </div>
+        <div class="b-example-divider b-example-vr"></div>
+        <div class="container-fluid p-4">
+            <!-- Section Help -->
+            <div id="help" class="content-section">
+                <div class="container">
+                    <h3 class="mb-4">WELCOME TO DASHBOARD</h3>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="card bg-light mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title">Manage Reports</h5>
+                                    <p class="card-text">Use this section to create, update, and delete reports. Each report includes a title, date, and content.</p>
+                                </div>
+                            </div>
+                            <div class="card bg-light mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title">Manage Events</h5>
+                                    <p class="card-text">This section allows you to manage upcoming events. You can add, update, or delete events and mark attendance.</p>
+                                </div>
+                            </div>
+                            <div class="card bg-light mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title">Manage Users</h5>
+                                    <p class="card-text">In this section, you can manage user accounts. Create new users, update user details, and manage admin rights.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card bg-light mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title">Manage News</h5>
+                                    <p class="card-text">Use this section to post news articles. Add new articles, update existing ones, and delete old articles.</p>
+                                </div>
+                            </div>
+                            <div class="card bg-light mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title">Manage Achievements</h5>
+                                    <p class="card-text">This section is for tracking achievements. Record new achievements, update details, and manage related information.</p>
+                                </div>
+                            </div>
+                            <div class="card bg-light mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title">Manage Media</h5>
+                                    <p class="card-text">Upload and manage media files such as images and videos. Ensure all files are properly labeled and organized.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="card bg-light mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title">Statistics</h5>
+                                    <p class="card-text">View and analyze various statistics related to events, user activity, and more. Use this section to get insights and make data-driven decisions.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card bg-light mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title">Attendance Events</h5>
+                                    <p class="card-text">Track attendance for events. See who is attending and manage attendee details.</p>
+                                </div>
+                            </div>
+                            <div class="card bg-light mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title">Support</h5>
+                                    <p class="card-text">If you have any questions or need further assistance, please contact support.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            <div id="reports" class="content-section d-none">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h2>Manage Reports <i class="fas fa-file-alt"></i></h2>
+                </div>
             <div class="card-body">
-                <form id="reports-form" method="post" action="{{ url_for('admin.create_report') }}">
+                <form id="reports-form" method="post" action="{{ url_for('admin.create_report') }}" required>
                     <div class="mb-3">
                         <label for="create-title" class="form-label">Title</label>
-                        <input type="text" class="form-control" id="create-title" name="title">
+                        <input type="text" class="form-control" id="create-title" name="title" required>
                     </div>
                     <div class="mb-3">
                         <label for="create-date" class="form-label">Date (YYYY-MM-DD)</label>
-                        <input type="date" class="form-control" id="create-date" name="date">
+                        <input type="date" class="form-control" id="create-date" name="date" required>
                     </div>
                     <div class="mb-3">
                         <label for="create-content" class="form-label">Content</label>
-                        <textarea class="form-control" id="create-content" name="content"></textarea>
+                        <textarea class="form-control" id="create-content" name="content" required></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Add Report</button>
                 </form>
@@ -76,7 +325,7 @@
                                 <td>{{ report.date }}</td>
                                 <td>
                                     <!-- Bouton pour ouvrir le modal de mise à jour -->
-                                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal{{ report.id }}">
+                                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal{{ report.id }}" >
                                         Update
                                     </button>
                                     <form method="post" action="{{ url_for('admin.delete_report', report_id=report.id) }}" class="mt-2">
@@ -97,15 +346,15 @@
                                             <div class="modal-body">
                                                 <div class="mb-3">
                                                     <label for="update-title" class="form-label">Title</label>
-                                                    <input type="text" class="form-control" id="update-title" name="title" value="{{ report.title }}">
+                                                    <input type="text" class="form-control" id="update-title" name="title" value="{{ report.title }}" required>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="update-date" class="form-label">Date (YYYY-MM-DD)</label>
-                                                    <input type="date" class="form-control" id="update-date" name="date" value="{{ report.date }}">
+                                                    <input type="date" class="form-control" id="update-date" name="date" value="{{ report.date }}" required>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="update-content" class="form-label">Content</label>
-                                                    <textarea class="form-control" id="update-content" name="content">{{ report.content }}</textarea>
+                                                    <textarea class="form-control" id="update-content" name="content" required>{{ report.content }}</textarea>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
@@ -143,26 +392,124 @@
         </div>
     </div>
 
-    <!-- Onglet Manage Users -->
-    <div class="tab-pane fade" id="pills-users" role="tabpanel" aria-labelledby="pills-users-tab">
-        <div class="card mb-3">
-            <div class="card-header">
-                <h2>Manage Users <i class="fas fa-users"></i></h2>
+           <div id="events" class="content-section d-none">
+    <div class="card mb-3">
+        <div class="card-header">
+            <h2>Manage Events <i class="fas fa-calendar-alt"></i></h2>
+        </div>
+            <div class="card-body">
+                <form id="events-form" method="post" action="{{ url_for('admin.create_event') }}">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="date" class="form-label">Date</label>
+                        <input type="date" class="form-control" id="date" name="date" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Event</button>
+                </form>
+                <div class="table-responsive mt-4">
+                    <table id="events-table" class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for event in events.items %}
+                            <tr>
+                                <td>{{ event.name }}</td>
+                                <td>{{ event.date }}</td>
+                                <td>
+                                    <!-- Update Event Modal Trigger -->
+                                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#updateEventModal{{ event.id }}">
+                                        Update
+                                    </button>
+                                    
+                                    <!-- Delete Event Form -->
+                                    <form method="post" action="{{ url_for('admin.delete_event', event_id=event.id) }}" class="d-inline">
+                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            
+                            <!-- Update Event Modal -->
+                            <div class="modal fade" id="updateEventModal{{ event.id }}" tabindex="-1" aria-labelledby="updateEventModalLabel{{ event.id }}" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="updateEventModalLabel{{ event.id }}">Update Event</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="post" action="{{ url_for('admin.update_event', event_id=event.id) }}">
+                                                <div class="mb-3">
+                                                    <label for="name" class="form-label">Name</label>
+                                                    <input type="text" class="form-control" id="name" name="name" value="{{ event.name }}" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="date" class="form-label">Date</label>
+                                                    <input type="date" class="form-control" id="date" name="date" value="{{ event.date }}" required>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                    <button type="submit" class="btn btn-primary">Update Event</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Pagination for events -->
+                <nav>
+                    <ul class="pagination">
+                        {% if events.has_prev %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('admin.dashboard', page_events=events.prev_num) }}" data-target="#pills-events">Previous</a>
+                        </li>
+                        {% endif %}
+                        {% for page_num in events.iter_pages() %}
+                        <li class="page-item {% if page_num == events.page %}active{% endif %}">
+                            <a class="page-link" href="{{ url_for('admin.dashboard', page_events=page_num) }}" data-target="#pills-events">{{ page_num }}</a>
+                        </li>
+                        {% endfor %}
+                        {% if events.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('admin.dashboard', page_events=events.next_num) }}" data-target="#pills-events">Next</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
             </div>
+        </div>
+    </div>
+
+           <div id="users" class="content-section d-none">
+    <div class="card mb-3">
+        <div class="card-header">
+            <h2>Manage Users <i class="fas fa-users"></i></h2>
+        </div>
             <div class="card-body">
                 <!-- Form for creating a new user -->
                 <form id="users-form" method="post" action="{{ url_for('admin.create_user') }}">
                     <div class="mb-3">
                         <label for="username" class="form-label">Username</label>
-                        <input type="text" class="form-control" id="username" name="username">
+                        <input type="text" class="form-control" id="username" name="username" required>
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" name="email">
+                        <input type="email" class="form-control" id="email" name="email" required>
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" name="password">
+                        <input type="password" class="form-control" id="password" name="password" required>
                     </div>
                     <div class="mb-3 form-check">
                         <input type="checkbox" class="form-check-input" id="is_admin" name="is_admin">
@@ -213,15 +560,15 @@
                                             <form method="post" action="{{ url_for('admin.update_user', user_id=user.id) }}">
                                                 <div class="mb-3">
                                                     <label for="username" class="form-label">Username</label>
-                                                    <input type="text" class="form-control" id="username" name="username" value="{{ user.username }}">
+                                                    <input type="text" class="form-control" id="username" name="username" value="{{ user.username }}" required>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="email" class="form-label">Email</label>
-                                                    <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}">
+                                                    <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" required>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="password" class="form-label">New Password</label>
-                                                    <input type="password" class="form-control" id="password" name="password">
+                                                    <input type="password" class="form-control" id="password" name="password" required>
                                                 </div>
                                                 <div class="mb-3 form-check">
                                                     <input type="checkbox" class="form-check-input" id="is_admin" name="is_admin" {% if user.is_admin %} checked {% endif %}>
@@ -263,122 +610,20 @@
             </div>
         </div>
     </div>
-
-    <!-- Onglet Manage Events -->
-    <div class="tab-pane fade" id="pills-events" role="tabpanel" aria-labelledby="pills-events-tab">
-        <div class="card mb-3">
-            <div class="card-header">
-                <h2>Manage Events <i class="fas fa-calendar-alt"></i></h2>
-            </div>
-            <div class="card-body">
-                <form id="events-form" method="post" action="{{ url_for('admin.create_event') }}">
-                    <div class="mb-3">
-                        <label for="name" class="form-label">Name</label>
-                        <input type="text" class="form-control" id="name" name="name">
-                    </div>
-                    <div class="mb-3">
-                        <label for="date" class="form-label">Date</label>
-                        <input type="date" class="form-control" id="date" name="date">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Add Event</button>
-                </form>
-                <div class="table-responsive mt-4">
-                    <table id="events-table" class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Date</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for event in events.items %}
-                            <tr>
-                                <td>{{ event.name }}</td>
-                                <td>{{ event.date }}</td>
-                                <td>
-                                    <!-- Update Event Modal Trigger -->
-                                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#updateEventModal{{ event.id }}">
-                                        Update
-                                    </button>
-                                    
-                                    <!-- Delete Event Form -->
-                                    <form method="post" action="{{ url_for('admin.delete_event', event_id=event.id) }}" class="d-inline">
-                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                    </form>
-                                </td>
-                            </tr>
-                            
-                            <!-- Update Event Modal -->
-                            <div class="modal fade" id="updateEventModal{{ event.id }}" tabindex="-1" aria-labelledby="updateEventModalLabel{{ event.id }}" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="updateEventModalLabel{{ event.id }}">Update Event</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form method="post" action="{{ url_for('admin.update_event', event_id=event.id) }}">
-                                                <div class="mb-3">
-                                                    <label for="name" class="form-label">Name</label>
-                                                    <input type="text" class="form-control" id="name" name="name" value="{{ event.name }}">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="date" class="form-label">Date</label>
-                                                    <input type="date" class="form-control" id="date" name="date" value="{{ event.date }}">
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                    <button type="submit" class="btn btn-primary">Update Event</button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-                <!-- Pagination for events -->
-                <nav>
-                    <ul class="pagination">
-                        {% if events.has_prev %}
-                        <li class="page-item">
-                            <a class="page-link" href="{{ url_for('admin.dashboard', page_events=events.prev_num) }}" data-target="#pills-events">Previous</a>
-                        </li>
-                        {% endif %}
-                        {% for page_num in events.iter_pages() %}
-                        <li class="page-item {% if page_num == events.page %}active{% endif %}">
-                            <a class="page-link" href="{{ url_for('admin.dashboard', page_events=page_num) }}" data-target="#pills-events">{{ page_num }}</a>
-                        </li>
-                        {% endfor %}
-                        {% if events.has_next %}
-                        <li class="page-item">
-                            <a class="page-link" href="{{ url_for('admin.dashboard', page_events=events.next_num) }}" data-target="#pills-events">Next</a>
-                        </li>
-                        {% endif %}
-                    </ul>
-                </nav>
-            </div>
+           <div id="news" class="content-section d-none">
+    <div class="card mb-3">
+        <div class="card-header">
+            <h2>Manage News <i class="fas fa-newspaper"></i></h2>
         </div>
-    </div>
-
-    <!-- Onglet Manage News -->
-    <div class="tab-pane fade" id="pills-news" role="tabpanel" aria-labelledby="pills-news-tab">
-        <div class="card mb-3">
-            <div class="card-header">
-                <h2>Manage News <i class="fas fa-newspaper"></i></h2>
-            </div>
             <div class="card-body">
                 <form id="news-form" method="post" action="{{ url_for('admin.create_news') }}">
                     <div class="mb-3">
                         <label for="news_title" class="form-label">Title</label>
-                        <input type="text" class="form-control" id="news_title" name="news_title">
+                        <input type="text" class="form-control" id="news_title" name="news_title" required>
                     </div>
                     <div class="mb-3">
                         <label for="news_content" class="form-label">Content</label>
-                        <textarea class="form-control" id="news_content" name="news_content"></textarea>
+                        <textarea class="form-control" id="news_content" name="news_content" required></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Add News</button>
                 </form>
@@ -421,11 +666,11 @@
                                             <form method="post" action="{{ url_for('admin.update_news', news_id=news.id) }}">
                                                 <div class="mb-3">
                                                     <label for="news_title" class="form-label">Title</label>
-                                                    <input type="text" class="form-control" id="news_title" name="news_title" value="{{ news.title }}">
+                                                    <input type="text" class="form-control" id="news_title" name="news_title" value="{{ news.title }}" required>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="news_content" class="form-label">Content</label>
-                                                    <textarea class="form-control" id="news_content" name="news_content">{{ news.content }}</textarea>
+                                                    <textarea class="form-control" id="news_content" name="news_content" required>{{ news.content }}</textarea>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -464,12 +709,12 @@
         </div>
     </div>
 
-    <!-- Onglet Manage Achievements -->
-    <div class="tab-pane fade" id="pills-achievements" role="tabpanel" aria-labelledby="pills-achievements-tab">
-        <div class="card mb-3">
-            <div class="card-header">
-                <h2>Manage Achievements <i class="fas fa-trophy"></i></h2>
-            </div>
+
+           <div id="achievements" class="content-section d-none">
+    <div class="card mb-3">
+        <div class="card-header">
+            <h2>Manage Achievements <i class="fas fa-trophy"></i></h2>
+        </div>
             <div class="card-body">
                 <form id="achievements-form" method="post" action="{{ url_for('admin.create_achievement') }}">
                     <div class="mb-3">
@@ -555,35 +800,35 @@
                                             <form method="post" action="{{ url_for('admin.update_achievement', achievement_id=achievement.id) }}">
                                                 <div class="mb-3">
                                                     <label for="name" class="form-label">Activity Name</label>
-                                                    <input type="text" class="form-control" id="name" name="name" value="{{ achievement.name }}">
+                                                    <input type="text" class="form-control" id="name" name="name" value="{{ achievement.name }}" required>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="start_date" class="form-label">Start Date</label>
-                                                    <input type="date" class="form-control" id="start_date" name="start_date" value="{{ achievement.start_date }}">
+                                                    <input type="date" class="form-control" id="start_date" name="start_date" value="{{ achievement.start_date }}" required>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="end_date" class="form-label">End Date</label>
-                                                    <input type="date" class="form-control" id="end_date" name="end_date" value="{{ achievement.end_date }}">
+                                                    <input type="date" class="form-control" id="end_date" name="end_date" value="{{ achievement.end_date }}" required>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="site" class="form-label">Site</label>
-                                                    <input type="text" class="form-control" id="site" name="site" value="{{ achievement.site }}">
+                                                    <input type="text" class="form-control" id="site" name="site" value="{{ achievement.site }}" required>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="objectives" class="form-label">Objectives</label>
-                                                    <textarea class="form-control" id="objectives" name="objectives">{{ achievement.objectives }}</textarea>
+                                                    <textarea class="form-control" id="objectives" name="objectives" required>{{ achievement.objectives }}</textarea>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="beneficiaries_kind" class="form-label">Beneficiaries Kind</label>
-                                                    <input type="text" class="form-control" id="beneficiaries_kind" name="beneficiaries_kind" value="{{ achievement.beneficiaries_kind }}">
+                                                    <input type="text" class="form-control" id="beneficiaries_kind" name="beneficiaries_kind" value="{{ achievement.beneficiaries_kind }}" required>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="beneficiaries_number" class="form-label">Beneficiaries Number</label>
-                                                    <input type="number" class="form-control" id="beneficiaries_number" name="beneficiaries_number" value="{{ achievement.beneficiaries_number }}">
+                                                    <input type="number" class="form-control" id="beneficiaries_number" name="beneficiaries_number" value="{{ achievement.beneficiaries_number }}" required>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="results_obtained" class="form-label">The Results Obtained</label>
-                                                    <textarea class="form-control" id="results_obtained" name="results_obtained">{{ achievement.results_obtained }}</textarea>
+                                                    <textarea class="form-control" id="results_obtained" name="results_obtained" required>{{ achievement.results_obtained }}</textarea>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -622,8 +867,8 @@
         </div>
     </div>
 
-<!-- Onglet Manage Media -->
-<div class="tab-pane fade" id="pills-media" role="tabpanel" aria-labelledby="pills-media-tab">
+
+          <div id="media" class="content-section d-none">
     <div class="card mb-3">
         <div class="card-header">
             <h2>Manage Media <i class="fas fa-images"></i></h2>
@@ -635,11 +880,11 @@
     </div>
     <div class="mb-3">
         <label for="description" class="form-label">Description</label>
-        <textarea class="form-control" id="description" name="description"></textarea>
+        <textarea class="form-control" id="description" name="description" required></textarea>
     </div>
     <div class="mb-3">
         <label for="file_url" class="form-label">File URL</label>
-        <input type="text" class="form-control" id="file_url" name="file_url">
+        <input type="text" class="form-control" id="file_url" name="file_url" required>
     </div>
     <button type="submit" class="btn btn-primary">Add Media</button>
 </form>
@@ -687,15 +932,15 @@
                                             <form method="post" action="{{ url_for('admin.update_media', media_id=media.id) }}">
                                                 <div class="mb-3">
                                                     <label for="update-title" class="form-label">Title</label>
-                                                    <input type="text" class="form-control" id="update-title" name="title" value="{{ media.title }}">
+                                                    <input type="text" class="form-control" id="update-title" name="title" value="{{ media.title }}" required>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="update-description" class="form-label">Description</label>
-                                                    <textarea class="form-control" id="update-description" name="description">{{ media.description }}</textarea>
+                                                    <textarea class="form-control" id="update-description" name="description" required>{{ media.description }}</textarea>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="update-file-url" class="form-label">File URL</label>
-                                                    <input type="text" class="form-control" id="update-file-url" name="file_url" value="{{ media.file_url }}">
+                                                    <input type="text" class="form-control" id="update-file-url" name="file_url" value="{{ media.file_url }}" required>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -734,26 +979,88 @@
     </div>
 </div>
 
-</div>
-<script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Check if there's a stored tab state
-            var storedTab = localStorage.getItem('activeTab');
-            if (storedTab) {
-                var triggerEl = document.querySelector(`#pills-tab button[data-bs-target="${storedTab}"]`);
-                var tab = new bootstrap.Tab(triggerEl);
-                tab.show();
+ 
+          <div id="statistics" class="content-section d-none">
+    <h3>Statistics</h3>
+    <canvas id="myChart" width="400" height="200"></canvas>
+    <script>
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: {{ event_names|tojson }},
+                datasets: [{
+                    label: 'Attendance',
+                    data: {{ attendance_counts|tojson }},
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
             }
-
-            // Store the active tab state on tab change
-            var tabTriggerEls = document.querySelectorAll('#pills-tab button[data-bs-toggle="pill"]');
-            tabTriggerEls.forEach(function (tabTriggerEl) {
-                tabTriggerEl.addEventListener('show.bs.tab', function (event) {
-                    var target = event.target.getAttribute('data-bs-target');
-                    localStorage.setItem('activeTab', target);
-                });
-            });
         });
     </script>
-    <script src="path/to/bootstrap.bundle.min.js"></script>
+</div>
+
+          <div id="attendance" class="content-section d-none">
+    <h3>Attendance Events</h3>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Event</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for attendance in attendances %}
+                <tr>
+                    <td>{{ attendance.event.name }}</td>
+                    <td>{{ attendance.name }}</td>
+                    <td>{{ attendance.email }}</td>
+                    <td>{{ attendance.phone }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+        </div>
+    </main>
+
+    <!-- Scripts JavaScript -->
+    <script>
+        function showSection(event, sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.add('d-none');
+            });
+            document.getElementById(sectionId).classList.remove('d-none');
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+        }
+
+        // Afficher la section "help" par défaut lors du chargement de la page
+        document.addEventListener('DOMContentLoaded', function() {
+            showSection(null, 'help');
+        });
+    </script>
+        <script src="path/to/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="sidebars.js"></script>
+  </body>
 {% endblock %}
