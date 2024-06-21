@@ -678,25 +678,7 @@ def view_media():
     return render_template('media.html', media_list=media_list)
 
 
-@main_bp.route('/attend_event/<int:event_id>', methods=['POST'])
-def attend_event_form(event_id):
-    event = Event.query.get_or_404(event_id)
-    
-    if current_user.is_authenticated:
-        name = current_user.name
-        email = current_user.email
-        phone = current_user.phone
-    else:
-        name = request.form['name']
-        email = request.form['email']
-        phone = request.form['phone']
-    
-    new_attendance = Attendance(event_id=event.id, name=name, email=email, phone=phone)
-    db.session.add(new_attendance)
-    db.session.commit()
-    
-    flash('Your attendance has been marked successfully.', 'success')
-    return redirect(url_for('main.event_attendance'))
+
 
 
 # Ensure you have an event_attendance.html template or update the redirect accordingly.
