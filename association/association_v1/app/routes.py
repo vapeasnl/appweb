@@ -709,25 +709,35 @@ def allowed_file(filename):
 @login_required
 def create_media():
     if not current_user.is_admin:
+        flash('You do not have permission to add media.', 'error')
         return redirect(url_for('main.home'))
 
-    title = request.form['title']
-    description = request.form['description']
-    file = request.files['file']
+    title = request.form.get('title')
+    description = request.form.get('description')
+    file = request.files.get('file')
+
+    # Debugging information
+    if not title:
+        flash('Title is missing.', 'error')
+    if not description:
+        flash('Description is missing.', 'error')
+    if not file:
+        flash('File is missing.', 'error')
 
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        file.save(file_path)
-        file_url = url_for('static', filename=os.path.join('uploads', filename))
-
-        new_media = Media(title=title, description=description, file_url=file_url)
-        db.session.add(new_media)
-        db.session.commit()
-        flash('New media added successfully.', 'success')
+        try:
+            file.save(file_path)
+            file_url = url_for('static', filename=os.path.join('uploads', filename))
+            new_media = Media(title=title, description=description, file_url=file_url)
+            db.session.add(new_media)
+            db.session.commit()
+            flash(f'New media added successfully. File saved to {file_path}', 'success')
+        except Exception as e:
+            flash(f'Failed to save file. Error: {str(e)}', 'error')
+            db.session.rollback()
     else:
         flash('Invalid file type or no file uploaded.', 'error')
 
     return redirect(url_for('admin.dashboard'))
-
-
