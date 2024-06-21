@@ -148,6 +148,26 @@ def attend_event(event_id):
         flash('You have marked your attendance for the event.', 'success')
     return redirect(url_for('main.home'))
 
+@main_bp.route('/attend_event/<int:event_id>', methods=['POST'])
+def attend_event_form(event_id):
+    event = Event.query.get_or_404(event_id)
+    
+    if current_user.is_authenticated:
+        name = current_user.name
+        email = current_user.email
+        phone = current_user.phone
+    else:
+        name = request.form['name']
+        email = request.form['email']
+        phone = request.form['phone']
+    
+    new_attendance = Attendance(event_id=event.id, name=name, email=email, phone=phone)
+    db.session.add(new_attendance)
+    db.session.commit()
+    
+    flash('Your attendance has been marked successfully.', 'success')
+    return redirect(url_for('main.event_attendance'))
+
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -732,24 +752,4 @@ def create_media():
 if not os.path.exists(app.config['UPLOAD_FOLDER']):
     os.makedirs(app.config['UPLOAD_FOLDER'])
 
-@main_bp.route('/attend_event/<int:event_id>', methods=['POST'])
-@login_required
-def attend_event(event_id):
-    event = Event.query.get_or_404(event_id)
-    
-    if current_user.is_authenticated:
-        name = current_user.name
-        email = current_user.email
-        phone = current_user.phone
-    else:
-        name = request.form['name']
-        email = request.form['email']
-        phone = request.form['phone']
-    
-    attendance = Attendance(event_id=event_id, name=name, email=email, phone=phone)
-    db.session.add(attendance)
-    db.session.commit()
-    
-    flash('Your attendance has been marked.', 'success')
-    return redirect(url_for('main.home'))
 
