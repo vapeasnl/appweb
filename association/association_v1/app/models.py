@@ -64,8 +64,7 @@ class Event(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), nullable=False)
     date = db.Column(db.DateTime, nullable=False)
-    attendances = db.relationship('Attendance', back_populates='event')
-
+    attendances = db.relationship('Attendance', backref='event', lazy=True)
 
 class Report(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -91,7 +90,6 @@ class Attendance(db.Model):
     name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), nullable=False)
     phone = db.Column(db.String(20), nullable=False)
-    event = db.relationship('Event', backref=db.backref('attendances', lazy=True))
-
+    event_attendance = db.relationship('Event', backref='attendances', lazy=True)
 
 
