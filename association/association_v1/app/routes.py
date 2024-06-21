@@ -141,6 +141,21 @@ def home():
     news = News.query.order_by(News.date.desc()).all()
     return render_template('home.html', events=upcoming_events, news=news)
 
+@main_bp.route('/events/<int:event_id>/register-attendance', methods=['POST'])
+def register_attendance(event_id):
+    event = Event.query.get_or_404(event_id)
+    
+    name = request.form.get('name')
+    email = request.form.get('email')
+    phone = request.form.get('phone')
+    
+    new_attendance = Attendance(event_id=event.id, name=name, email=email, phone=phone)
+    db.session.add(new_attendance)
+    db.session.commit()
+    
+    flash('Votre présence a été enregistrée avec succès.', 'success')
+    return redirect(url_for('main.event_details', event_id=event_id))
+
 
 @main_bp.route('/events/<int:event_id>/attend', methods=['POST'])
 @login_required
