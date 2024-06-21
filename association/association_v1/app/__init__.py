@@ -24,3 +24,4 @@ def create_app():
     app.register_blueprint(news_bp)
 
     return app
+
