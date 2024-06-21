@@ -705,7 +705,7 @@ def allowed_file(filename):
     ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'pdf', 'mp4', 'mov'}
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@app.route('/media', methods=['POST'])
+@admin_bp.route('/media/create', methods=['POST'])
 @login_required
 def create_media():
     if not current_user.is_admin:
@@ -718,7 +718,7 @@ def create_media():
 
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
-        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
         try:
             file.save(file_path)
             file_url = url_for('static', filename=os.path.join('uploads', filename))
@@ -726,7 +726,6 @@ def create_media():
             db.session.add(new_media)
             db.session.commit()
             flash(f'New media added successfully. File saved to {file_path}', 'success')
-            print(f'File saved to {file_path}')
         except Exception as e:
             flash(f'Failed to save file. Error: {str(e)}', 'error')
             db.session.rollback()
