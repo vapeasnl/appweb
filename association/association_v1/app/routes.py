@@ -21,6 +21,14 @@ def before_request():
     else:
         g.unread_count = 0
 
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+
 @profile_bp.context_processor
 def inject_unread_count():
     return dict(unread_count=g.get('unread_count', 0))
