@@ -1,9 +1,10 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, g
 from flask_login import login_user, logout_user, login_required, current_user
-from .models import db, User, Association, News, Event, Report, Achievement, Media, ContactMessage
+from .models import db, User, Association, News, Event, Report, Achievement, Media, ContactMessage, Attendance
 from datetime import datetime
 from sqlalchemy import func
 import os
+from flask import Flask
 
 
 main_bp = Blueprint('main', __name__)
@@ -184,6 +185,7 @@ def manage_profile():
         return redirect(url_for('profile.profile'))
     return render_template('manage_profile.html', user=current_user, unread_count=g.unread_count)
 
+
 @admin_bp.route('/dashboard')
 @login_required
 def dashboard():
@@ -204,12 +206,15 @@ def dashboard():
     achievements = Achievement.query.paginate(page=page_achievements, per_page=10)
     media_list = Media.query.paginate(page=page_media, per_page=10)
 
-    attendances = Attendance.query.all()  # Vous devrez peut-être filtrer cela par événement si nécessaire
+    attendances = Attendance.query.all()  # You may need to filter this by event if necessary
 
     event_names = [event.name for event in events.items]
     attendance_counts = [len(event.attendances) for event in events.items]
 
     return render_template('dashboard.html', reports=reports, users=users, events=events, news_list=news_list, achievements=achievements, media_list=media_list, attendances=attendances, event_names=event_names, attendance_counts=attendance_counts, unread_count=g.unread_count)
+
+
+
 # Report routes
 @admin_bp.route('/reports/create', methods=['POST'])
 @login_required
