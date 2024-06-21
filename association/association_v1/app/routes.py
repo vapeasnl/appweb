@@ -625,35 +625,7 @@ def delete_achievement(achievement_id):
         db.session.commit()
     return redirect(url_for('admin.dashboard'))
 
-# Media routes
-@admin_bp.route('/media', methods=['POST'])
-@login_required
-def create_media():
-    if not current_user.is_admin:
-        flash('You do not have permission to create media.', 'error')
-        return redirect(url_for('main.home'))
 
-    # Récupération des données du formulaire
-    title = request.form.get('title')
-    description = request.form.get('description')
-    file_url = request.form.get('file_url')
-
-    # Vérification des champs requis
-    if not title or not description or not file_url:
-        flash('Title, description, and file URL are required.', 'error')
-        return redirect(url_for('admin.dashboard'))
-
-    try:
-        # Création d'une nouvelle instance de Media
-        new_media = Media(title=title, description=description, file_url=file_url)
-        db.session.add(new_media)
-        db.session.commit()
-        flash('New media added successfully.', 'success')
-    except Exception as e:
-        flash(f'Failed to add media. Error: {str(e)}', 'error')
-        db.session.rollback()
-
-    return redirect(url_for('admin.dashboard'))
 
 @admin_bp.route('/media/update/<int:media_id>', methods=['POST'])
 @login_required
