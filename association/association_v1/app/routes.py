@@ -630,7 +630,6 @@ def delete_achievement(achievement_id):
     return redirect(url_for('admin.dashboard'))
 
 
-
 @admin_bp.route('/media/update/<int:media_id>', methods=['POST'])
 @login_required
 def update_media(media_id):
@@ -638,16 +637,22 @@ def update_media(media_id):
         flash('You do not have permission to update media.', 'error')
         return redirect(url_for('main.home'))
 
-    # Récupération du média à mettre à jour
     media = Media.query.get_or_404(media_id)
-
-    # Mise à jour des champs du média
     media.title = request.form.get('title')
     media.description = request.form.get('description')
-    media.file_url = request.form.get('file_url')
+    
+    file = request.files.get('file')
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+        try:
+            file.save(file_path)
+            media.file_url = url_for('static', filename=os.path.join('uploads', filename))
+        except Exception as e:
+            flash(f'Failed to update file. Error: {str(e)}', 'error')
+            db.session.rollback()
 
     try:
-        # Commit des changements dans la base de données
         db.session.commit()
         flash('Media updated successfully.', 'success')
     except Exception as e:
@@ -656,22 +661,23 @@ def update_media(media_id):
 
     return redirect(url_for('admin.dashboard'))
 
-
 @admin_bp.route('/media/<int:media_id>/delete', methods=['POST'])
 @login_required
 def delete_media(media_id):
     if not current_user.is_admin:
+        flash('You do not have permission to delete media.', 'error')
         return redirect(url_for('main.home'))
-    media = Media.query.get(media_id)
-    if media:
+
+    media = Media.query.get_or_404(media_id)
+    try:
         db.session.delete(media)
         db.session.commit()
-    return redirect(url_for('admin.dashboard'))
+        flash('Media deleted successfully.', 'success')
+    except Exception as e:
+        flash(f'Failed to delete media. Error: {str(e)}', 'error')
+        db.session.rollback()
 
-@main_bp.route('/media', methods=['GET'])
-def view_media():
-    media_list = Media.query.all()
-    return render_template('media.html', media_list=media_list)
+    return redirect(url_for('admin.dashboard'))
 
 
 
