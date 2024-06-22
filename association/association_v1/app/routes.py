@@ -247,12 +247,12 @@ def dashboard():
     achievements = Achievement.query.paginate(page=page_achievements, per_page=10)
     media_list = Media.query.paginate(page=page_media, per_page=10)
 
-    # Data for the statistics section
+    # Récupérer les noms des événements et les comptes de présences
     event_names = [event.name for event in events.items]
-    attendance_counts = [len(event.attendances) for event in events.items]
-    
-    # Get attendances
-    attendances = Attendance.query.all()  # Assuming you have an Attendance model
+    attendance_counts = [event.attendances.count() for event in events.items]
+
+    # Récupérer toutes les présences
+    all_attendances = Attendance.query.all()
 
     return render_template('dashboard.html', 
                            reports=reports, 
@@ -263,7 +263,7 @@ def dashboard():
                            media_list=media_list, 
                            event_names=event_names, 
                            attendance_counts=attendance_counts, 
-                           attendances=attendances,
+                           all_attendances=all_attendances,
                            unread_count=g.unread_count)
 
 # Report routes
