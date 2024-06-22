@@ -106,7 +106,5 @@ class Event(db.Model):
 
     attendances = relationship('Attendance', backref='event', lazy='dynamic')
     def __repr__(self):
-        return f"<Event {self.name}>"
-
-
+        return f"<Event {self.name} - ID: {self.id}>"
 
