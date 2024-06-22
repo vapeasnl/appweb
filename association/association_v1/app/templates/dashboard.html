@@ -1019,21 +1019,38 @@
                 <h3>Statistiques des réalisations</h3>
                 <canvas id="myChart" width="800" height="400"></canvas>
             </div>
-            
-            <!-- Deuxième graphe - Statistiques des événements -->
-           
+        </div>
+    </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <div class="row mt-4">
+        <div class="col-lg-8">
+            <!-- Deuxième graphe - Statistiques des événements -->
+            <div id="eventStatistics" class="content-section">
+                <h3>Statistiques des événements</h3>
+                <canvas id="eventChart" width="800" height="400"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+                <style>
+    .content-section {
+        border: 1px solid #ddd; /* Bordure pour séparer visuellement les sections */
+        padding: 20px; /* Espacement intérieur pour chaque section */
+        margin-bottom: 20px; /* Espacement en bas pour séparer les sections */
+    }
+</style>
+                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Premier graphique - Statistiques des réalisations
         const ctx1 = document.getElementById('myChart').getContext('2d');
         const myChart1 = new Chart(ctx1, {
             type: 'bar',
             data: {
-                labels: ['Janvier', 'Février', 'Mars', 'Avril'],  // Remplacer par vos labels de mois
+                labels: {{ achievement_names|tojson }},
                 datasets: [{
                     label: 'Nombre de bénéficiaires',
-                    data: {{ beneficiaries_numbers|tojson }},  // Utilisez les données des bénéficiaires pour chaque mois
+                    data: {{ beneficiaries_numbers|tojson }},
                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
                     borderColor: 'rgba(54, 162, 235, 1)',
                     borderWidth: 1
@@ -1047,26 +1064,16 @@
                 }
             }
         });
-    });
-</script>
-                
- <div id="eventStatistics" class="content-section mt-4">
-                <h3>Statistiques des événements</h3>
-                <canvas id="eventChart" width="800" height="400"></canvas>
-            </div>
-        </div>
-    </div>
-</div>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
+
+        // Deuxième graphique - Statistiques des événements
         const ctx2 = document.getElementById('eventChart').getContext('2d');
         const myChart2 = new Chart(ctx2, {
             type: 'bar',
             data: {
-                labels: ['Janvier', 'Février', 'Mars', 'Avril'],  // Remplacer par vos labels de mois
+                labels: {{ event_names|tojson }},
                 datasets: [{
                     label: 'Participants par événement',
-                    data: {{ attendance_counts|tojson }},  // Utilisez les données des participants pour chaque mois
+                    data: {{ attendance_counts|tojson }},
                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
                     borderColor: 'rgba(255, 99, 132, 1)',
                     borderWidth: 1
