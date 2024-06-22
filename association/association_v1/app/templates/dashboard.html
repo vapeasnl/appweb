@@ -96,6 +96,10 @@
         .bd-mode-toggle .dropdown-menu .active .bi {
             display: block !important;
         }
+         .scrollable-section {
+            height: calc(100vh - 4rem); /* Ajustez en fonction de votre en-tête ou autres éléments */
+            overflow-y: auto;
+        }
         
     </style>
 
@@ -282,7 +286,7 @@
                     </div>
                 </div>
             </div>    
-            <div id="reports" class="content-fluid d-none">
+            <div id="reports" class="content-section d-none">
             <div class="card mb-3">
                 <div class="card-header">
                     <h2>Manage Reports <i class="fas fa-file-alt"></i></h2>
