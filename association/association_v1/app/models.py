@@ -104,6 +104,7 @@ class Event(db.Model):
     name = db.Column(db.String(128), nullable=False)
     date = db.Column(db.DateTime, nullable=False)
 
+    attendances = relationship('Attendance', backref='event', lazy='dynamic')
     def __repr__(self):
         return f"<Event {self.name}>"
 
