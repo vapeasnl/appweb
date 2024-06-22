@@ -1011,22 +1011,20 @@
             </div>
         </div>
     </div>
- <div id="statistics" class="content-section">
-    <h3>Statistics - Achievements</h3>
-    <div class="chart-container">
-        <canvas id="achievementChart" width="400" height="200"></canvas>
-    </div>
+ <div id="achievements-chart" class="content-section">
+    <h3>Achievement Statistics</h3>
+    <canvas id="myChart" width="400" height="200"></canvas>
     <script>
-        const ctx = document.getElementById('achievementChart').getContext('2d');
-        const achievementChart = new Chart(ctx, {
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const myChart = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: {{ achievement_names|tojson }},
                 datasets: [{
                     label: 'Number of Beneficiaries',
                     data: {{ beneficiaries_numbers|tojson }},
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
                     borderWidth: 1
                 }]
             },
@@ -1034,15 +1032,8 @@
                 scales: {
                     y: {
                         beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Number of Beneficiaries'
-                        }
-                    },
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Achievement Name'
+                        ticks: {
+                            precision: 0
                         }
                     }
                 }
