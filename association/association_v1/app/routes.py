@@ -300,7 +300,7 @@ def dashboard():
 def create_report():
     if not current_user.is_admin:
         flash('You do not have permission to create reports.', 'error')
-        return redirect(url_for('main.home'))
+        return redirect(url_for('admin.dashboard', section='reports'))
 
     title = request.form.get('title')
     date = request.form.get('date')
@@ -308,7 +308,7 @@ def create_report():
 
     if not title or not date or not content:
         flash('Title, date, and content are required.', 'error')
-        return redirect(url_for('admin.dashboard'))
+        return redirect(url_for('admin.dashboard', section='reports'))
 
     try:
         report = Report(title=title, date=date, content=content)
@@ -319,7 +319,7 @@ def create_report():
         flash(f'Failed to add report. Error: {str(e)}', 'error')
         db.session.rollback()
 
-    return redirect(url_for('admin.dashboard'))
+        return redirect(url_for('admin.dashboard', section='reports'))
 
 @admin_bp.route('/reports/<int:report_id>', methods=['POST'])
 @login_required
