@@ -168,8 +168,8 @@
         <div class="d-flex flex-column flex-shrink-0 bg-body-tertiary" style="width: 4.5rem;" sticky-top>
             <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
                 <li>
-                    <a class="nav-link active py-3 border-bottom rounded-0" title="Help" data-bs-toggle="tooltip" data-bs-placement="right" onclick="showSection(event, 'help')">
-                        <svg class="bi pe-none" width="24" height="24" role="img" aria-label="Help"><use xlink:href="#speedometer2" /></svg>
+                    <a class="nav-link active py-3 border-bottom rounded-0" title="Dash" data-bs-toggle="tooltip" data-bs-placement="right" onclick="showSection(event, 'dash')">
+                        <svg class="bi pe-none" width="24" height="24" role="img" aria-label="dash"><use xlink:href="#speedometer2" /></svg>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -217,8 +217,8 @@
         </div>
         <div class="b-example-divider b-example-vr"></div>
         <div class="container-fluid p-4">
-            <!-- Section Help -->
-<div id="help" class="content-section">
+            <!-- Section Dash -->
+<div id="dash" class="content-section">
                 <div class="container">
                     <h3 class="mb-4">WELCOME TO DASHBOARD</h3>
                     <div class="row">
@@ -1157,9 +1157,8 @@
         }
     }
 
-    // Afficher la section "help" par défaut lors du chargement de la page
     document.addEventListener('DOMContentLoaded', function() {
-        showSection(null, 'help');
+        showSection(null, 'dash');
     });
 
     // Exemple de gestionnaire de clic sur un bouton
