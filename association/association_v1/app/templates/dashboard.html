@@ -1011,14 +1011,39 @@
             </div>
         </div>
     </div>
- <div id="statistics" class="content-section">
-    <h3>Statistiques</h3>
-    <canvas id="myChart" width="400" height="200"></canvas>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Premier graphe - Statistiques -->
+            <div id="statistics" class="content-section">
+                <h3> Achievements statistics</h3>
+                <canvas id="myChart" width="400" height="200"></canvas>
+            </div>
+            
+            <!-- Deuxième graphe - Événements -->
+            <div id="eventStatistics" class="content-section mt-4">
+                <h3>Event statistics</h3>
+                <canvas id="eventChart" width="400" height="200"></canvas>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <h3>Sidebar</h3>
+                <!-- Contenu de la sidebar -->
+                <ul>
+                    <li>Liens</li>
+                    <li>Widgets</li>
+                    <li>Autres informations</li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Premier graphe - Statistiques
         const ctx = document.getElementById('myChart').getContext('2d');
         const myChart = new Chart(ctx, {
             type: 'bar',
@@ -1040,8 +1065,32 @@
                 }
             }
         });
+
+        // Deuxième graphe - Événements
+        const eventCtx = document.getElementById('eventChart').getContext('2d');
+        const eventChart = new Chart(eventCtx, {
+            type: 'bar',
+            data: {
+                labels: {{ event_names|tojson }},
+                datasets: [{
+                    label: 'Nombre de participants',
+                    data: {{ attendance_counts|tojson }},
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
     });
 </script>
+
 
 
                 
