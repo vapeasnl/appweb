@@ -141,20 +141,29 @@ def home():
     news = News.query.order_by(News.date.desc()).all()
     return render_template('home.html', events=upcoming_events, news=news)
 
-@main_bp.route('/events/<int:event_id>/register-attendance', methods=['POST'])
+@app.route('/events/<int:event_id>/register-attendance', methods=['GET', 'POST'])
 def register_attendance(event_id):
-    event = Event.query.get_or_404(event_id)
-    
-    name = request.form.get('name')
-    email = request.form.get('email')
-    phone = request.form.get('phone')
-    
-    new_attendance = Attendance(event_id=event.id, name=name, email=email, phone=phone)
-    db.session.add(new_attendance)
-    db.session.commit()
-    
-    flash('Votre présence a été enregistrée avec succès.', 'success')
-    return redirect(url_for('main.event_details', event_id=event_id))
+    if request.method == 'POST':
+        name = request.form.get('name')
+        email = request.form.get('email')
+        phone = request.form.get('phone')
+
+        # Enregistrement de l'attendance avec user_id à None pour les utilisateurs non connectés
+        attendance = Attendance(
+            event_id=event_id,
+            user_id=None,  # Ajustez selon votre logique, peut-être utiliser un ID spécial pour non connecté
+            name=name,
+            email=email,
+            phone=phone
+        )
+
+        db.session.add(attendance)
+        db.session.commit()
+
+        flash('Attendance registered successfully', 'success')
+        return redirect(url_for('event_details', event_id=event_id))
+
+    return render_template('register_attendance.html', event_id=event_id)
 
 
 @main_bp.route('/events/<int:event_id>/attend', methods=['POST'])
