@@ -13,7 +13,7 @@ main {
   max-height: 100vh;
   overflow-x: auto;
   overflow-y: hidden;
-  left: 0;
+  margin: 0;
 }
 
 .dropdown-toggle { outline: 0; }
