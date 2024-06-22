@@ -768,6 +768,7 @@ def create_media():
     title = request.form['title']
     description = request.form['description']
     file = request.files['file']
+    section = request.args.get('section', 'dash')
 
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
