@@ -227,12 +227,17 @@ def manage_profile():
     return render_template('manage_profile.html', user=current_user, unread_count=g.unread_count)
 
 
+from flask import render_template, request, redirect, url_for, g
+from flask_login import login_required, current_user
+from .models import Event, Attendance, User, News, Achievement, Media, Report
+
 @admin_bp.route('/dashboard')
 @login_required
 def dashboard():
     if not current_user.is_admin:
         return redirect(url_for('main.home'))
     
+    # Pagination variables
     page_reports = request.args.get('page_reports', 1, type=int)
     page_users = request.args.get('page_users', 1, type=int)
     page_events = request.args.get('page_events', 1, type=int)
@@ -240,6 +245,7 @@ def dashboard():
     page_achievements = request.args.get('page_achievements', 1, type=int)
     page_media = request.args.get('page_media', 1, type=int)
 
+    # Pagination queries
     reports = Report.query.paginate(page=page_reports, per_page=10)
     users = User.query.paginate(page=page_users, per_page=10)
     events = Event.query.paginate(page=page_events, per_page=10)
@@ -247,11 +253,11 @@ def dashboard():
     achievements = Achievement.query.paginate(page=page_achievements, per_page=10)
     media_list = Media.query.paginate(page=page_media, per_page=10)
 
-    # Correctly access items from pagination
+    # Retrieve event names and attendance counts
     event_names = [event.name for event in events.items]
-    attendance_counts = [len(event.attendees) for event in events.items]
+    attendance_counts = [Attendance.query.filter_by(event_id=event.id).count() for event in events.items]
 
-    # Get all attendances
+    # Retrieve all attendances
     attendances = Attendance.query.all()
 
     return render_template('dashboard.html', 
