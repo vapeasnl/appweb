@@ -1028,11 +1028,12 @@
     </div>
 </div>
                 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Premier graphe - Statistiques
-        const ctx = document.getElementById('myChart').getContext('2d');
-        const myChart = new Chart(ctx, {
+        // Premier graphique
+        const ctx1 = document.getElementById('myChart').getContext('2d');
+        const myChart1 = new Chart(ctx1, {
             type: 'bar',
             data: {
                 labels: {{ achievement_names|tojson }},
@@ -1053,14 +1054,14 @@
             }
         });
 
-        // Deuxième graphe - Événements
-        const eventCtx = document.getElementById('eventChart').getContext('2d');
-        const eventChart = new Chart(eventCtx, {
+        // Deuxième graphique
+        const ctx2 = document.getElementById('eventChart').getContext('2d');
+        const myChart2 = new Chart(ctx2, {
             type: 'bar',
             data: {
                 labels: {{ event_names|tojson }},
                 datasets: [{
-                    label: 'Nombre de participants',
+                    label: 'Participants par événement',
                     data: {{ attendance_counts|tojson }},
                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
                     borderColor: 'rgba(255, 99, 132, 1)',
@@ -1077,6 +1078,7 @@
         });
     });
 </script>
+
 
 
 
