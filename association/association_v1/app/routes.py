@@ -6,6 +6,7 @@ from sqlalchemy import func
 import os
 from flask import Flask
 from werkzeug.utils import secure_filename
+from . import app
 
 
 main_bp = Blueprint('main', __name__)
