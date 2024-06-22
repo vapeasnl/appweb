@@ -4,3 +4,4 @@
 # Ignore __pycache__ directories
 __pycache__/
 .vscode/
+association/association_v1/app/static/uploads
