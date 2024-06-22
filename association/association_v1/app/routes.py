@@ -6,6 +6,7 @@ from sqlalchemy import func
 import os
 from flask import Flask
 from werkzeug.utils import secure_filename
+from . import db
 
 
 main_bp = Blueprint('main', __name__)
@@ -142,7 +143,7 @@ def home():
     return render_template('home.html', events=upcoming_events, news=news)
 
 
-@app.route('/events/<int:event_id>/register-attendance', methods=['GET', 'POST'])
+@admin_bp.route('/events/<int:event_id>/register-attendance', methods=['GET', 'POST'])
 def register_attendance(event_id):
     if request.method == 'POST':
         name = request.form.get('name')
@@ -172,6 +173,8 @@ def register_attendance(event_id):
         return redirect(url_for('event_details', event_id=event_id))
 
     return render_template('register_attendance.html', event_id=event_id)
+
+
 
 
 @main_bp.route('/events/<int:event_id>/attend', methods=['POST'])
