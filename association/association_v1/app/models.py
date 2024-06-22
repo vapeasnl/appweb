@@ -3,6 +3,7 @@ from flask_login import UserMixin
 from datetime import datetime
 from . import db, login_manager
 from sqlalchemy.orm import relationship
+import os
 
 
 user_event = db.Table(
