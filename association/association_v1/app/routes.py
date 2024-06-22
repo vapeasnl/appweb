@@ -227,9 +227,6 @@ def manage_profile():
     return render_template('manage_profile.html', user=current_user, unread_count=g.unread_count)
 
 
-from flask import render_template, request, redirect, url_for, g
-from flask_login import login_required, current_user
-from .models import Event, Attendance, User, News, Achievement, Media, Report
 
 @admin_bp.route('/dashboard')
 @login_required
@@ -245,28 +242,27 @@ def dashboard():
     page_achievements = request.args.get('page_achievements', 1, type=int)
     page_media = request.args.get('page_media', 1, type=int)
 
-    # Pagination queries
     reports = Report.query.paginate(page=page_reports, per_page=10)
     users = User.query.paginate(page=page_users, per_page=10)
     events = Event.query.paginate(page=page_events, per_page=10)
     news_list = News.query.paginate(page=page_news, per_page=10)
-    achievements = Achievement.query.paginate(page=page_achievements, per_page=10)
+    achievements_pagination = Achievement.query.paginate(page=page_achievements, per_page=10)
     media_list = Media.query.paginate(page=page_media, per_page=10)
 
-    event_names = [event.name for event in events.items]
-    attendance_counts = [Attendance.query.filter_by(event_id=event.id).count() for event in events.items]  
-    attendances = Attendance.query.all()
+    achievement_names = [achievement.name for achievement in achievements_pagination.items]
+    beneficiaries_numbers = [achievement.beneficiaries_number for achievement in achievements_pagination.items]
 
-    achievements = Achievement.query.all()
-    achievement_names = [achievement.name for achievement in achievements]
-    beneficiaries_numbers = [achievement.beneficiaries_number for achievement in achievements]
+    event_names = [event.name for event in events.items]
+    attendance_counts = [Attendance.query.filter_by(event_id=event.id).count() for event in events.items]
+
+    attendances = Attendance.query.all()
 
     return render_template('dashboard.html', 
                            reports=reports, 
                            users=users, 
                            events=events, 
                            news_list=news_list, 
-                           achievements=achievements, 
+                           achievements=achievements_pagination, 
                            media_list=media_list, 
                            event_names=event_names, 
                            attendance_counts=attendance_counts, 
@@ -274,6 +270,7 @@ def dashboard():
                            unread_count=g.unread_count, 
                            achievement_names=achievement_names, 
                            beneficiaries_numbers=beneficiaries_numbers)
+
 
 
 
