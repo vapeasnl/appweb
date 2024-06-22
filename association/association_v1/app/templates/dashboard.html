@@ -1009,29 +1009,30 @@
             </div>
         </div>
     </div>
+
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-8">
-            <!-- Premier graphe - Statistiques -->
+            <!-- Premier graphe - Statistiques des réalisations -->
             <div id="statistics" class="content-section">
-                <h3> Achievements statistics</h3>
-                <canvas id="myChart" width="400" height="200"></canvas>
+                <h3>Statistiques des réalisations</h3>
+                <canvas id="myChart" width="800" height="400"></canvas>
             </div>
             
-            <!-- Deuxième graphe - Événements -->
+            <!-- Deuxième graphe - Statistiques des événements -->
             <div id="eventStatistics" class="content-section mt-4">
-                <h3>Event statistics</h3>
-                <canvas id="eventChart" width="400" height="200"></canvas>
+                <h3>Statistiques des événements</h3>
+                <canvas id="eventChart" width="800" height="400"></canvas>
             </div>
         </div>
-
     </div>
 </div>
-                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Premier graphique
+        // Premier graphique - Statistiques des réalisations
         const ctx1 = document.getElementById('myChart').getContext('2d');
         const myChart1 = new Chart(ctx1, {
             type: 'bar',
@@ -1054,7 +1055,7 @@
             }
         });
 
-        // Deuxième graphique
+        // Deuxième graphique - Statistiques des événements
         const ctx2 = document.getElementById('eventChart').getContext('2d');
         const myChart2 = new Chart(ctx2, {
             type: 'bar',
@@ -1078,6 +1079,7 @@
         });
     });
 </script>
+
 
 
 
