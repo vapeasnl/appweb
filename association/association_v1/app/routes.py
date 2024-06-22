@@ -247,13 +247,12 @@ def dashboard():
     achievements = Achievement.query.paginate(page=page_achievements, per_page=10)
     media_list = Media.query.paginate(page=page_media, per_page=10)
 
-    # Get attendances
-    attendances = Attendance.query.all()  # Assuming you have an Attendance model
-
-    print(attendances)  # Add this line to check if attendances are fetched correctly
-
+    # Correctly access items from pagination
     event_names = [event.name for event in events.items]
-    attendance_counts = [len(event.attendances) for event in events.items]
+    attendance_counts = [len(event.attendees) for event in events.items]
+
+    # Get all attendances
+    attendances = Attendance.query.all()
 
     return render_template('dashboard.html', 
                            reports=reports, 
@@ -266,6 +265,7 @@ def dashboard():
                            attendance_counts=attendance_counts, 
                            attendances=attendances,
                            unread_count=g.unread_count)
+
 
 # Report routes
 @admin_bp.route('/reports/create', methods=['POST'])
