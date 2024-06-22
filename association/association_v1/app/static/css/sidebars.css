@@ -1,7 +1,6 @@
 body {
   min-height: 100vh;
   min-height: -webkit-fill-available;
-  margin: 0;
 }
 
 html {
@@ -12,9 +11,8 @@ main {
   height: 100vh;
   height: -webkit-fill-available;
   max-height: 100vh;
-  overflow-x: 0;
+  overflow-x: auto;
   overflow-y: hidden;
-  margin: 0;
 }
 
 .dropdown-toggle { outline: 0; }
