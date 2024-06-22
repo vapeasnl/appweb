@@ -254,14 +254,13 @@ def dashboard():
     media_list = Media.query.paginate(page=page_media, per_page=10)
 
     event_names = [event.name for event in events.items]
-    attendance_counts = [Attendance.query.filter_by(event_id=event.id).count() for event in events.items]
-    achievements = Achievement.query.all()
-    
-    # Retrieve all attendances
+    attendance_counts = [Attendance.query.filter_by(event_id=event.id).count() for event in events.items]  
     attendances = Attendance.query.all()
+
+    achievements = Achievement.query.all()
     achievement_names = [achievement.name for achievement in achievements]
     beneficiaries_numbers = [achievement.beneficiaries_number for achievement in achievements]
-    
+
     return render_template('dashboard.html', 
                            reports=reports, 
                            users=users, 
@@ -272,9 +271,11 @@ def dashboard():
                            event_names=event_names, 
                            attendance_counts=attendance_counts, 
                            attendances=attendances,
-                           unread_count=g.unread_count
+                           unread_count=g.unread_count, 
                            achievement_names=achievement_names, 
                            beneficiaries_numbers=beneficiaries_numbers)
+
+
 
 # Report routes
 @admin_bp.route('/reports/create', methods=['POST'])
