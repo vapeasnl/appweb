@@ -319,7 +319,7 @@ def create_report():
         flash(f'Failed to add report. Error: {str(e)}', 'error')
         db.session.rollback()
 
-        return redirect(url_for('admin.dashboard', section='reports'))
+    return redirect(url_for('admin.dashboard', section='reports'))
 
 @admin_bp.route('/reports/<int:report_id>', methods=['POST'])
 @login_required
