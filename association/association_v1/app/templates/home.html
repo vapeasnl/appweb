@@ -32,8 +32,7 @@
                                     <h5 class="modal-title" id="attendanceModalLabel{{ event.id }}">Inscription à l'événement</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
-                                <form method="post" action="{{ url_for('main.register_attendance', event_id=event.id) }}">
-                                    <div class="modal-body">
+<form method="post" action="{{ url_for('main.register_attendance', event_id=event.id) }}">                                    <div class="modal-body">
                                         <div class="mb-3">
                                             <label for="name" class="form-label">Nom</label>
                                             <input type="text" class="form-control" id="name" name="name" required>
