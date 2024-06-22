@@ -6,8 +6,8 @@ from sqlalchemy import func
 import os
 from flask import Flask
 from werkzeug.utils import secure_filename
-from . import app
-
+from . import create_app
+app = create_app()
 
 main_bp = Blueprint('main', __name__)
 auth_bp = Blueprint('auth', __name__)
