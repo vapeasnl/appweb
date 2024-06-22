@@ -1048,24 +1048,29 @@
             <thead>
                 <tr>
                     <th>Event</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
+                    <th>Attendance Count</th>
+                    <th>Details</th>
                 </tr>
             </thead>
             <tbody>
-                {% for attendance in attendances %}
+                {% for idx, event in enumerate(events.items) %}
                 <tr>
-                    <td>{{ attendance.event.name }}</td>
-                    <td>{{ attendance.name }}</td>
-                    <td>{{ attendance.email }}</td>
-                    <td>{{ attendance.phone }}</td>
+                    <td>{{ event.name }}</td>
+                    <td>{{ attendance_counts[idx] }}</td>
+                    <td>
+                        <ul>
+                            {% for attendance in event.attendances %}
+                            <li>{{ attendance.name }} - {{ attendance.email }} - {{ attendance.phone }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
 </div>
+
 
     </main>
 
