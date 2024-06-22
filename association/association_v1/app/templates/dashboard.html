@@ -373,7 +373,7 @@
                     <ul class="pagination">
     {% if paginated_items.has_prev %}
     <li class="page-item">
-        <a class="page-link" href="{{ url_for('admin.dashboard', section=section, page_%s=paginated_items.prev_num) }}">Previous</a>
+<a class="page-link" href="{{ url_for('admin.dashboard', section=section, **{f'page_{paginated_items.prev_num}': paginated_items.prev_num}) }}">Previous</a>
     </li>
     {% endif %}
     {% for page_num in paginated_items.iter_pages() %}
