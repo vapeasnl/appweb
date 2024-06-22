@@ -12,7 +12,7 @@ user_event = db.Table(
     db.Column('event_id', db.Integer, db.ForeignKey('event.id'), primary_key=True)
 )
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     __tablename__ = 'user'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -35,6 +35,24 @@ class User(db.Model):
     def check_password(self, password):
         return self.password == password
 
+    # Flask-Login required methods
+    def get_id(self):
+        return str(self.id)
+
+    @property
+    def is_authenticated(self):
+        # Return True if the user is authenticated, i.e., they have provided valid credentials.
+        return True  # Adjust as per your application logic
+
+    @property
+    def is_active(self):
+        # Return True if the user is active and should be able to log in.
+        return True  # Adjust as per your application logic
+
+    @property
+    def is_anonymous(self):
+        # Return True if this is an anonymous user.
+        return False
 
 class News(db.Model):
     id = db.Column(db.Integer, primary_key=True)
