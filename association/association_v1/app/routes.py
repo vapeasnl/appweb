@@ -6,8 +6,7 @@ from sqlalchemy import func
 import os
 from flask import Flask
 from werkzeug.utils import secure_filename
-from . import create_app
-app = create_app()
+
 
 main_bp = Blueprint('main', __name__)
 auth_bp = Blueprint('auth', __name__)
@@ -142,22 +141,30 @@ def home():
     news = News.query.order_by(News.date.desc()).all()
     return render_template('home.html', events=upcoming_events, news=news)
 
+
 @app.route('/events/<int:event_id>/register-attendance', methods=['GET', 'POST'])
 def register_attendance(event_id):
     if request.method == 'POST':
         name = request.form.get('name')
         email = request.form.get('email')
         phone = request.form.get('phone')
+        
+        # Determine user_id
+        if current_user.is_authenticated:
+            user_id = current_user.id  # Assuming you're using Flask-Login
+        else:
+            user_id = 999  # Default user ID for non-logged-in users
 
-        # Enregistrement de l'attendance avec user_id à None pour les utilisateurs non connectés
+        # Create attendance object
         attendance = Attendance(
             event_id=event_id,
-            user_id=None,  # Ajustez selon votre logique, peut-être utiliser un ID spécial pour non connecté
+            user_id=user_id,
             name=name,
             email=email,
             phone=phone
         )
 
+        # Add to database session and commit
         db.session.add(attendance)
         db.session.commit()
 
