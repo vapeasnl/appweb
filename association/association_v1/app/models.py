@@ -11,7 +11,7 @@ user_event = db.Table(
     db.Column('event_id', db.Integer, db.ForeignKey('event.id'), primary_key=True)
 )
 
-class User(db.Model, UserMixin):
+class User(db.Model):
     __tablename__ = 'user'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -26,16 +26,13 @@ class User(db.Model, UserMixin):
     phone = db.Column(db.String(20))
     is_admin = db.Column(db.Boolean, default=False)
 
-    events = db.relationship('Event', secondary=user_event, backref='attendees')
+    events = db.relationship('Event', secondary='user_event', backref='attendees')
 
     def set_password(self, password):
         self.password = password
 
     def check_password(self, password):
         return self.password == password
-
-    def __repr__(self):
-        return f"<User {self.username} - Email: {self.email}>"
 
 
 class News(db.Model):
@@ -103,9 +100,9 @@ class Attendance(db.Model):
     def __repr__(self):
         return f"<Attendance {self.name} - Event: {self.event_id}>"
 
-
 class Event(db.Model):
     __tablename__ = 'event'
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), nullable=False)
     date = db.Column(db.DateTime, nullable=False)
