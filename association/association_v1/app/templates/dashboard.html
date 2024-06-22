@@ -1053,10 +1053,10 @@
                 </tr>
             </thead>
             <tbody>
-                {% for idx, event in enumerate(events.items) %}
+                {% for event in events.items %}
                 <tr>
                     <td>{{ event.name }}</td>
-                    <td>{{ attendance_counts[idx] }}</td>
+                    <td>{{ attendance_counts[loop.index0] }}</td>
                     <td>
                         <ul>
                             {% for attendance in event.attendances %}
@@ -1070,6 +1070,7 @@
         </table>
     </div>
 </div>
+
 
 
     </main>
