@@ -300,8 +300,8 @@ def dashboard():
 def create_report():
     if not current_user.is_admin:
         flash('You do not have permission to create reports.', 'error')
-        return redirect(url_for('admin.dashboard', section='reports'))
-
+        return redirect(url_for('main.home'))
+        
     title = request.form.get('title')
     date = request.form.get('date')
     content = request.form.get('content')
@@ -344,14 +344,14 @@ def update_report(report_id):
             report.date = date
         except ValueError:
             flash('Invalid date format. Please use YYYY-MM-DD format.')
-            return redirect(url_for('admin.dashboard'))  # Redirige vers le tableau de bord en cas d'erreur
+            return redirect(url_for('admin.dashboard', section='reports'))  # Redirige vers le tableau de bord en cas d'erreur
         
         # Sauvegarde les modifications dans la base de données
         db.session.commit()
         flash('Report updated successfully.')
     
     # Redirige vers le tableau de bord une fois la mise à jour effectuée
-    return redirect(url_for('admin.dashboard'))
+    return redirect(url_for('admin.dashboard', section='reports'))  # Redirige vers le tableau de bord en cas d'erreur
 
 @admin_bp.route('/reports/<int:report_id>/delete', methods=['POST'])
 @login_required
@@ -362,7 +362,7 @@ def delete_report(report_id):
     if report:
         db.session.delete(report)
         db.session.commit()
-    return redirect(url_for('admin.dashboard'))
+    return redirect(url_for('admin.dashboard', section='reports'))
 
 @admin_bp.route('/events', methods=['POST'])
 @login_required
@@ -376,13 +376,13 @@ def create_event():
 
     if not name or not date_str:
         flash('Name and date are required fields.', 'error')
-        return redirect(url_for('admin.dashboard'))
+        return redirect(url_for('admin.dashboard', section='event'))
 
     try:
         date = datetime.strptime(date_str, '%Y-%m-%d')
     except ValueError:
         flash('Invalid date format. Please use YYYY-MM-DD format.', 'error')
-        return redirect(url_for('admin.dashboard'))
+        return redirect(url_for('admin.dashboard', section='event'))
 
     try:
         new_event = Event(name=name, date=date)
@@ -393,7 +393,7 @@ def create_event():
         flash(f'Failed to add event. Error: {str(e)}', 'error')
         db.session.rollback()
 
-    return redirect(url_for('admin.dashboard'))
+    return redirect(url_for('admin.dashboard', section='event'))
 
 @admin_bp.route('/events/<int:event_id>/update', methods=['POST'])
 @login_required
@@ -407,7 +407,7 @@ def update_event(event_id):
         event.date = request.form['date']
         db.session.commit()
         flash('Event updated successfully.', 'success')
-    return redirect(url_for('admin.dashboard'))
+    return redirect(url_for('admin.dashboard', section='event'))
 
 @admin_bp.route('/events/<int:event_id>/delete', methods=['POST'])
 @login_required
@@ -420,7 +420,7 @@ def delete_event(event_id):
         db.session.delete(event)
         db.session.commit()
         flash('Event deleted successfully.', 'success')
-    return redirect(url_for('admin.dashboard'))
+    return redirect(url_for('admin.dashboard', section='event'))
 
 # User routes
 @admin_bp.route('/users', methods=['POST'])
@@ -438,13 +438,13 @@ def create_user():
     # Vérification des champs requis
     if not username or not email or not password:
         flash('Username, email, and password are required fields.', 'error')
-        return redirect(url_for('admin.dashboard'))
+        return redirect(url_for('admin.dashboard', section='user'))
 
     # Vérification de l'unicité de l'email
     existing_user = User.query.filter_by(email=email).first()
     if existing_user:
         flash('Email address is already in use. Please use a different email.', 'error')
-        return redirect(url_for('admin.dashboard'))
+        return redirect(url_for('admin.dashboard', section='user'))
 
     # Création du nouvel utilisateur
     new_user = User(username=username, email=email, is_admin=is_admin)
@@ -455,14 +455,14 @@ def create_user():
     db.session.commit()
 
     flash('New user added successfully.', 'success')
-    return redirect(url_for('admin.dashboard'))
+    return redirect(url_for('admin.dashboard', section='user'))
 
 @admin_bp.route('/users/<int:user_id>/update', methods=['POST'])
 @login_required
 def update_user(user_id):
     if not current_user.is_admin:
         flash('You do not have permission to update users.', 'error')
-        return redirect(url_for('main.home'))
+        return redirect(url_for('admin.dashboard', section='user'))
 
     user = User.query.get(user_id)
     if user:
@@ -477,7 +477,7 @@ def update_user(user_id):
         db.session.commit()
         flash('User updated successfully.', 'success')
         
-    return redirect(url_for('admin.dashboard'))
+    return redirect(url_for('admin.dashboard', section='user'))
 
 @admin_bp.route('/users/<int:user_id>/delete', methods=['POST'])
 @login_required
@@ -490,7 +490,7 @@ def delete_user(user_id):
         db.session.delete(user)
         db.session.commit()
         flash('User deleted successfully.', 'success')
-    return redirect(url_for('admin.dashboard'))
+    return redirect(url_for('admin.dashboard', section='user'))
 
 # News routes
 @news_bp.route('/news', methods=['GET'])
@@ -547,7 +547,7 @@ def update_news(news_id):
         news.content = request.form['news_content']
         db.session.commit()
         flash('News updated successfully.', 'success')
-    return redirect(url_for('admin.dashboard'))
+    return redirect(url_for('admin.dashboard', section='news'))
 
 @admin_bp.route('/news/<int:news_id>/delete', methods=['POST'])
 @login_required
@@ -560,7 +560,7 @@ def delete_news(news_id):
         db.session.delete(news)
         db.session.commit()
         flash('News deleted successfully.', 'success')
-    return redirect(url_for('admin.dashboard'))
+    return redirect(url_for('admin.dashboard', section='news'))
 
 @admin_bp.route('/news/create', methods=['POST'])
 @login_required
@@ -575,7 +575,7 @@ def create_news():
     # Vérification des champs requis
     if not title or not content:
         flash('Title and content are required.', 'error')
-        return redirect(url_for('admin.dashboard'))
+        return redirect(url_for('admin.dashboard', section='news'))
 
     try:
         # Création de la nouvelle
@@ -587,7 +587,7 @@ def create_news():
         flash(f'Failed to add news. Error: {str(e)}', 'error')
         db.session.rollback()
 
-    return redirect(url_for('admin.dashboard'))
+    return redirect(url_for('admin.dashboard', section='news'))
     
 # Achievement routes
 @main_bp.route('/achievements', methods=['GET', 'POST'])
@@ -619,7 +619,7 @@ def create_achievement():
     # Vérification des champs requis
     if not name or not start_date_str or not end_date_str or not site or not objectives:
         flash('All fields are required.', 'error')
-        return redirect(url_for('admin.dashboard'))
+        return redirect(url_for('admin.dashboard', section='achievements'))
 
     try:
         # Conversion des dates
@@ -642,7 +642,7 @@ def create_achievement():
         flash(f'An error occurred: {str(e)}', 'error')
         db.session.rollback()
 
-    return redirect(url_for('admin.dashboard'))
+    return redirect(url_for('admin.dashboard', section='achievements'))
 
 @admin_bp.route('/achievements/<int:achievement_id>/update', methods=['POST'])
 @login_required
@@ -660,7 +660,7 @@ def update_achievement(achievement_id):
         achievement.beneficiaries_number = request.form['beneficiaries_number']
         achievement.results_obtained = request.form['results_obtained']
         db.session.commit()
-    return redirect(url_for('admin.dashboard'))
+    return redirect(url_for('admin.dashboard', section='achievements'))
 
 @admin_bp.route('/achievements/<int:achievement_id>/delete', methods=['POST'])
 @login_required
@@ -671,7 +671,7 @@ def delete_achievement(achievement_id):
     if achievement:
         db.session.delete(achievement)
         db.session.commit()
-    return redirect(url_for('admin.dashboard'))
+    return redirect(url_for('admin.dashboard', section='achievements'))
 
 
 @admin_bp.route('/media/update/<int:media_id>', methods=['POST'])
@@ -703,7 +703,7 @@ def update_media(media_id):
         flash(f'Failed to update media. Error: {str(e)}', 'error')
         db.session.rollback()
 
-    return redirect(url_for('admin.dashboard'))
+    return redirect(url_for('admin.dashboard', section='media'))
 
 @admin_bp.route('/media/<int:media_id>/delete', methods=['POST'])
 @login_required
@@ -721,7 +721,7 @@ def delete_media(media_id):
         flash(f'Failed to delete media. Error: {str(e)}', 'error')
         db.session.rollback()
 
-    return redirect(url_for('admin.dashboard'))
+    return redirect(url_for('admin.dashboard', section='media'))
 
 
 
@@ -785,4 +785,4 @@ def create_media():
     else:
         flash('Invalid file type or no file uploaded.', 'error')
 
-    return redirect(url_for('admin.dashboard', tab=request.args.get('tab', 'media')))
+    return redirect(url_for('admin.dashboard', section='media'))
