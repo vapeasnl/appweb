@@ -1152,23 +1152,25 @@
         }
     }
 
+    // Fonction pour maintenir la section active après une action
     document.addEventListener('DOMContentLoaded', function() {
-        showSection(null, 'dash');
-    });
+        // Récupérer la section actuelle de l'URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const section = urlParams.get('section') || 'dash'; // Par défaut, afficher 'dash'
 
-    // Exemple de gestionnaire de clic sur un bouton
-    document.querySelector('.btn').addEventListener('click', function() {
-        alert('Vous avez cliqué sur le bouton !');
-    });
+        // Afficher la section correspondante
+        showSection(null, section);
 
-    // Initialisation des tooltips Bootstrap
-    document.addEventListener('DOMContentLoaded', function() {
+        // Initialisation des tooltips Bootstrap
         const tooltipTriggerList = Array.from(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
         tooltipTriggerList.forEach(tooltipTriggerEl => {
             new bootstrap.Tooltip(tooltipTriggerEl);
         });
     });
 </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/static/js/sidebars.js"></script>
+
                
        </body>
 
