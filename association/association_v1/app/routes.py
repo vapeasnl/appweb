@@ -265,6 +265,7 @@ def dashboard():
     page_achievements = request.args.get('page_achievements', 1, type=int)
     page_media = request.args.get('page_media', 1, type=int)
 
+    # Querying data with pagination
     reports = Report.query.paginate(page=page_reports, per_page=5)
     users = User.query.paginate(page=page_users, per_page=5)
     events = Event.query.paginate(page=page_events, per_page=5)
@@ -274,12 +275,12 @@ def dashboard():
 
     # Check if the request is an Ajax request (XHR request)
     if request.is_json:
-        # Example for users
+        # Example for users section
         if request.args.get('section') == 'users':
             users_data = [{'username': user.username, 'email': user.email} for user in users.items]
             return jsonify(users=users_data)
         
-        # Example for events
+        # Example for events section
         if request.args.get('section') == 'events':
             events_data = [{'name': event.name, 'date': event.date} for event in events.items]
             return jsonify(events=events_data)
@@ -304,6 +305,7 @@ def dashboard():
             media_data = [{'title': media.title, 'type': media.type} for media in media_list.items]
             return jsonify(media=media_data)
 
+    # For rendering the HTML template
     achievement_names = [achievement.name for achievement in achievements_pagination.items]
     beneficiaries_numbers = [achievement.beneficiaries_number for achievement in achievements_pagination.items]
 
