@@ -7,6 +7,8 @@ import os
 from flask import Flask
 from werkzeug.utils import secure_filename
 from . import db
+from flask import jsonify
+
 
 
 main_bp = Blueprint('main', __name__)
@@ -248,12 +250,13 @@ def manage_profile():
 
 
 
+
 @admin_bp.route('/dashboard')
 @login_required
 def dashboard():
     if not current_user.is_admin:
         return redirect(url_for('main.home'))
-    
+
     # Pagination variables
     page_reports = request.args.get('page_reports', 1, type=int)
     page_users = request.args.get('page_users', 1, type=int)
@@ -262,12 +265,18 @@ def dashboard():
     page_achievements = request.args.get('page_achievements', 1, type=int)
     page_media = request.args.get('page_media', 1, type=int)
 
-    reports = Report.query.paginate(page=page_reports, per_page=5)
-    users = User.query.paginate(page=page_users, per_page=5)
-    events = Event.query.paginate(page=page_events, per_page=5)
-    news_list = News.query.paginate(page=page_news, per_page=5)
-    achievements_pagination = Achievement.query.paginate(page=page_achievements, per_page=5)
-    media_list = Media.query.paginate(page=page_media, per_page=5)
+    reports = Report.query.paginate(page=page_reports, per_page=10)
+    users = User.query.paginate(page=page_users, per_page=10)
+    events = Event.query.paginate(page=page_events, per_page=10)
+    news_list = News.query.paginate(page=page_news, per_page=10)
+    achievements_pagination = Achievement.query.paginate(page=page_achievements, per_page=10)
+    media_list = Media.query.paginate(page=page_media, per_page=10)
+
+    # Return JSON response for Ajax requests
+    if request.is_xhr:
+        # Example: Return events JSON data
+        events_data = [{'name': event.name, 'date': event.date} for event in events.items]
+        return jsonify(events=events_data)
 
     achievement_names = [achievement.name for achievement in achievements_pagination.items]
     beneficiaries_numbers = [achievement.beneficiaries_number for achievement in achievements_pagination.items]
@@ -290,6 +299,7 @@ def dashboard():
                            unread_count=g.unread_count, 
                            achievement_names=achievement_names, 
                            beneficiaries_numbers=beneficiaries_numbers)
+
 
 
 
