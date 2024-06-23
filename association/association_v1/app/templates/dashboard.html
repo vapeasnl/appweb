@@ -958,9 +958,10 @@
                                     <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#updateMediaModal{{ media.id }}">
                                         Update
                                     </button>
-                                        <button type="button" class="btn btn-sm btn-danger btn-delete-media" data-id="{{ media.id }}">
-                                           Delete
-                                     </button>
+                                        <button type="button" class="btn btn-sm btn-danger btn-delete-media" data-media-id="{{ media.id }}">
+                                            Delete
+                                        </button>
+
 
                                 </td>
                             </tr>
@@ -1152,26 +1153,26 @@
 
         
        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script>
-    // Script pour gérer la suppression d'un média
+
+        <script>
     $(document).ready(function() {
         $('.btn-delete-media').click(function() {
-            var mediaId = $(this).data('id');
+            var mediaId = $(this).data('media-id');
             var confirmation = confirm("Are you sure you want to delete this media?");
             
             if (confirmation) {
-                // Soumettre le formulaire de suppression via Ajax
                 $.ajax({
                     type: 'POST',
-                    url: "{{ url_for('admin.delete_media', section='media') }}",
-                    data: { media_id: mediaId },
+                    url: "{{ url_for('admin.delete_media', media_id='__media_id__', section='media') }}".replace('__media_id__', mediaId),
                     success: function(response) {
-                        // Actualiser la page ou prendre une autre action si nécessaire
-                        location.reload(); // Exemple : Recharger la page après suppression
+                        // Handle success response
+                        console.log('Media deleted successfully');
+                        // Optionally, update UI or reload page
                     },
                     error: function(error) {
+                        // Handle error response
                         console.error('Error deleting media:', error);
-                        // Gérer les erreurs si nécessaire
+                        // Optionally, show error message or handle as needed
                     }
                 });
             }
