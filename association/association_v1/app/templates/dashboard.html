@@ -947,8 +947,8 @@
                                 <td>{{ media.title }}</td>
                                 <td>{{ media.description }}</td>
                                 <td>
-                                    {% if media.media_url %}
-                                        <a href="{{ media.media_url }}" target="_blank">{{ media.media_url }}</a>
+                                    {% if media.file_url %}
+                                        <a href="{{ media.file_url }}" target="_blank">{{ media.file_url }}</a>
                                     {% else %}
                                         N/A
                                     {% endif %}
@@ -958,13 +958,12 @@
                                     <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#updateMediaModal{{ media.id }}">
                                         Update
                                     </button>
-                                        <form method="post" action="{{ url_for('admin.delete_media', media_id=media.id, section='media') }}" class="mt-2">
-                                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                        </form>
-
+                                    <form method="post" action="{{ url_for('admin.delete_media', media_id=media.id) }}" class="d-inline">
+                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                    </form>
                                 </td>
                             </tr>
-
+                            <!-- Include the modal code here for each media item -->
                             <!-- Modal de mise à jour du média -->
                             <div class="modal fade" id="updateMediaModal{{ media.id }}" tabindex="-1" aria-labelledby="updateMediaModalLabel{{ media.id }}" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered">
@@ -974,7 +973,7 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <form method="post" action="{{ url_for('admin.update_media', media_id=media.id, section='media') }}" enctype="multipart/form-data">
+                                            <form method="post" action="{{ url_for('admin.update_media', media_id=media.id) }}" enctype="multipart/form-data">
                                                 <div class="mb-3">
                                                     <label for="update-title" class="form-label">Title</label>
                                                     <input type="text" class="form-control" id="update-title" name="title" value="{{ media.title }}" required>
@@ -996,12 +995,14 @@
                                     </div>
                                 </div>
                             </div>
-
-                           
                         {% endfor %}
                     </tbody>
                 </table>
             </div>
+        </div>
+    </div>
+</div>
+
             
             <!-- Pagination for media -->
             <nav>
@@ -1154,6 +1155,88 @@
        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 
+<script>
+$(document).ready(function() {
+    // Création d'un nouveau média
+    $('#media form').on('submit', function(e) {
+        e.preventDefault();
+        var form = $(this);
+        
+        $.ajax({
+            type: 'POST',
+            url: form.attr('action'),
+            data: new FormData(this),
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                if (response.success) {
+                    // Ajouter le nouveau média au tableau
+                    var newMedia = response.media;
+                    var newRow = `<tr id="mediaRow${newMedia.id}">
+                        <td>${newMedia.title}</td>
+                        <td>${newMedia.description}</td>
+                        <td><a href="${newMedia.file_url}" target="_blank">${newMedia.file_url}</a></td>
+                        <td>${newMedia.upload_date}</td>
+                        <td>
+                            <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#updateMediaModal${newMedia.id}">
+                                Update
+                            </button>
+                            <form method="post" action="/media/delete/${newMedia.id}" class="d-inline">
+                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                            </form>
+                        </td>
+                    </tr>`;
+                    $('#media-table tbody').prepend(newRow);
+                    form.trigger('reset'); // Réinitialiser le formulaire
+                } else {
+                    alert('Error: ' + response.error);
+                }
+            },
+            error: function(xhr) {
+                alert('Error: ' + xhr.responseJSON.error);
+            }
+        });
+    });
+
+    // Mise à jour d'un média existant
+    $(document).on('submit', 'form[action^="{{ url_for("admin.update_media", media_id=0) }}"]', function(e) {
+        e.preventDefault();
+        var form = $(this);
+        
+        $.ajax({
+            type: 'POST',
+            url: form.attr('action'),
+            data: new FormData(this),
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                $('#media-table tbody').html($(response).find('tbody').html());
+                $('.modal').modal('hide');
+            },
+            error: function(xhr) {
+                alert('Error: ' + xhr.responseJSON.error);
+            }
+        });
+    });
+
+    // Suppression d'un média
+    $(document).on('submit', 'form[action^="{{ url_for("admin.delete_media", media_id=0) }}"]', function(e) {
+        e.preventDefault();
+        var form = $(this);
+        
+        $.ajax({
+            type: 'POST',
+            url: form.attr('action'),
+            success: function(response) {
+                $('#media-table tbody').html($(response).find('tbody').html());
+            },
+            error: function(xhr) {
+                alert('Error: ' + xhr.responseJSON.error);
+            }
+        });
+    });
+});
+</script>
 
 
 
