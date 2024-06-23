@@ -210,8 +210,19 @@
             </li>
         </ul>
     </div>
+   </div>
+           
     <div class="b-example-divider b-example-vr"></div>
-
+        <div class="col-md-9">
+            <div id="section-container">
+                <!-- Contenu des sections chargées dynamiquement sera injecté ici -->
+                {% block section_content %}
+                    {% include 'dashboard_sections/dash.html' %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+</div>
 
             <div class="container-fluid p-4">
             <!-- Section Dash -->
