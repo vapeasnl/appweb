@@ -758,15 +758,18 @@ def loader():
 
 
 #media
+
 @admin_bp.route('/media/create', methods=['POST'])
 @login_required
 def create_media():
     if not current_user.is_admin:
-        return jsonify({'error': 'You do not have permission to add media.'}), 403
+        flash('You do not have permission to add media.', 'error')
+        return redirect(url_for('main.home'))
 
     title = request.form['title']
     description = request.form['description']
     file = request.files['file']
+    section = request.args.get('section', 'dash')
 
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
@@ -777,47 +780,46 @@ def create_media():
             new_media = Media(title=title, description=description, file_url=file_url)
             db.session.add(new_media)
             db.session.commit()
-            return jsonify({
-                'id': new_media.id,
-                'title': new_media.title,
-                'description': new_media.description,
-                'file_url': new_media.file_url,
-                'upload_date': new_media.upload_date.strftime('%Y-%m-%d %H:%M:%S')
-            }), 201
+            flash(f'New media added successfully. File saved to {file_path}', 'success')
         except Exception as e:
+            flash(f'Failed to save file. Error: {str(e)}', 'error')
             db.session.rollback()
-            return jsonify({'error': str(e)}), 500
     else:
-        return jsonify({'error': 'Invalid file type or no file uploaded.'}), 400
+        flash('Invalid file type or no file uploaded.', 'error')
 
-        
-@admin_bp.route('/media/delete/<int:media_id>', methods=['POST'])
+    return redirect(url_for('admin.dashboard', section='media'))
+
+@admin_bp.route('/media/<int:media_id>/delete', methods=['POST'])
 @login_required
 def delete_media(media_id):
     if not current_user.is_admin:
-        return jsonify({'error': 'You do not have permission to delete media.'}), 403
+        flash('You do not have permission to delete media.', 'error')
+        return redirect(url_for('main.home'))
 
     media = Media.query.get_or_404(media_id)
     try:
         db.session.delete(media)
         db.session.commit()
-        return jsonify({'success': True}), 200
+        flash('Media deleted successfully.', 'success')
     except Exception as e:
+        flash(f'Failed to delete media. Error: {str(e)}', 'error')
         db.session.rollback()
-        return jsonify({'error': str(e)}), 500
+
+    return redirect(url_for('admin.dashboard', section='media'))
 
 
 @admin_bp.route('/media/update/<int:media_id>', methods=['POST'])
 @login_required
 def update_media(media_id):
     if not current_user.is_admin:
-        return jsonify({'error': 'You do not have permission to update media.'}), 403
+        flash('You do not have permission to update media.', 'error')
+        return redirect(url_for('main.home'))
 
     media = Media.query.get_or_404(media_id)
-    title = request.form['title']
-    description = request.form['description']
-    file = request.files.get('file', None)
+    media.title = request.form.get('title')
+    media.description = request.form.get('description')
     
+    file = request.files.get('file')
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
         file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
@@ -825,21 +827,14 @@ def update_media(media_id):
             file.save(file_path)
             media.file_url = url_for('static', filename=os.path.join('uploads', filename))
         except Exception as e:
+            flash(f'Failed to update file. Error: {str(e)}', 'error')
             db.session.rollback()
-            return jsonify({'error': str(e)}), 500
-    
-    media.title = title
-    media.description = description
-    
+
     try:
         db.session.commit()
-        return jsonify({
-            'id': media.id,
-            'title': media.title,
-            'description': media.description,
-            'file_url': media.file_url,
-            'upload_date': media.upload_date.strftime('%Y-%m-%d %H:%M:%S')
-        }), 200
+        flash('Media updated successfully.', 'success')
     except Exception as e:
+        flash(f'Failed to update media. Error: {str(e)}', 'error')
         db.session.rollback()
-        return jsonify({'error': str(e)}), 500
+
+    return redirect(url_for('admin.dashboard', section='media'))
