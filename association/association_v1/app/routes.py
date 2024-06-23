@@ -794,5 +794,5 @@ def loader():
     if not current_user.is_admin:
         return redirect(url_for('main.home'))
     
-    return render_template('loader.html')
+    return render_template('static/loader.html')
 
