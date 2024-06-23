@@ -713,61 +713,6 @@ def delete_achievement(achievement_id):
     return redirect(url_for('admin.dashboard', section='achievements'))
 
 
-@admin_bp.route('/media/update/<int:media_id>', methods=['POST'])
-@login_required
-def update_media(media_id):
-    if not current_user.is_admin:
-        flash('You do not have permission to update media.', 'error')
-        return redirect(url_for('main.home'))
-
-    media = Media.query.get_or_404(media_id)
-    media.title = request.form.get('title')
-    media.description = request.form.get('description')
-    
-    file = request.files.get('file')
-    if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
-        file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
-        try:
-            file.save(file_path)
-            media.file_url = url_for('static', filename=os.path.join('uploads', filename))
-        except Exception as e:
-            flash(f'Failed to update file. Error: {str(e)}', 'error')
-            db.session.rollback()
-
-    try:
-        db.session.commit()
-        flash('Media updated successfully.', 'success')
-    except Exception as e:
-        flash(f'Failed to update media. Error: {str(e)}', 'error')
-        db.session.rollback()
-
-    return redirect(url_for('admin.dashboard', section='media'))
-
-
-@admin_bp.route('/media/<int:media_id>/delete', methods=['POST'])
-@login_required
-def delete_media(media_id):
-    if not current_user.is_admin:
-        flash('You do not have permission to delete media.', 'error')
-        return redirect(url_for('main.home'))
-
-    media = Media.query.get_or_404(media_id)
-    try:
-        db.session.delete(media)
-        db.session.commit()
-        flash('Media deleted successfully.', 'success')
-    except Exception as e:
-        flash(f'Failed to delete media. Error: {str(e)}', 'error')
-        db.session.rollback()
-
-    return redirect(url_for('admin.dashboard', section='media'))
-
-
-
-
-
-
 
 
 # Ensure you have an event_attendance.html template or update the redirect accordingly.
@@ -801,18 +746,29 @@ def allowed_file(filename):
     ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'pdf', 'mp4', 'mov'}
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+
+@admin_bp.route('/loader')
+@login_required
+def loader():
+    if not current_user.is_admin:
+        return redirect(url_for('main.home'))
+    
+    return redirect(url_for('admin.dashboard', section='loader'))
+
+
+
+#media
+
 @admin_bp.route('/media/create', methods=['POST'])
 @login_required
 def create_media():
     if not current_user.is_admin:
-        flash('You do not have permission to add media.', 'error')
-        return redirect(url_for('main.home'))
+        return jsonify({'error': 'You do not have permission to add media.'}), 403
 
     title = request.form['title']
     description = request.form['description']
     file = request.files['file']
-    section = request.args.get('section', 'dash')
-
+    
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
         file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
@@ -822,20 +778,61 @@ def create_media():
             new_media = Media(title=title, description=description, file_url=file_url)
             db.session.add(new_media)
             db.session.commit()
-            flash(f'New media added successfully. File saved to {file_path}', 'success')
+            
+            # Format the media data for the response
+            media_data = {
+                'id': new_media.id,
+                'title': new_media.title,
+                'description': new_media.description,
+                'file_url': new_media.file_url,
+                'upload_date': new_media.upload_date.strftime('%Y-%m-%d %H:%M:%S')
+            }
+            return jsonify({'success': True, 'media': media_data})
         except Exception as e:
-            flash(f'Failed to save file. Error: {str(e)}', 'error')
             db.session.rollback()
+            return jsonify({'error': str(e)}), 500
     else:
-        flash('Invalid file type or no file uploaded.', 'error')
+        return jsonify({'error': 'Invalid file type or no file uploaded.'}), 400
 
-    return redirect(url_for('admin.dashboard', section='media'))
-
-@admin_bp.route('/loader')
+@admin_bp.route('/media/delete/<int:media_id>', methods=['POST'])
 @login_required
-def loader():
+def delete_media(media_id):
     if not current_user.is_admin:
-        return redirect(url_for('main.home'))
+        return jsonify({'error': 'You do not have permission to delete media.'}), 403
+
+    media = Media.query.get_or_404(media_id)
+    db.session.delete(media)
+    db.session.commit()
+
+    # Render the updated media table
+    media_list = Media.query.paginate(page=1, per_page=10)
+    return render_template('partials/media_table.html', media_list=media_list)
+
+
+@admin_bp.route('/media/update/<int:media_id>', methods=['POST'])
+@login_required
+def update_media(media_id):
+    if not current_user.is_admin:
+        return jsonify({'error': 'You do not have permission to update media.'}), 403
+
+    media = Media.query.get_or_404(media_id)
+    media.title = request.form['title']
+    media.description = request.form['description']
+    file = request.files.get('file')
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+        try:
+            file.save(file_path)
+            media.file_url = url_for('static', filename=os.path.join('uploads', filename))
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({'error': str(e)}), 500
     
-    return redirect(url_for('admin.dashboard', section='loader'))
+    db.session.commit()
+    
+    # Render the updated media table
+    media_list = Media.query.paginate(page=1, per_page=10)
+    return render_template('partials/media_table.html', media_list=media_list)
+
 
