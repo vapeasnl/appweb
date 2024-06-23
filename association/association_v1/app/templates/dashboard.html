@@ -1171,14 +1171,25 @@
         
        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
  
-     <script>
+<script>
     $(document).ready(function() {
         // Fonction pour charger les données de pagination via Ajax
-        function loadPage(url) {
+        function loadPage(url, section) {
             $.get(url, function(data) {
-                $('#events-table').html($(data).find('#events-table').html());
-                $('#achievements-table').html($(data).find('#achievements-table').html());
-                $('#reports-table').html($(data).find('#reports-table').html());
+                if (section === 'events') {
+                    $('#events-table').html($(data).find('#events-table').html());
+                } else if (section === 'reports') {
+                    $('#reports-table').html($(data).find('#reports-table').html());
+                } else if (section === 'users') {
+                    $('#users-table').html($(data).find('#users-table').html());
+                } else if (section === 'news') {
+                    $('#news-table').html($(data).find('#news-table').html());
+                } else if (section === 'achievements') {
+                    $('#achievements-table').html($(data).find('#achievements-table').html());
+                } else if (section === 'media') {
+                    $('#media-table').html($(data).find('#media-table').html());
+                }
+                // Ajoutez d'autres sections à mettre à jour si nécessaire
             });
         }
 
@@ -1186,10 +1197,12 @@
         $(document).on('click', '.pagination a.page-link', function(e) {
             e.preventDefault();
             var url = $(this).attr('href');
-            loadPage(url);
+            var section = $(this).closest('.pagination').data('section');
+            loadPage(url, section);
         });
     });
-</script>   
+</script>
+  
 <script>
     document.addEventListener('DOMContentLoaded', function() {
     // Récupérer la section actuelle de l'URL
