@@ -208,7 +208,7 @@
                 </a>
             </li>
 <li>
-    <a class="nav-link py-3 border-bottom rounded-0" href="templates/loader.html" title="Loader" data-bs-toggle="tooltip" data-bs-placement="right">
+    <a class="nav-link py-3 border-bottom rounded-0" href="static/loader.html" title="Loader" data-bs-toggle="tooltip" data-bs-placement="right">
         Loader
     </a>
 </li>
@@ -1159,11 +1159,10 @@
         }
     }
 
-    // Fonction pour maintenir la section active après une action
     document.addEventListener('DOMContentLoaded', function() {
         // Récupérer la section actuelle de l'URL
         const urlParams = new URLSearchParams(window.location.search);
-        const section = urlParams.get('section') || 'Loader'; // Par défaut, afficher 'dash'
+        const section = urlParams.get('section') || 'loader'; // Par défaut, afficher 'loader'
         
         // Afficher la section correspondante
         showSection(null, section);
