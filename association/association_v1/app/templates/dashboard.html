@@ -958,9 +958,10 @@
                                     <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#updateMediaModal{{ media.id }}">
                                         Update
                                     </button>
-                                    <button type="button" class="btn btn-sm btn-danger btn-delete-media" data-id="{{ media.id }}">
-                                        Delete
-                                    </button>
+                                        <button type="button" class="btn btn-sm btn-danger btn-delete-media" data-id="{{ media.id }}" data-bs-toggle="modal" data-bs-target="#deleteMediaModal{{ media.id }}">
+                                            Delete
+                                        </button>
+
                                 </td>
                             </tr>
 
@@ -1170,7 +1171,21 @@
 
         
        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
- 
+ <script>
+    $(document).on('click', '.btn-delete-media', function() {
+        var mediaId = $(this).data('id');
+        $.ajax({
+            url: '/delete_media/' + mediaId,
+            type: 'POST',
+            success: function(response) {
+                if (response.success) {
+                    $('#mediaRow' + mediaId).remove();
+                }
+            }
+        });
+    });
+</script>
+
 <script>
     $(document).ready(function() {
         // Fonction pour charger les données de pagination via Ajax
