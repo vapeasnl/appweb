@@ -758,7 +758,6 @@ def loader():
 
 
 #media
-
 @admin_bp.route('/media/create', methods=['POST'])
 @login_required
 def create_media():
@@ -768,7 +767,8 @@ def create_media():
     title = request.form['title']
     description = request.form['description']
     file = request.files['file']
-    
+    section = request.args.get('section', 'dash')
+
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
         file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
@@ -778,8 +778,6 @@ def create_media():
             new_media = Media(title=title, description=description, file_url=file_url)
             db.session.add(new_media)
             db.session.commit()
-            
-            # Format the media data for the response
             media_data = {
                 'id': new_media.id,
                 'title': new_media.title,
@@ -793,7 +791,6 @@ def create_media():
             return jsonify({'error': str(e)}), 500
     else:
         return jsonify({'error': 'Invalid file type or no file uploaded.'}), 400
-
 
 @admin_bp.route('/media/delete/<int:media_id>', methods=['POST'])
 @login_required
@@ -809,7 +806,6 @@ def delete_media(media_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({'error': str(e)}), 500
-
 
 @admin_bp.route('/media/update/<int:media_id>', methods=['POST'])
 @login_required
@@ -848,3 +844,4 @@ def update_media(media_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({'error': str(e)}), 500
+
