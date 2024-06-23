@@ -788,11 +788,11 @@ def create_media():
 
     return redirect(url_for('admin.dashboard', section='media'))
 
-@admin_bp.route('/dashboard/loader')
+@admin_bp.route('/loader')
 @login_required
 def loader():
     if not current_user.is_admin:
         return redirect(url_for('main.home'))
     
-    return render_template('static/loader.html')
+    return redirect(url_for('admin.dashboard', section='loader'))
 
