@@ -1136,43 +1136,43 @@
 </div>
             </div>
 <script>
-    // Fonction pour afficher une section spécifique et gérer les classes actives
-    function showSection(event, sectionId) {
-        // Cacher toutes les sections
-        const sections = document.querySelectorAll('.content-section');
-        sections.forEach(section => {
-            section.classList.add('d-none');
-        });
-
-        // Afficher la section spécifiée par sectionId
-        document.getElementById(sectionId).classList.remove('d-none');
-
-        // Retirer la classe 'active' de tous les liens de navigation
-        const navLinks = document.querySelectorAll('.nav-link');
-        navLinks.forEach(link => {
-            link.classList.remove('active');
-        });
-
-        // Ajouter la classe 'active' au lien cliqué (event.currentTarget)
-        if (event) {
-            event.currentTarget.classList.add('active');
-        }
-    }
-
     document.addEventListener('DOMContentLoaded', function() {
-        // Récupérer la section actuelle de l'URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const section = urlParams.get('section') || 'loader'; // Par défaut, afficher 'loader'
-        
-        // Afficher la section correspondante
-        showSection(null, section);
+    // Récupérer la section actuelle de l'URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const section = urlParams.get('section') || 'loader'; // Par défaut, afficher 'loader'
+    
+    // Afficher la section correspondante
+    showSection(null, section);
 
-        // Initialisation des tooltips Bootstrap
-        const tooltipTriggerList = Array.from(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-        tooltipTriggerList.forEach(tooltipTriggerEl => {
-            new bootstrap.Tooltip(tooltipTriggerEl);
-        });
+    // Initialisation des tooltips Bootstrap
+    const tooltipTriggerList = Array.from(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.forEach(tooltipTriggerEl => {
+        new bootstrap.Tooltip(tooltipTriggerEl);
     });
+});
+
+// Fonction pour afficher une section spécifique et gérer les classes actives
+function showSection(event, sectionId) {
+    // Cacher toutes les sections
+    const sections = document.querySelectorAll('.content-section');
+    sections.forEach(section => {
+        section.classList.add('d-none');
+    });
+
+    // Afficher la section spécifiée par sectionId
+    document.getElementById(sectionId).classList.remove('d-none');
+
+    // Retirer la classe 'active' de tous les liens de navigation
+    const navLinks = document.querySelectorAll('.nav-link');
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+    });
+
+    // Ajouter la classe 'active' au lien cliqué (event.currentTarget)
+    if (event) {
+        event.currentTarget.classList.add('active');
+    }
+}
 </script>
 
  <div id="loader" class="content-section scrollable-section d-none">
