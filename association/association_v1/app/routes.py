@@ -301,7 +301,7 @@ def dashboard():
             return jsonify(achievements=achievements_data)
         
         if request.args.get('section') == 'media':
-            media_data = [{'title': media.title, 'description': media.description, 'media_url': media.media_url, 'upload_date': media.upload_date} for media in media_list.items]
+            media_data = [{'title': media.title, 'description': media.description} for media in media_list.items]
             return jsonify(media=media_data)
 
     # For rendering the HTML template
