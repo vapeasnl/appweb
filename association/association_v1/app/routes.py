@@ -300,9 +300,8 @@ def dashboard():
             achievements_data = [{'name': achievement.name, 'description': achievement.description} for achievement in achievements_pagination.items]
             return jsonify(achievements=achievements_data)
         
-        # Handle media section
         if request.args.get('section') == 'media':
-            media_data = [{'title': media.title, 'type': media.type} for media in media_list.items]
+            media_data = [{'title': media.title, 'description': media.description, 'media_url': media.media_url, 'upload_date': media.upload_date} for media in media_list.items]
             return jsonify(media=media_data)
 
     # For rendering the HTML template
