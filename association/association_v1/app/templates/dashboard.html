@@ -208,8 +208,12 @@
                     <svg class="bi pe-none" width="24" height="24" role="img" aria-label="Attendance Events"><use xlink:href="#people" /></svg>
                 </a>
             </li>
+              <li style="display: none;">
+                 <a class="nav-link py-3 border-bottom rounded-0" href="{{ url_for('admin.loader') }}" title="Loader" data-bs-toggle="tooltip" data-bs-placement="right">
+            <svg class="bi pe-none" width="24" height="24" role="img" aria-label="Loader"><use xlink:href="#people" /></svg>
+                </a>
+            </li>
         </ul>
-    </div>
     <div class="b-example-divider b-example-vr"></div>
 
             <div class="container-fluid p-4">
@@ -1153,7 +1157,7 @@
     document.addEventListener('DOMContentLoaded', function() {
         // Récupérer la section actuelle de l'URL
         const urlParams = new URLSearchParams(window.location.search);
-        const section = urlParams.get('section') || 'dash'; // Par défaut, afficher 'dash'
+        const section = urlParams.get('section') || 'Loader'; // Par défaut, afficher 'dash'
         
         // Afficher la section correspondante
         showSection(null, section);
