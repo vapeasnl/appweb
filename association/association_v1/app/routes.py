@@ -794,6 +794,7 @@ def create_media():
     else:
         return jsonify({'error': 'Invalid file type or no file uploaded.'}), 400
 
+
 @admin_bp.route('/media/delete/<int:media_id>', methods=['POST'])
 @login_required
 def delete_media(media_id):
@@ -801,12 +802,13 @@ def delete_media(media_id):
         return jsonify({'error': 'You do not have permission to delete media.'}), 403
 
     media = Media.query.get_or_404(media_id)
-    db.session.delete(media)
-    db.session.commit()
-
-    # Render the updated media table
-    media_list = Media.query.paginate(page=1, per_page=10)
-    return render_template('partials/media_table.html', media_list=media_list)
+    try:
+        db.session.delete(media)
+        db.session.commit()
+        return jsonify({'success': True})
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
 
 
 @admin_bp.route('/media/update/<int:media_id>', methods=['POST'])
@@ -816,9 +818,10 @@ def update_media(media_id):
         return jsonify({'error': 'You do not have permission to update media.'}), 403
 
     media = Media.query.get_or_404(media_id)
-    media.title = request.form['title']
-    media.description = request.form['description']
-    file = request.files.get('file')
+    title = request.form['title']
+    description = request.form['description']
+    file = request.files.get('file', None)
+    
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
         file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
@@ -829,10 +832,19 @@ def update_media(media_id):
             db.session.rollback()
             return jsonify({'error': str(e)}), 500
     
-    db.session.commit()
+    media.title = title
+    media.description = description
     
-    # Render the updated media table
-    media_list = Media.query.paginate(page=1, per_page=10)
-    return render_template('partials/media_table.html', media_list=media_list)
-
-
+    try:
+        db.session.commit()
+        media_data = {
+            'id': media.id,
+            'title': media.title,
+            'description': media.description,
+            'file_url': media.file_url,
+            'upload_date': media.upload_date.strftime('%Y-%m-%d %H:%M:%S')
+        }
+        return jsonify({'success': True, 'media': media_data})
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
