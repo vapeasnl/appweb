@@ -1030,7 +1030,7 @@
         </li>
         {% endif %}
         {% for page_num in media_list.iter_pages() %}
-        <li class="page-item {% if page_num == media.page %}active{% endif %}">
+        <li class="page-item {% if page_num == media_list.page %}active{% endif %}">
             <a class="page-link" href="{{ url_for('admin.dashboard', page_media=page_num) }}" data-target="#pills-media">{{ page_num }}</a>
         </li>
         {% endfor %}
