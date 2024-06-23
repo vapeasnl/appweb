@@ -493,24 +493,28 @@
                     </div>
                     <!-- Pagination for events -->
                     <nav>
-                        <ul class="pagination">
-                            {% if events.has_prev %}
-                            <li class="page-item">
-                                <a class="page-link" href="{{ url_for('admin.dashboard', page_events=events.prev_num) }}" data-target="#pills-events">Previous</a>
-                            </li>
-                            {% endif %}
-                            {% for page_num in events.iter_pages() %}
-                            <li class="page-item {% if page_num == events.page %}active{% endif %}">
-                                <a class="page-link" href="{{ url_for('admin.dashboard', page_events=page_num) }}" data-target="#pills-events">{{ page_num }}</a>
-                            </li>
-                            {% endfor %}
-                            {% if events.has_next %}
-                            <li class="page-item">
-                                <a class="page-link" href="{{ url_for('admin.dashboard', page_events=events.next_num) }}" data-target="#pills-events">Next</a>
-                            </li>
-                            {% endif %}
-                        </ul>
-                    </nav>
+                <ul class="pagination">
+                    {% if events.has_prev %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('admin.dashboard', page_events=events.prev_num) }}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% for page_num in events.iter_pages() %}
+                    <li class="page-item {% if page_num == events.page %}active{% endif %}">
+                        <a class="page-link" href="{{ url_for('admin.dashboard', page_events=page_num) }}">{{ page_num }}</a>
+                    </li>
+                    {% endfor %}
+                    {% if events.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('admin.dashboard', page_events=events.next_num) }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
                 </div>
             </div>
         </div>
