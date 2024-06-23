@@ -767,7 +767,6 @@ def create_media():
     title = request.form['title']
     description = request.form['description']
     file = request.files['file']
-    section = request.args.get('section', 'dash')
 
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
@@ -778,20 +777,20 @@ def create_media():
             new_media = Media(title=title, description=description, file_url=file_url)
             db.session.add(new_media)
             db.session.commit()
-            media_data = {
+            return jsonify({
                 'id': new_media.id,
                 'title': new_media.title,
                 'description': new_media.description,
                 'file_url': new_media.file_url,
                 'upload_date': new_media.upload_date.strftime('%Y-%m-%d %H:%M:%S')
-            }
-            return jsonify({'success': True, 'media': media_data})
+            }), 201
         except Exception as e:
             db.session.rollback()
             return jsonify({'error': str(e)}), 500
     else:
         return jsonify({'error': 'Invalid file type or no file uploaded.'}), 400
 
+        
 @admin_bp.route('/media/delete/<int:media_id>', methods=['POST'])
 @login_required
 def delete_media(media_id):
@@ -802,10 +801,11 @@ def delete_media(media_id):
     try:
         db.session.delete(media)
         db.session.commit()
-        return jsonify({'success': True})
+        return jsonify({'success': True}), 200
     except Exception as e:
         db.session.rollback()
         return jsonify({'error': str(e)}), 500
+
 
 @admin_bp.route('/media/update/<int:media_id>', methods=['POST'])
 @login_required
@@ -833,15 +833,13 @@ def update_media(media_id):
     
     try:
         db.session.commit()
-        media_data = {
+        return jsonify({
             'id': media.id,
             'title': media.title,
             'description': media.description,
             'file_url': media.file_url,
             'upload_date': media.upload_date.strftime('%Y-%m-%d %H:%M:%S')
-        }
-        return jsonify({'success': True, 'media': media_data})
+        }), 200
     except Exception as e:
         db.session.rollback()
         return jsonify({'error': str(e)}), 500
-
