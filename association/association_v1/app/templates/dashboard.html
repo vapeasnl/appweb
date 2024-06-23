@@ -415,6 +415,7 @@
 
 
 
+
                 </div>
             </div>
         </div>
@@ -1177,7 +1178,7 @@
             $.get(url, function(data) {
                 $('#events-table').html($(data).find('#events-table').html());
                 $('#achievements-table').html($(data).find('#achievements-table').html());
-                // Ajoutez d'autres éléments à mettre à jour si nécessaire
+                $('#reports-table').html($(data).find('#reports-table').html());
             });
         }
 
