@@ -760,6 +760,7 @@ def delete_media(media_id):
 
 
 
+
 # Ensure you have an event_attendance.html template or update the redirect accordingly.
 @main_bp.route('/event_attendance')
 def event_attendance():
