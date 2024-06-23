@@ -745,23 +745,15 @@ def update_media(media_id):
     return redirect(url_for('admin.dashboard', section='media'))
 
 
-@admin_bp.route('/media/<int:media_id>/delete', methods=['POST'])
-@login_required
+@admin_bp.route('/delete_media/<int:media_id>', methods=['POST'])
 def delete_media(media_id):
-    if not current_user.is_admin:
-        flash('You do not have permission to delete media.', 'error')
-        return redirect(url_for('main.home'))
-
+    # Logic to delete the media with given media_id
     media = Media.query.get_or_404(media_id)
-    try:
-        db.session.delete(media)
-        db.session.commit()
-        flash('Media deleted successfully.', 'success')
-    except Exception as e:
-        flash(f'Failed to delete media. Error: {str(e)}', 'error')
-        db.session.rollback()
-
+    db.session.delete(media)
+    db.session.commit()
+    flash('Media deleted successfully', 'success')
     return redirect(url_for('admin.dashboard', section='media'))
+
 
 
 
