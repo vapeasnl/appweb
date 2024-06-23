@@ -303,7 +303,8 @@ def dashboard():
         if request.args.get('section') == 'media':
             media_data = [{'title': media.title, 'description': media.description} for media in media_list.items]
             return jsonify(media=media_data)
-
+            
+    print("Media list:", media_list.items)
     # For rendering the HTML template
     achievement_names = [achievement.name for achievement in achievements_pagination.items]
     beneficiaries_numbers = [achievement.beneficiaries_number for achievement in achievements_pagination.items]
