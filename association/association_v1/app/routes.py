@@ -789,28 +789,3 @@ def create_media():
     return redirect(url_for('admin.dashboard', section='media'))
 
 
-@admin_bp.route('/load_section', methods=['POST'])
-@login_required
-def load_section():
-    section_name = request.form.get('section_name')  # Récupérer le nom de la section depuis la requête POST
-    if section_name == 'reports':
-        # Logique pour charger la section des rapports
-        return redirect(url_for('admin.dashboard', section='reports'))
-    elif section_name == 'media':
-        # Logique pour charger la section des médias
-        return redirect(url_for('admin.dashboard', section='media'))
-    elif section_name == 'events':
-        # Logique pour charger la section des événements
-        return redirect(url_for('admin.dashboard', section='events'))
-    elif section_name == 'events':
-        # Logique pour charger la section des événements
-        return redirect(url_for('admin.dashboard', section='users'))
-    elif section_name == 'events':
-        # Logique pour charger la section des événements
-        return redirect(url_for('admin.dashboard', section='news'))
-    elif section_name == 'events':
-        # Logique pour charger la section des événements
-        return redirect(url_for('admin.dashboard', section='achievments'))
-    else:
-        # Gérer les cas où la section demandée n'est pas reconnue
-        return render_template('404.html'), 404
