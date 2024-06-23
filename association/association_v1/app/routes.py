@@ -271,7 +271,7 @@ def dashboard():
     events = Event.query.paginate(page=page_events, per_page=5)
     news_list = News.query.paginate(page=page_news, per_page=5)
     achievements_pagination = Achievement.query.paginate(page=page_achievements, per_page=5)
-    media_list = Media.query.paginate(page=page_media, per_page=5)
+    media_list = Media.query.paginate(page=page_media, per_page=10)
 
     # Check if the request is an Ajax request (XHR request)
     if request.is_json:
