@@ -1174,22 +1174,15 @@
 <script>
     $(document).ready(function() {
         // Fonction pour charger les données de pagination via Ajax
-        function loadPage(url, section) {
+        function loadPage(url) {
             $.get(url, function(data) {
-                if (section === 'events') {
-                    $('#events-table').html($(data).find('#events-table').html());
-                } else if (section === 'reports') {
-                    $('#reports-table').html($(data).find('#reports-table').html());
-                } else if (section === 'users') {
-                    $('#users-table').html($(data).find('#users-table').html());
-                } else if (section === 'news') {
-                    $('#news-table').html($(data).find('#news-table').html());
-                } else if (section === 'achievements') {
-                    $('#achievements-table').html($(data).find('#achievements-table').html());
-                } else if (section === 'media') {
-                    $('#media-table').html($(data).find('#media-table').html());
-                }
-                // Ajoutez d'autres sections à mettre à jour si nécessaire
+                $('#events-table').html($(data).find('#events-table').html());
+                $('#achievements-table').html($(data).find('#achievements-table').html());
+                $('#users-table').html($(data).find('#users-table').html());
+                $('#news-table').html($(data).find('#news-table').html());
+                $('#media-table').html($(data).find('#media-table').html());
+                $('#reports-table').html($(data).find('#reports-table').html());
+
             });
         }
 
@@ -1197,11 +1190,10 @@
         $(document).on('click', '.pagination a.page-link', function(e) {
             e.preventDefault();
             var url = $(this).attr('href');
-            var section = $(this).closest('.pagination').data('section');
-            loadPage(url, section);
+            loadPage(url);
         });
     });
-</script>
+</script>   
   
 <script>
     document.addEventListener('DOMContentLoaded', function() {
