@@ -273,10 +273,36 @@ def dashboard():
     media_list = Media.query.paginate(page=page_media, per_page=5)
 
     # Check if the request is an Ajax request (XHR request)
-    if request.is_json:
-        # Example: Return events JSON data
-        events_data = [{'name': event.name, 'date': event.date} for event in events.items]
-        return jsonify(events=events_data)
+     if request.is_json:
+        # Example for users
+        if request.args.get('section') == 'users':
+            users_data = [{'username': user.username, 'email': user.email} for user in users.items]
+            return jsonify(users=users_data)
+        
+        # Example for events
+        if request.args.get('section') == 'events':
+            events_data = [{'name': event.name, 'date': event.date} for event in events.items]
+            return jsonify(events=events_data)        # Handle reports section
+        if request.args.get('section') == 'reports':
+            reports_data = [{'title': report.title, 'description': report.description} for report in reports.items]
+            return jsonify(reports=reports_data)
+        
+        # Handle news section
+        if request.args.get('section') == 'news':
+            news_data = [{'title': news.title, 'content': news.content} for news in news_list.items]
+            return jsonify(news=news_data)
+        
+        # Handle achievements section
+        if request.args.get('section') == 'achievements':
+            achievements_data = [{'name': achievement.name, 'description': achievement.description} for achievement in achievements_pagination.items]
+            return jsonify(achievements=achievements_data)
+        
+        # Handle media section
+        if request.args.get('section') == 'media':
+            media_data = [{'title': media.title, 'type': media.type} for media in media_list.items]
+            return jsonify(media=media_data)
+            
+
 
     achievement_names = [achievement.name for achievement in achievements_pagination.items]
     beneficiaries_numbers = [achievement.beneficiaries_number for achievement in achievements_pagination.items]
@@ -299,6 +325,7 @@ def dashboard():
                            unread_count=g.unread_count, 
                            achievement_names=achievement_names, 
                            beneficiaries_numbers=beneficiaries_numbers)
+
 
 
 
