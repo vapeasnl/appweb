@@ -1024,19 +1024,19 @@
 <!-- Pagination for media -->
  <nav>
     <ul class="pagination">
-        {% if media.has_prev %}
+        {% if media_list.has_prev %}
         <li class="page-item">
-            <a class="page-link" href="{{ url_for('admin.dashboard', page_media=media.prev_num) }}" data-target="#pills-media">Previous</a>
+            <a class="page-link" href="{{ url_for('admin.dashboard', page_media=media_list.prev_num) }}" data-target="#pills-media">Previous</a>
         </li>
         {% endif %}
-        {% for page_num in media.iter_pages() %}
+        {% for page_num in media_list.iter_pages() %}
         <li class="page-item {% if page_num == media.page %}active{% endif %}">
             <a class="page-link" href="{{ url_for('admin.dashboard', page_media=page_num) }}" data-target="#pills-media">{{ page_num }}</a>
         </li>
         {% endfor %}
-        {% if media.has_next %}
+        {% if media_list.has_next %}
         <li class="page-item">
-            <a class="page-link" href="{{ url_for('admin.dashboard', page_media=media.next_num) }}" data-target="#pills-media">Next</a>
+            <a class="page-link" href="{{ url_for('admin.dashboard', page_media=media_list.next_num) }}" data-target="#pills-media">Next</a>
         </li>
         {% endif %}
     </ul>
