@@ -1268,6 +1268,24 @@
             }, 2000); // Simulate loading time
         }
     });
+                // Fonction pour charger les données de pagination via Ajax
+        function loadPage(url) {
+            $.get(url, function(data) {
+                $('#events-table').html($(data).find('#events-table').html());
+                $('#achievements-table').html($(data).find('#achievements-table').html());
+                $('#users-table').html($(data).find('#users-table').html());
+                $('#news-table').html($(data).find('#news-table').html());
+                $('#reports-table').html($(data).find('#reports-table').html());
+                $('#media-table').html($(data).find('#media-table').html());
+            });
+        }
+
+        // Gestion du clic sur les liens de pagination
+        $(document).on('click', '.pagination a.page-link', function(e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
+            loadPage(url);
+        });
 </script>
 
 
