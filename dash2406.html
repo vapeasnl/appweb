@@ -121,6 +121,7 @@
         
         
     </style>
+<main>
 <body>
     
 <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
@@ -232,6 +233,7 @@
             </li>
         </ul>
     </div>
+ <div class="b-example-divider b-example-vr"></div>
 
     <div class="container-fluid p-4">
         <!-- Section Dash -->
@@ -899,10 +901,243 @@
         </div>
     </div>
 </div>
+            <!-- section for media -->
 
+<div id="media" class="content-section scrollable-section d-none">
+    <div class="card mb-3">
+        <div class="card-header">
+            <h2>Manage Media <i class="fas fa-images"></i></h2>
+        </div>
+        <div class="card-body">
+            <form method="post" action="{{ url_for('admin.create_media', section='media') }}" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="title" class="form-label">Title</label>
+                    <input type="text" class="form-control" id="title" name="title" required>
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea class="form-control" id="description" name="description" required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="file" class="form-label">Upload File</label>
+                    <input type="file" class="form-control" id="file" name="file" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Media</button>
+            </form>
+            
+            <!-- Display number of media to verify data passing -->
+            <p>Number of media: {{ media_list.items|length }}</p>
 
+            <!-- Media Table -->
+            <div class="table-responsive mt-4">
+                <table id="media-table" class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>File</th>
+                            <th>Upload Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for media in media_list.items %}
+                            <tr id="mediaRow{{ media.id }}">
+                                <td>{{ media.title }}</td>
+                                <td>{{ media.description }}</td>
+                                <td>
+                                    {% if media.media_url %}
+                                        <a href="{{ media.media_url }}" target="_blank">{{ media.media_url }}</a>
+                                    {% else %}
+                                        N/A
+                                    {% endif %}
+                                </td>
+                                <td>{{ media.upload_date }}</td>
+                                <td>
+                                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#updateMediaModal{{ media.id }}">
+                                        Update
+                                    </button>
+                                    <form method="post" action="{{ url_for('admin.delete_media', media_id=media.id, section='media') }}" class="mt-2">
+                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
 
+                            <!-- Update Media Modal -->
+                            <div class="modal fade" id="updateMediaModal{{ media.id }}" tabindex="-1" aria-labelledby="updateMediaModalLabel{{ media.id }}" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="updateMediaModalLabel{{ media.id }}">Update Media</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="post" action="{{ url_for('admin.update_media', media_id=media.id, section='media') }}" enctype="multipart/form-data">
+                                                <div class="mb-3">
+                                                    <label for="update-title" class="form-label">Title</label>
+                                                    <input type="text" class="form-control" id="update-title" name="title" value="{{ media.title }}" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="update-description" class="form-label">Description</label>
+                                                    <textarea class="form-control" id="update-description" name="description" required>{{ media.description }}</textarea>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="update-media-file" class="form-label">File</label>
+                                                    <input type="file" class="form-control" id="update-media-file" name="file">
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                    <button type="submit" class="btn btn-primary">Update Media</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
 
+            <!-- Pagination for media -->
+            <nav>
+                <ul class="pagination">
+                    {% if media_list.has_prev %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('admin.dashboard', page_media=media_list.prev_num) }}" data-target="#pills-media">Previous</a>
+                        </li>
+                    {% endif %}
+                    {% for page_num in media_list.iter_pages() %}
+                        <li class="page-item {% if page_num == media_list.page %}active{% endif %}">
+                            <a class="page-link" href="{{ url_for('admin.dashboard', page_media=page_num) }}" data-target="#pills-media">{{ page_num }}</a>
+                        </li>
+                    {% endfor %}
+                    {% if media_list.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('admin.dashboard', page_media=media_list.next_num) }}" data-target="#pills-media">Next</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+                        <!-- section for statistiques -->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Premier graphe - Statistiques des réalisations -->
+            <div id="statistics" class="content-section scrollable-section">
+                <h3>Statistiques des réalisations</h3>
+                <canvas id="myChart" width="800" height="400"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-lg-8">
+            <!-- Deuxième graphe - Statistiques des événements -->
+            <div id="eventStatistics" class="content-section scrollable-section">
+                <h3>Statistiques des événements</h3>
+                <canvas id="eventChart" width="800" height="400"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section des présences aux événements -->
+    <div id="attendance" class="content-section scrollable-section">
+        <h3>Attendance Events</h3>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Event</th>
+                        <th>Attendance Count</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for event in events.items %}
+                    <tr>
+                        <td>{{ event.name }}</td>
+                        <td>{{ attendance_counts[loop.index0] }}</td>
+                        <td>
+                            <ul>
+                                {% for attendance in event.attendances %}
+                                <li>{{ attendance.name }} - {{ attendance.email }} - {{ attendance.phone }}</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="loader" class="loader d-none"></div>
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<!-- Chart.js library -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Retrieve data from Django template variables
+        const achievementNames = {{ achievement_names|tojson }};
+        const beneficiariesNumbers = {{ beneficiaries_numbers|tojson }};
+        const eventNames = {{ event_names|tojson }};
+        const attendanceCounts = {{ attendance_counts|tojson }};
+        
+        // Premier graphique - Statistiques des réalisations
+        const ctx1 = document.getElementById('myChart').getContext('2d');
+        const myChart1 = new Chart(ctx1, {
+            type: 'bar',
+            data: {
+                labels: achievementNames,
+                datasets: [{
+                    label: 'Nombre de bénéficiaires',
+                    data: beneficiariesNumbers,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Deuxième graphique - Statistiques des événements
+        const ctx2 = document.getElementById('eventChart').getContext('2d');
+        const myChart2 = new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: eventNames,
+                datasets: [{
+                    label: 'Participants par événement',
+                    data: attendanceCounts,
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    });
+</script>
 
     </div>
 
@@ -942,9 +1177,32 @@
         });
     });
     </script>
+        
+<script>
+    $(document).ready(function() {
+        // Fonction pour charger les données de pagination via Ajax
+        function loadPage(url) {
+            $.get(url, function(data) {
+                $('#events-table').html($(data).find('#events-table').html());
+                $('#achievements-table').html($(data).find('#achievements-table').html());
+                $('#users-table').html($(data).find('#users-table').html());
+                $('#news-table').html($(data).find('#news-table').html());
+                $('#reports-table').html($(data).find('#reports-table').html());
+                $('#media-table').html($(data).find('#media-table').html());
+            });
+        }
+
+        // Gestion du clic sur les liens de pagination
+        $(document).on('click', '.pagination a.page-link', function(e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
+            loadPage(url);
+        });
+    });
+</script>   
 </body>
-
-
+</main>
+{% endblock %}
 
 
 
