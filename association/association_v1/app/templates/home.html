@@ -3,11 +3,20 @@
 {% block content %}
 <style>
     .jumbotron {
-        padding: 1rem 2rem; /* Espacement intérieur de la bannière */
-        background-color: #f8f9fa; /* Couleur de fond */
+        background-image: url('static/img/standard-quality-control-collage-concept.jpg'); /* Image de fond */
+        background-size: cover; /* Ajustement de la taille de l'image */
+        background-position: center; /* Position de l'image */
+        padding: 4rem; /* Espacement intérieur de la bannière */
         text-align: center; /* Centrage du contenu */
+        border-radius: 0; /* Bordure sans arrondi */
+    }
+
+    .jumbotron h1,
+    .jumbotron p {
+        color: white; /* Couleur du texte */
     }
 </style>
+
 
     <div class="jumbotron">
         <div class="dropdown border-top mt-auto">
