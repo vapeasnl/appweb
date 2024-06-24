@@ -857,3 +857,30 @@ def update_media(media_id):
         db.session.rollback()
 
     return redirect(url_for('admin.dashboard', section='media'))
+
+
+
+@app.route('/attendance/update', methods=['POST'])
+def update_attendance_view():
+    attendance_id = request.form.get('attendance_id')
+    event_id = request.form.get('event_id')
+    try:
+        update_attendance(attendance_id, event_id)
+        flash('Attendance updated successfully', 'success')
+    except ValueError as e:
+        flash(f'Error: {e}', 'danger')
+    except IntegrityError as e:
+        flash(f'Database error: {e}', 'danger')
+    return redirect(url_for('some_view'))
+
+def update_attendance(attendance_id, event_id):
+    if event_id is None:
+        raise ValueError("L'event_id ne peut pas être None")
+    attendance = db.session.query(Attendance).get(attendance_id)
+    attendance.event_id = event_id
+    try:
+        db.session.commit()
+    except IntegrityError as e:
+        db.session.rollback()
+        print(f"Erreur d'intégrité lors de la mise à jour de l'attendance: {e}")
+
