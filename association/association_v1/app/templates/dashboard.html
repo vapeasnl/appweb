@@ -1162,7 +1162,7 @@
     });
 </script>
 
-    <!-- Bootstrap JS -->
+      <!-- Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
@@ -1176,7 +1176,92 @@
 
 <!-- Scripts spécifiques -->
 <script>
+    $(document).ready(function() {
+        // Création d'un nouveau média
+        $('#create-media-form').on('submit', function(e) {
+            e.preventDefault();
+            var form = $(this);
 
+            $.ajax({
+                type: 'POST',
+                url: form.attr('action'),
+                data: new FormData(this),
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if (response.id) {
+                        var newRow = `<tr id="mediaRow${response.id}">
+                            <td>${response.title}</td>
+                            <td>${response.description}</td>
+                            <td><a href="${response.file_url}" target="_blank">${response.file_url}</a></td>
+                            <td>${response.upload_date}</td>
+                            <td>
+                                <button class="btn btn-sm btn-primary update-media-btn" data-id="${response.id}">Update</button>
+                                <button class="btn btn-sm btn-danger delete-media-btn" data-id="${response.id}">Delete</button>
+                            </td>
+                        </tr>`;
+                        $('#media-table tbody').prepend(newRow);
+                        form.trigger('reset');
+                    } else {
+                        alert('Error: ' + response.error);
+                    }
+                },
+                error: function(xhr) {
+                    alert('Error: ' + xhr.responseJSON.error);
+                }
+            });
+        });
+
+        // Suppression d'un média
+        $(document).on('click', '.delete-media-btn', function(e) {
+            e.preventDefault();
+            var mediaId = $(this).data('id');
+
+            $.ajax({
+                type: 'POST',
+                url: '/media/delete/' + mediaId,
+                success: function(response) {
+                    if (response.success) {
+                        $('#mediaRow' + mediaId).remove();
+                    } else {
+                        alert('Error: ' + response.error);
+                    }
+                },
+                error: function(xhr) {
+                    alert('Error: ' + xhr.responseJSON.error);
+                }
+            });
+        });
+
+        // Mise à jour d'un média
+        $(document).on('submit', '.update-media-form', function(e) {
+            e.preventDefault();
+            var form = $(this);
+            var mediaId = form.data('id');
+
+            $.ajax({
+                type: 'POST',
+                url: '/media/update/' + mediaId,
+                data: new FormData(this),
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if (response.id) {
+                        var row = $('#mediaRow' + response.id);
+                        row.find('td:nth-child(1)').text(response.title);
+                        row.find('td:nth-child(2)').text(response.description);
+                        row.find('td:nth-child(3) a').attr('href', response.file_url).text(response.file_url);
+                        row.find('td:nth-child(4)').text(response.upload_date);
+                        form.closest('.modal').modal('hide');
+                    } else {
+                        alert('Error: ' + response.error);
+                    }
+                },
+                error: function(xhr) {
+                    alert('Error: ' + xhr.responseJSON.error);
+                }
+            });
+        });
 
         // Fonction pour charger les données de pagination via Ajax
         function loadPage(url) {
@@ -1201,14 +1286,14 @@
         document.addEventListener('DOMContentLoaded', function () {
             var storedTab = localStorage.getItem('activeTab');
             if (storedTab) {
-                var triggerEl = document.querySelector(#pills-tab a[data-bs-target="${storedTab}"]);
+                var triggerEl = document.querySelector(`#pills-tab a[data-bs-target="${storedTab}"]`);
                 if (triggerEl) {
                     var tab = new bootstrap.Tab(triggerEl);
                     tab.show();
                     document.querySelector(storedTab).classList.add('active');
                 }
             } else {
-                document.querySelector('#loader').classList.add('active');
+                document.querySelector('#dash').classList.add('active');
             }
 
             var tabTriggerEls = document.querySelectorAll('#pills-tab a[data-bs-toggle="pill"]');
@@ -1224,88 +1309,7 @@
             });
         });
     });
-
 </script>
- <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var isFirstClick = true;
-        var storedTab = localStorage.getItem('activeTab');
-
-        // Show stored tab or default to loader
-        if (storedTab) {
-            var triggerEl = document.querySelector(#pills-tab a[data-bs-target="${storedTab}"]);
-            if (triggerEl) {
-                var tab = new bootstrap.Tab(triggerEl);
-                tab.show();
-                document.querySelector(storedTab).classList.add('active');
-            }
-        } else {
-            document.querySelector('#loader').classList.add('active');
-        }
-
-        var tabTriggerEls = document.querySelectorAll('#pills-tab a[data-bs-toggle="pill"]');
-
-        // Add click event listener to each tab
-        tabTriggerEls.forEach(function (tabTriggerEl) {
-            tabTriggerEl.addEventListener('show.bs.tab', function (event) {
-                var target = event.target.getAttribute('data-bs-target');
-                
-                // If it's the first click on Dashboard
-                if (target === '#dash' && isFirstClick) {
-                    isFirstClick = false; // Set flag to false to prevent further redirections
-                    document.querySelectorAll('.content-section').forEach(function (section) {
-                        section.classList.remove('active');
-                    });
-                    document.querySelector('#dash').classList.add('active');
-                    // Show loader and simulate redirect (replace with actual redirect logic if needed)
-                    document.querySelector('#loader').classList.add('active');
-                    setTimeout(function () {
-                        document.querySelector('#loader').classList.remove('active');
-                        document.querySelector('#dash').classList.add('active');
-                    }, 2000); // Simulate loading time
-                } else {
-                    // Store active tab in localStorage
-                    localStorage.setItem('activeTab', target);
-                    document.querySelectorAll('.content-section').forEach(function (section) {
-                        section.classList.remove('active');
-                    });
-                    document.querySelector(target).classList.add('active');
-                }
-            });
-        });
-    });
-</script>
-
-<style>
-    /* Add styles for the loader */
-    #loader {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(255, 255, 255, 0.8);
-        z-index: 1000;
-    }
-
-    #loader.active {
-        display: block;
-    }
-
-    .spinner-border {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
-</style>
-
-<div id="loader" class="text-center">
-    <div class="spinner-border" role="status">
-        <span class="visually-hidden">Loading...</span>
-    </div>
-</div>
 
 </main>
 {% endblock %}
