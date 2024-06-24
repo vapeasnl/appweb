@@ -29,6 +29,7 @@ class User(db.Model, UserMixin):
     is_admin = db.Column(db.Boolean, default=False)
 
     events = db.relationship('Event', secondary='user_event', backref='attendees')
+    attendances = db.relationship('Attendance', backref='user', cascade="all, delete-orphan")
 
     def set_password(self, password):
         self.password = password
