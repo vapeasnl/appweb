@@ -545,12 +545,17 @@ def delete_user(user_id):
     if not current_user.is_admin:
         flash('You do not have permission to delete users.', 'error')
         return redirect(url_for('main.home'))
+    
     user = User.query.get(user_id)
     section = request.args.get('section', 'users')
+    
     if user:
+        # Supprimer les enregistrements associés dans attendance
+        Attendance.query.filter_by(user_id=user_id).delete()
         db.session.delete(user)
         db.session.commit()
         flash('User deleted successfully.', 'success')
+    
     return redirect(url_for('admin.dashboard', section='users'))
 
 # News routes
