@@ -460,13 +460,20 @@ def delete_event(event_id):
     if not current_user.is_admin:
         flash('You do not have permission to delete events.', 'error')
         return redirect(url_for('main.home'))
-    event = Event.query.get(event_id)
+    
+    event = Event.query.get_or_404(event_id)
     section = request.args.get('section', 'events')
-    if event:
+
+    try:
         db.session.delete(event)
         db.session.commit()
         flash('Event deleted successfully.', 'success')
-    return redirect(url_for('admin.dashboard', section='events'))
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Error deleting event: {str(e)}', 'error')
+
+    return redirect(url_for('admin.dashboard', section=section))
+
 
 # User routes
 @admin_bp.route('/users', methods=['POST'])
