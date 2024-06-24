@@ -1,32 +1,15 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<style>
-    .jumbotron {
-        background-color: #007bff; /* Couleur de fond */
-        padding: 1rem; /* Espacement intérieur de la bannière */
-        text-align: center; /* Centrage horizontal du contenu */
-        border-radius: 0; /* Bordure sans arrondi */
-        min-height: 200px; /* Hauteur minimale de la bannière */
-    }
 
-    .jumbotron h1,
-    .jumbotron p {
-        color: white; /* Couleur du texte */
-    }
-
-    .jumbotron h1 {
-        margin-bottom: 0; /* Supprime la marge en bas du titre */
-    }
-</style>
 
 
 
     <div class="jumbotron">
-        <div class="dropdown border-top mt-auto">
-            <img src="static/img/user_8963496.png" alt="admin" width="24" height="24" class="rounded-circle">
-            <!-- Si besoin d'un lien vers le profil, ajoutez-le ici -->
-        </div>
+       <div class="container mt-3">
+        <img src="static/img/standard-quality-control-collage-concept.jpg class="img-fluid" alt="Votre image">
+    </div>
+
         <div class="container">
             <h1 class="display-4">Bienvenue, {{ current_user.username }}</h1>
             <p class="lead">Oisis association for sustainable development</p>
