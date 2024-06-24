@@ -9,8 +9,8 @@ import os
 
 user_event = db.Table(
     'user_event',
-    db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
-    db.Column('event_id', db.Integer, db.ForeignKey('event.id'), primary_key=True)
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), primary_key=True),
+    db.Column('event_id', db.Integer, db.ForeignKey('event.id', ondelete='CASCADE'), primary_key=True)
 )
 
 class User(db.Model, UserMixin):
@@ -42,17 +42,14 @@ class User(db.Model, UserMixin):
 
     @property
     def is_authenticated(self):
-        # Return True if the user is authenticated, i.e., they have provided valid credentials.
         return True  # Adjust as per your application logic
 
     @property
     def is_active(self):
-        # Return True if the user is active and should be able to log in.
         return True  # Adjust as per your application logic
 
     @property
     def is_anonymous(self):
-        # Return True if this is an anonymous user.
         return False
 
 class News(db.Model):
@@ -111,8 +108,8 @@ class ContactMessage(db.Model):
 class Attendance(db.Model):
     __tablename__ = 'attendance'
     id = db.Column(db.Integer, primary_key=True)
-    event_id = db.Column(db.Integer, db.ForeignKey('event.id'), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    event_id = db.Column(db.Integer, db.ForeignKey('event.id', ondelete='CASCADE'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
     name = db.Column(db.String(100))
     email = db.Column(db.String(120))
     phone = db.Column(db.String(20))
@@ -127,8 +124,7 @@ class Event(db.Model):
     name = db.Column(db.String(128), nullable=False)
     date = db.Column(db.DateTime, nullable=False)
 
-    attendances = db.relationship('Attendance', backref='event', lazy='dynamic')
+    attendances = db.relationship('Attendance', backref='event', cascade="all, delete-orphan", passive_deletes=True)
 
     def __repr__(self):
         return f"<Event {self.name} - ID: {self.id}>"
-
