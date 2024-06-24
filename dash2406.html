@@ -1145,40 +1145,101 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Script pour mémoriser l'onglet actif -->
-    <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Vérifie s'il y a un état d'onglet actif stocké
-        var storedTab = localStorage.getItem('activeTab');
-        if (storedTab) {
-            var triggerEl = document.querySelector(`#pills-tab a[data-bs-target="${storedTab}"]`);
-            if (triggerEl) {
-                var tab = new bootstrap.Tab(triggerEl);
-                tab.show();
-                document.querySelector(storedTab).classList.add('active');
-            }
-        } else {
-            // Set default active tab if no storedTab
-            document.querySelector('#dash').classList.add('active');
-        }
+   <!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-        // Stocke l'état de l'onglet actif lors du changement d'onglet
-        var tabTriggerEls = document.querySelectorAll('#pills-tab a[data-bs-toggle="pill"]');
-        tabTriggerEls.forEach(function (tabTriggerEl) {
-            tabTriggerEl.addEventListener('show.bs.tab', function (event) {
-                var target = event.target.getAttribute('data-bs-target');
-                localStorage.setItem('activeTab', target);
-                document.querySelectorAll('.content-section').forEach(function (section) {
-                    section.classList.remove('active');
-                });
-                document.querySelector(target).classList.add('active');
-            });
-        });
-    });
-    </script>
-        
+<!-- Bootstrap Bundle JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Scripts spécifiques -->
 <script>
     $(document).ready(function() {
+        // Création d'un nouveau média
+        $('#create-media-form').on('submit', function(e) {
+            e.preventDefault();
+            var form = $(this);
+
+            $.ajax({
+                type: 'POST',
+                url: form.attr('action'),
+                data: new FormData(this),
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if (response.id) {
+                        var newRow = `<tr id="mediaRow${response.id}">
+                            <td>${response.title}</td>
+                            <td>${response.description}</td>
+                            <td><a href="${response.file_url}" target="_blank">${response.file_url}</a></td>
+                            <td>${response.upload_date}</td>
+                            <td>
+                                <button class="btn btn-sm btn-primary update-media-btn" data-id="${response.id}">Update</button>
+                                <button class="btn btn-sm btn-danger delete-media-btn" data-id="${response.id}">Delete</button>
+                            </td>
+                        </tr>`;
+                        $('#media-table tbody').prepend(newRow);
+                        form.trigger('reset');
+                    } else {
+                        alert('Error: ' + response.error);
+                    }
+                },
+                error: function(xhr) {
+                    alert('Error: ' + xhr.responseJSON.error);
+                }
+            });
+        });
+
+        // Suppression d'un média
+        $(document).on('click', '.delete-media-btn', function(e) {
+            e.preventDefault();
+            var mediaId = $(this).data('id');
+
+            $.ajax({
+                type: 'POST',
+                url: '/media/delete/' + mediaId,
+                success: function(response) {
+                    if (response.success) {
+                        $('#mediaRow' + mediaId).remove();
+                    } else {
+                        alert('Error: ' + response.error);
+                    }
+                },
+                error: function(xhr) {
+                    alert('Error: ' + xhr.responseJSON.error);
+                }
+            });
+        });
+
+        // Mise à jour d'un média
+        $(document).on('submit', '.update-media-form', function(e) {
+            e.preventDefault();
+            var form = $(this);
+            var mediaId = form.data('id');
+
+            $.ajax({
+                type: 'POST',
+                url: '/media/update/' + mediaId,
+                data: new FormData(this),
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if (response.id) {
+                        var row = $('#mediaRow' + response.id);
+                        row.find('td:nth-child(1)').text(response.title);
+                        row.find('td:nth-child(2)').text(response.description);
+                        row.find('td:nth-child(3) a').attr('href', response.file_url).text(response.file_url);
+                        row.find('td:nth-child(4)').text(response.upload_date);
+                        form.closest('.modal').modal('hide');
+                    } else {
+                        alert('Error: ' + response.error);
+                    }
+                },
+                error: function(xhr) {
+                    alert('Error: ' + xhr.responseJSON.error);
+                }
+            });
+        });
+
         // Fonction pour charger les données de pagination via Ajax
         function loadPage(url) {
             $.get(url, function(data) {
@@ -1197,8 +1258,36 @@
             var url = $(this).attr('href');
             loadPage(url);
         });
+
+        // Script pour mémoriser l'onglet actif
+        document.addEventListener('DOMContentLoaded', function () {
+            var storedTab = localStorage.getItem('activeTab');
+            if (storedTab) {
+                var triggerEl = document.querySelector(`#pills-tab a[data-bs-target="${storedTab}"]`);
+                if (triggerEl) {
+                    var tab = new bootstrap.Tab(triggerEl);
+                    tab.show();
+                    document.querySelector(storedTab).classList.add('active');
+                }
+            } else {
+                document.querySelector('#dash').classList.add('active');
+            }
+
+            var tabTriggerEls = document.querySelectorAll('#pills-tab a[data-bs-toggle="pill"]');
+            tabTriggerEls.forEach(function (tabTriggerEl) {
+                tabTriggerEl.addEventListener('show.bs.tab', function (event) {
+                    var target = event.target.getAttribute('data-bs-target');
+                    localStorage.setItem('activeTab', target);
+                    document.querySelectorAll('.content-section').forEach(function (section) {
+                        section.classList.remove('active');
+                    });
+                    document.querySelector(target).classList.add('active');
+                });
+            });
+        });
     });
-</script>   
+</script>
+ 
 </main>
 {% endblock %}
 
