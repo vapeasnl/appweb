@@ -173,6 +173,27 @@
         display: block !important;
       }
     </style>
+<style>
+    /* Styles pour le header */
+    header {
+        background-color: #333; /* Couleur de fond du header */
+        color: #fff; /* Couleur du texte */
+    }
+
+    .nav-link {
+        padding: 0.5rem 1rem; /* Ajuster le padding des liens */
+    }
+
+    /* Styles pour aligner les onglets à droite */
+    .justify-content-between {
+        justify-content: space-between; /* Aligner les éléments à droite */
+    }
+
+    /* Styles pour l'image à côté du logo si connecté */
+    .me-3 {
+        margin-right: 0.75rem; /* Espacement à droite de l'image */
+    }
+</style>
 
     
     <!-- Custom styles for this template -->
@@ -296,8 +317,16 @@
   <header>
     <div class="px-3 py-2 text-bg-dark border-bottom">
       <div class="container-fluid">
-        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-          <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
+      
+            <div class="d-flex flex-wrap align-items-center justify-content-between">
+		     {% if current_user.is_authenticated %}
+                    <div class="d-flex align-items-center">
+                        <!-- Ajoutez ici votre logo ou image -->
+                        <img src="static/img/user_187488.png" alt="Logo" class="me-3" style="height: 30px;">
+                    </div>
+                {% endif %}
+		    <div>
+		    <ul class="nav col-12 col-lg-auto my-2 justify-content-end my-md-0 text-small">
             <li>
               <a href="{{ url_for('main.home') }}" class="nav-link text-white">
                 <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#home"/></svg>
@@ -411,6 +440,8 @@
         </div>
       </div>
     </div>
+	        </div>
+
     <div class="container mt-4" style="margin-left: 1px">
         {% block content %}{% endblock %}
     </div>
