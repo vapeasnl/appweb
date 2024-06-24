@@ -425,15 +425,7 @@
     <div class="container mt-4" style="margin-left: 1px">
         {% block content %}{% endblock %}
     </div>
-    <div class="px-3 py-2 border-bottom mb-3">
-      <div class="container d-flex flex-wrap justify-content-center">
-        <form class="col-12 col-lg-auto mb-2 mb-lg-0 me-lg-auto" role="search">
-          <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
-        </form>
-
-        
-      </div>
-    </div>
+    
   </header>
 {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
