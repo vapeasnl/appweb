@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, g, current_app
 from flask_login import login_user, logout_user, login_required, current_user
-from .models import db, User, Association, News, Event, Report, Achievement, Media, ContactMessage, Attendance
+from .models import db, User, Association, News, Event, Report, Achievement, Media, ContactMessage, Attendance, AttendanceForm
 from datetime import datetime
 from sqlalchemy import func
 import os
@@ -454,18 +454,23 @@ def update_event(event_id):
         flash('Event updated successfully.', 'success')
     return redirect(url_for('admin.dashboard', section='events'))
 
+
 @admin_bp.route('/events/<int:event_id>/delete', methods=['POST'])
 @login_required
 def delete_event(event_id):
     if not current_user.is_admin:
         flash('You do not have permission to delete events.', 'error')
         return redirect(url_for('main.home'))
-    event = Event.query.get(event_id)
+
+    event = Event.query.get_or_404(event_id)
     section = request.args.get('section', 'events')
-    if event:
-        db.session.delete(event)
-        db.session.commit()
-        flash('Event deleted successfully.', 'success')
+
+    # Supprimer toutes les présences associées à cet événement
+    Attendance.query.filter_by(event_id=event_id).delete()
+
+    db.session.delete(event)
+    db.session.commit()
+    flash('Event deleted successfully.', 'success')
     return redirect(url_for('admin.dashboard', section='events'))
 
 # User routes
@@ -873,14 +878,19 @@ def update_attendance_view():
         flash(f'Database error: {e}', 'danger')
     return redirect(url_for('some_view'))
 
-def update_attendance(attendance_id, event_id):
-    if event_id is None:
-        raise ValueError("L'event_id ne peut pas être None")
-    attendance = db.session.query(Attendance).get(attendance_id)
-    attendance.event_id = event_id
-    try:
+@admin_bp.route('/attendance/<int:id>/update', methods=['GET', 'POST'])
+@login_required
+def update_attendance(id):
+    attendance = Attendance.query.get_or_404(id)
+    form = AttendanceForm(obj=attendance)
+    
+    if form.validate_on_submit():
+        attendance.name = form.name.data
+        attendance.email = form.email.data
+        attendance.phone = form.phone.data
         db.session.commit()
-    except IntegrityError as e:
-        db.session.rollback()
-        print(f"Erreur d'intégrité lors de la mise à jour de l'attendance: {e}")
+        flash('Attendance updated successfully.', 'success')
+        return redirect(url_for('admin.dashboard', section='attendance'))
+
+    return render_template('admin.dashboard', form=form)
 
