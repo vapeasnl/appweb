@@ -474,7 +474,6 @@ def delete_event(event_id):
 
     return redirect(url_for('admin.dashboard', section=section))
 
-
 # User routes
 @admin_bp.route('/users', methods=['POST'])
 @login_required
