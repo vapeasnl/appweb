@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, g, current_app
 from flask_login import login_user, logout_user, login_required, current_user
-from .models import db, User, Association, News, Event, Report, Achievement, Media, ContactMessage, Attendance, AttendanceForm
+from .models import db, User, Association, News, Event, Report, Achievement, Media, ContactMessage, Attendance
 from datetime import datetime
 from sqlalchemy import func
 import os
@@ -454,23 +454,18 @@ def update_event(event_id):
         flash('Event updated successfully.', 'success')
     return redirect(url_for('admin.dashboard', section='events'))
 
-
 @admin_bp.route('/events/<int:event_id>/delete', methods=['POST'])
 @login_required
 def delete_event(event_id):
     if not current_user.is_admin:
         flash('You do not have permission to delete events.', 'error')
         return redirect(url_for('main.home'))
-
-    event = Event.query.get_or_404(event_id)
+    event = Event.query.get(event_id)
     section = request.args.get('section', 'events')
-
-    # Supprimer toutes les présences associées à cet événement
-    Attendance.query.filter_by(event_id=event_id).delete()
-
-    db.session.delete(event)
-    db.session.commit()
-    flash('Event deleted successfully.', 'success')
+    if event:
+        db.session.delete(event)
+        db.session.commit()
+        flash('Event deleted successfully.', 'success')
     return redirect(url_for('admin.dashboard', section='events'))
 
 # User routes
@@ -862,35 +857,3 @@ def update_media(media_id):
         db.session.rollback()
 
     return redirect(url_for('admin.dashboard', section='media'))
-
-
-
-@app.route('/attendance/update', methods=['POST'])
-def update_attendance_view():
-    attendance_id = request.form.get('attendance_id')
-    event_id = request.form.get('event_id')
-    try:
-        update_attendance(attendance_id, event_id)
-        flash('Attendance updated successfully', 'success')
-    except ValueError as e:
-        flash(f'Error: {e}', 'danger')
-    except IntegrityError as e:
-        flash(f'Database error: {e}', 'danger')
-    return redirect(url_for('some_view'))
-
-@admin_bp.route('/attendance/<int:id>/update', methods=['GET', 'POST'])
-@login_required
-def update_attendance(id):
-    attendance = Attendance.query.get_or_404(id)
-    form = AttendanceForm(obj=attendance)
-    
-    if form.validate_on_submit():
-        attendance.name = form.name.data
-        attendance.email = form.email.data
-        attendance.phone = form.phone.data
-        db.session.commit()
-        flash('Attendance updated successfully.', 'success')
-        return redirect(url_for('admin.dashboard', section='attendance'))
-
-    return render_template('admin.dashboard', form=form)
-
