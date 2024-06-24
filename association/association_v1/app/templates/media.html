@@ -4,11 +4,11 @@
 <h1>Media Gallery</h1>
 
 <!-- Carousel -->
-<div id="mediaCarousel" class="carousel slide text-center" data-bs-ride="carousel">
+<div id="mediaCarousel" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">
         {% for media in media_list %}
             <div class="carousel-item {% if loop.first %}active{% endif %}">
-                <img src="{{ media.file_url }}" class="d-block mx-auto" alt="{{ media.title }}">
+                <img src="{{ media.file_url }}" class="d-block w-100" alt="{{ media.title }}">
                 <div class="carousel-caption d-none d-md-block">
                     <h5>{{ media.title }}</h5>
                     <p>{{ media.description }}</p>
@@ -45,7 +45,7 @@
         margin-top: 20px;
     }
     .media-item {
-        flex: 1 0 21%; /* Ajuster ce pourcentage pour contrôler le nombre d'éléments par ligne */
+        flex: 1 0 21%; /* Adjust this percentage to control the number of items per row */
         margin: 5px;
         box-shadow: 0 0 10px rgba(0,0,0,0.1);
         padding: 10px;
@@ -54,14 +54,9 @@
         max-width: 100%;
         height: auto;
     }
-    /* Styles pour le Carousel */
+    /* Carousel styles */
     #mediaCarousel {
         margin-bottom: 20px;
-    }
-    .carousel-item img {
-        max-width: 80%; /* Réduire la largeur des images du diaporama */
-        max-height: 400px; /* Ajuster la hauteur maximale des images */
-        margin: auto; /* Centrer les images horizontalement */
     }
     .carousel-caption {
         background: rgba(0, 0, 0, 0.5);
