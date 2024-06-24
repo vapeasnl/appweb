@@ -130,3 +130,8 @@ class Event(db.Model):
 
     def __repr__(self):
         return f"<Event {self.name} - ID: {self.id}>"
+
+
+class AttendanceForm(FlaskForm):
+    event_id = IntegerField('Event ID', validators=[DataRequired()])
+    submit = SubmitField('Submit')
