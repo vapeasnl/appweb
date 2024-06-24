@@ -344,7 +344,8 @@ def create_report():
     title = request.form.get('title')
     date = request.form.get('date')
     content = request.form.get('content')
-
+    section = request.args.get('section', 'reports')
+  
     if not title or not date or not content:
         flash('Title, date, and content are required.', 'error')
         return redirect(url_for('admin.dashboard', section='reports'))
@@ -368,7 +369,7 @@ def update_report(report_id):
     
     # Récupère le rapport existant depuis la base de données
     report = Report.query.get(report_id)
-    
+    section = request.args.get('section', 'reports')
     if report:
         # Met à jour les champs du rapport avec les données du formulaire
         report.title = request.form['title']
@@ -398,6 +399,8 @@ def delete_report(report_id):
     if not current_user.is_admin:
         return redirect(url_for('main.home'))
     report = Report.query.get(report_id)
+    section = request.args.get('section', 'reports')
+
     if report:
         db.session.delete(report)
         db.session.commit()
@@ -412,6 +415,7 @@ def create_event():
 
     name = request.form.get('name')
     date_str = request.form.get('date')
+    section = request.args.get('section', 'events')
 
     if not name or not date_str:
         flash('Name and date are required fields.', 'error')
@@ -441,6 +445,8 @@ def update_event(event_id):
         flash('You do not have permission to update events.', 'error')
         return redirect(url_for('main.home'))
     event = Event.query.get(event_id)
+    section = request.args.get('section', 'events')
+
     if event:
         event.name = request.form['name']
         event.date = request.form['date']
@@ -455,6 +461,7 @@ def delete_event(event_id):
         flash('You do not have permission to delete events.', 'error')
         return redirect(url_for('main.home'))
     event = Event.query.get(event_id)
+    section = request.args.get('section', 'events')
     if event:
         db.session.delete(event)
         db.session.commit()
@@ -473,7 +480,7 @@ def create_user():
     email = request.form.get('email')
     password = request.form.get('password')
     is_admin = request.form.get('is_admin') == 'on'
-
+    section = request.args.get('section', 'users')
     # Vérification des champs requis
     if not username or not email or not password:
         flash('Username, email, and password are required fields.', 'error')
@@ -502,7 +509,8 @@ def update_user(user_id):
     if not current_user.is_admin:
         flash('You do not have permission to update users.', 'error')
         return redirect(url_for('admin.dashboard', section='users'))
-
+   
+    section = request.args.get('section', 'users')
     user = User.query.get(user_id)
     if user:
         user.username = request.form['username']
@@ -525,6 +533,7 @@ def delete_user(user_id):
         flash('You do not have permission to delete users.', 'error')
         return redirect(url_for('main.home'))
     user = User.query.get(user_id)
+    section = request.args.get('section', 'users')
     if user:
         db.session.delete(user)
         db.session.commit()
@@ -544,6 +553,7 @@ def add_news():
         title = request.form.get('title')
         content = request.form.get('content')
         image_url = request.form.get('image_url')
+        section = request.args.get('section', 'news')
 
         if not title or not content or not image_url:
             flash('Please fill out all fields.', 'danger')
@@ -562,7 +572,7 @@ def add_news():
 @login_required
 def edit_news(id):
     news = News.query.get_or_404(id)
-    
+    section = request.args.get('section', 'news')
     if request.method == 'POST':
         news.title = request.form['title']
         news.content = request.form['content']
@@ -581,6 +591,8 @@ def update_news(news_id):
         flash('You do not have permission to update news.', 'error')
         return redirect(url_for('main.home'))
     news = News.query.get(news_id)
+    section = request.args.get('section', 'news')
+
     if news:
         news.title = request.form['news_title']
         news.content = request.form['news_content']
@@ -595,6 +607,8 @@ def delete_news(news_id):
         flash('You do not have permission to delete news.', 'error')
         return redirect(url_for('main.home'))
     news = News.query.get(news_id)
+    section = request.args.get('section', 'news')
+
     if news:
         db.session.delete(news)
         db.session.commit()
@@ -610,7 +624,7 @@ def create_news():
 
     title = request.form.get('news_title')
     content = request.form.get('news_content')
-
+    section = request.args.get('section', 'news')
     # Vérification des champs requis
     if not title or not content:
         flash('Title and content are required.', 'error')
@@ -654,6 +668,7 @@ def create_achievement():
     beneficiaries_kind = request.form['beneficiaries_kind']
     beneficiaries_number = request.form['beneficiaries_number']
     results_obtained = request.form['results_obtained']
+    section = request.args.get('section', 'achievements')
 
     # Vérification des champs requis
     if not name or not start_date_str or not end_date_str or not site or not objectives:
@@ -689,6 +704,7 @@ def update_achievement(achievement_id):
     if not current_user.is_admin:
         return redirect(url_for('main.home'))
     achievement = Achievement.query.get(achievement_id)
+    section = request.args.get('section', 'achievements')
     if achievement:
         achievement.name = request.form['name']
         achievement.start_date = datetime.strptime(request.form['start_date'], '%Y-%m-%d')
@@ -707,6 +723,7 @@ def delete_achievement(achievement_id):
     if not current_user.is_admin:
         return redirect(url_for('main.home'))
     achievement = Achievement.query.get(achievement_id)
+    section = request.args.get('section', 'achievements')
     if achievement:
         db.session.delete(achievement)
         db.session.commit()
@@ -769,7 +786,7 @@ def create_media():
     title = request.form['title']
     description = request.form['description']
     file = request.files['file']
-    section = request.args.get('section', 'dash')
+    section = request.args.get('section', 'media')
 
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
@@ -795,8 +812,9 @@ def delete_media(media_id):
     if not current_user.is_admin:
         flash('You do not have permission to delete media.', 'error')
         return redirect(url_for('main.home'))
-
+    
     media = Media.query.get_or_404(media_id)
+    section = request.args.get('section', 'media')
     try:
         db.session.delete(media)
         db.session.commit()
@@ -818,6 +836,7 @@ def update_media(media_id):
     media = Media.query.get_or_404(media_id)
     media.title = request.form.get('title')
     media.description = request.form.get('description')
+    section = request.args.get('section', 'media')
     
     file = request.files.get('file')
     if file and allowed_file(file.filename):
