@@ -4,6 +4,9 @@ from datetime import datetime
 from . import db, login_manager
 from sqlalchemy.orm import relationship
 import os
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField
+from wtforms.validators import DataRequired
 
 
 user_event = db.Table(
