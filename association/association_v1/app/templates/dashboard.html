@@ -97,26 +97,7 @@
             height: calc(100vh - 4rem); /* Ajustez en fonction de votre en-tête ou autres éléments */
             overflow-y: auto;
         }
-        .loader {
-          border: 16px solid #f3f3f3;
-          border-radius: 50%;
-          border-top: 16px solid blue;
-          border-bottom: 16px solid blue;
-          width: 120px;
-          height: 120px;
-          webkit-animation: spin 2s linear infinite;
-          animation: spin 2s linear infinite;
-        }
 
-        @-webkit-keyframes spin {
-          0% { -webkit-transform: rotate(0deg); }
-          100% { -webkit-transform: rotate(360deg); }
-        }
-
-        @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
         
         
     </style>
@@ -221,11 +202,6 @@
         <li>
             <a class="nav-link py-3 border-bottom rounded-0" href="#attendance" title="Attendance Events" data-bs-toggle="pill" data-bs-target="#attendance">
                 <svg class="bi pe-none" width="24" height="24" role="img" aria-label="Attendance Events"><use xlink:href="#people" /></svg>
-            </a>
-        </li>
-        <li>
-            <a class="nav-link py-3 border-bottom rounded-0" href="#loader" title="Loader" data-bs-toggle="pill" data-bs-target="#loader">
-                Loader
             </a>
         </li>
     </ul>
@@ -1250,7 +1226,86 @@
     });
 
 </script>
- 
+ <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var isFirstClick = true;
+        var storedTab = localStorage.getItem('activeTab');
+
+        // Show stored tab or default to loader
+        if (storedTab) {
+            var triggerEl = document.querySelector(`#pills-tab a[data-bs-target="${storedTab}"]`);
+            if (triggerEl) {
+                var tab = new bootstrap.Tab(triggerEl);
+                tab.show();
+                document.querySelector(storedTab).classList.add('active');
+            }
+        } else {
+            document.querySelector('#loader').classList.add('active');
+        }
+
+        var tabTriggerEls = document.querySelectorAll('#pills-tab a[data-bs-toggle="pill"]');
+
+        // Add click event listener to each tab
+        tabTriggerEls.forEach(function (tabTriggerEl) {
+            tabTriggerEl.addEventListener('show.bs.tab', function (event) {
+                var target = event.target.getAttribute('data-bs-target');
+                
+                // If it's the first click on Dashboard
+                if (target === '#dash' && isFirstClick) {
+                    isFirstClick = false; // Set flag to false to prevent further redirections
+                    document.querySelectorAll('.content-section').forEach(function (section) {
+                        section.classList.remove('active');
+                    });
+                    document.querySelector('#dash').classList.add('active');
+                    // Show loader and simulate redirect (replace with actual redirect logic if needed)
+                    document.querySelector('#loader').classList.add('active');
+                    setTimeout(function () {
+                        document.querySelector('#loader').classList.remove('active');
+                        document.querySelector('#dash').classList.add('active');
+                    }, 2000); // Simulate loading time
+                } else {
+                    // Store active tab in localStorage
+                    localStorage.setItem('activeTab', target);
+                    document.querySelectorAll('.content-section').forEach(function (section) {
+                        section.classList.remove('active');
+                    });
+                    document.querySelector(target).classList.add('active');
+                }
+            });
+        });
+    });
+</script>
+
+<style>
+    /* Add styles for the loader */
+    #loader {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.8);
+        z-index: 1000;
+    }
+
+    #loader.active {
+        display: block;
+    }
+
+    .spinner-border {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+</style>
+
+<div id="loader" class="text-center">
+    <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
 </main>
 {% endblock %}
 
