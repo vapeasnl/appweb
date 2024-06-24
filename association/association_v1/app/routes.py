@@ -472,7 +472,7 @@ def delete_event(event_id):
         db.session.rollback()
         flash(f'Error deleting event: {str(e)}', 'error')
 
-    return redirect(url_for('admin.dashboard', section=section))
+    return redirect(url_for('admin.dashboard', section='events'))
 
 # User routes
 @admin_bp.route('/users', methods=['POST'])
