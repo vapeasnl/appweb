@@ -1,0 +1,37 @@
+ <!-- Update Media Modal -->
+          
+               <div>
+                 <div class="modal fade" id="updateMediaModal{{ media.id }}" tabindex="-1" aria-labelledby="updateMediaModalLabel{{ media.id }}" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="updateMediaModalLabel{{ media.id }}">Update Media</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="post" action="{{ url_for('admin.update_media', media_id=media.id, section='media') }}" enctype="multipart/form-data">
+                                                <div class="mb-3">
+                                                    <label for="update-title" class="form-label">Title</label>
+                                                    <input type="text" class="form-control" id="update-title" name="title" value="{{ media.title }}" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="update-description" class="form-label">Description</label>
+                                                    <textarea class="form-control" id="update-description" name="description" required>{{ media.description }}</textarea>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="update-media-file" class="form-label">File</label>
+                                                    <input type="file" class="form-control" id="update-media-file" name="file">
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                    <button type="submit" class="btn btn-primary">Update Media</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
