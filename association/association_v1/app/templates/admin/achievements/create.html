@@ -1,0 +1,39 @@
+						<div class="card-body">
+							<form action="{{%20url_for('admin.create_achievement',%20section='achievements')%20}}" id="achievements-form" method="post" name="achievements-form">
+								<div class="mb-3">
+									<label class="form-label" for="name">Activity Name</label> <input class="form-control" id="name" name="name" required="" type="text">
+								</div>
+
+								<div class="mb-3">
+									<label class="form-label" for="start_date">Start Date</label> <input class="form-control" id="start_date" name="start_date" required="" type="date">
+								</div>
+
+								<div class="mb-3">
+									<label class="form-label" for="end_date">End Date</label> <input class="form-control" id="end_date" name="end_date" required="" type="date">
+								</div>
+
+								<div class="mb-3">
+									<label class="form-label" for="site">Site</label> <input class="form-control" id="site" name="site" required="" type="text">
+								</div>
+
+								<div class="mb-3">
+									<label class="form-label" for="objectives">Objectives</label> 
+
+									<textarea class="form-control" id="objectives" name="objectives" required=""></textarea>
+								</div>
+
+								<div class="mb-3">
+									<label class="form-label" for="beneficiaries_kind">Beneficiaries Kind</label> <input class="form-control" id="beneficiaries_kind" name="beneficiaries_kind" required="" type="text">
+								</div>
+
+								<div class="mb-3">
+									<label class="form-label" for="beneficiaries_number">Beneficiaries Number</label> <input class="form-control" id="beneficiaries_number" name="beneficiaries_number" required="" type="number">
+								</div>
+
+								<div class="mb-3">
+									<label class="form-label" for="results_obtained">The Results Obtained</label> 
+
+									<textarea class="form-control" id="results_obtained" name="results_obtained" required=""></textarea>
+								</div>
+								<button class="btn btn-primary" type="submit">Add Achievement</button>
+							</form>
