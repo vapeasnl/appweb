@@ -5,7 +5,7 @@
 
 
 
-   <div class="jumbotron jumbotron-fluid bg-primary text-white mb-0">
+<div class="jumbotron jumbotron-fluid bg-primary text-white mb-0">
         <div class="container text-center">
             <div class="row justify-content-center">
                 <div class="col-md-8">
@@ -15,149 +15,150 @@
                 </div>
             </div>
         </div>
-    </div>
-
-
-   <div class="container mb-5">
-    <h2 class="mb-4">Prochains événements</h2>
-    <ul class="list-group">
-        {% for event in events %}
-            <li class="list-group-item">
-                {{ event.name }} - {{ event.date }}
-                {% if current_user.is_authenticated %}
-                    <form method="post" action="{{ url_for('main.attend_event', event_id=event.id) }}" class="d-inline">
-                        <button type="submit" class="btn btn-primary btn-sm">Marquer la présence</button>
-                    </form>
-                {% else %}
-                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#attendanceModal{{ event.id }}">
-                        Marquer la présence
-                    </button>
-
-        <!-- Modal pour les utilisateurs non authentifiés -->
-        <div class="modal fade" id="attendanceModal{{ event.id }}" tabindex="-1" aria-labelledby="attendanceModalLabel{{ event.id }}" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="attendanceModalLabel{{ event.id }}">Inscription à l'événement</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <form id="attendanceForm{{ event.id }}" method="post" action="{{ url_for('admin.register_attendance', event_id=event.id) }}">                                   
-                        <div class="modal-body">
-                            <div class="mb-3">
-                                <label for="name" class="form-label">Nom</label>
-                                <input type="text" class="form-control" id="name" name="name" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="email" name="email" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="phone" class="form-label">Téléphone</label>
-                                <input type="text" class="form-control" id="phone" name="phone" required>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-                            <button type="submit" class="btn btn-primary">S'inscrire</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal de connexion pour les utilisateurs non authentifiés -->
-        <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="loginModalLabel">Connexion requise</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        Vous devez être connecté pour vous inscrire à un événement. Veuillez vous connecter ou créer un compte.
-                    </div>
-                    <div class="modal-footer">
-                        <a href="{{ url_for('auth.login') }}" class="btn btn-primary">Se connecter</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-                {% endif %}
-            </li>
-        {% endfor %}
-    </ul>
 </div>
 
-
-  <div class="container mb-5">
-    <h2 class="mb-4">Dernières actualités</h2>
-    <div class="row">
-        {% for item in news %}
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <img src="{{ item.image_url if item.image_url else url_for('static', filename='img/news.png') }}" class="card-img-top" alt="{{ item.title }}">                    <div class="card-body">
-                        <h5 class="card-title">{{ item.title }}</h5>
-                        <p class="card-text">
-                            <span class="short-text">{{ item.content[:50] }}...</span>
-                            <span class="full-text d-none">{{ item.content }}</span>
-                            <button class="btn btn-link p-0 read-more">Read more</button>
-                            <button class="btn btn-link p-0 read-less d-none">Read less</button>
-                        </p>
-                    </div>
+<div class="accordion" id="accordionExample">
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+         Upcoming Events
+        </button>
+      </h2>
+      <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+            <div class="container ">
+                <div class="row align-items-center">
+                    <table class="table table-hover ">
+                        <thead>
+                          <tr> 
+                            <th scope="col">Event Name</th>
+                            <th scope="col">Start Date</th>
+                            <th scope="col">Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% for event in events %}
+                          <tr> 
+                            <td>{{ event.name }}</td>
+                            <td>{{ event.date }}</td>
+                            <td>
+                                {% if current_user.is_authenticated %}
+                                <form method="post" action="{{ url_for('main.attend_event', event_id=event.id) }}" class="d-inline">
+                                    <button type="submit" class="btn btn-primary btn-sm">Mark attendance</button>
+                                </form>
+                                {% else %}
+                                <a href="{{ url_for('auth.login') }}" class="btn btn-primary btn-sm" role="button" data-bs-toggle="modal" data-bs-target="#attendanceModal{{ event.id }}">
+                                    Login to Mark your attendance
+                                </a>
+                                {% endif %}
+                            </td>
+                          </tr>
+                          {% endfor %}
+                        </tbody>
+                      </table>
                 </div>
             </div>
-        {% endfor %}
+        </div>
+      </div>
     </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+          Latest News
+        </button>
+      </h2>
+      <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+            <div class="container mb-5">
+                <h2 class="mb-4">Dernières actualités</h2>
+                <div class="row">
+                    {% for item in news %}
+                        <div class="col-md-4 mb-4">
+                            <div class="card">
+                                <img src="{{ item.image_url if item.image_url else url_for('static', filename='img/news.png') }}" class="card-img-top" alt="{{ item.title }}">                    <div class="card-body">
+                                    <h5 class="card-title">{{ item.title }}</h5>
+                                    <p class="card-text">
+                                        <span class="short-text">{{ item.content[:50] }}...</span>
+                                        <span class="full-text d-none">{{ item.content }}</span>
+                                        <button class="btn btn-link p-0 read-more">Read more</button>
+                                        <button class="btn btn-link p-0 read-less d-none">Read less</button>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+            Other Informations
+          </button>
+        </h2>
+        <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            <div class="container">
+                <h2 class="mb-4">Autres informations</h2>
+                <div class="alert alert-info" role="alert">
+                    <h4 class="alert-heading">A propos de nous</h4>
+                    <p>Informations sur notre association.</p>
+                    <hr>
+                    <p class="mb-0">Pour en savoir plus, contactez-nous à info@association.com</p>
+                </div>
+            </div>
+          </div>
+        </div>
+    </div> 
 </div>
 
+ 
 
-    <div class="container">
-        <h2 class="mb-4">Autres informations</h2>
-        <div class="alert alert-info" role="alert">
-            <h4 class="alert-heading">A propos de nous</h4>
-            <p>Informations sur notre association.</p>
-            <hr>
-            <p class="mb-0">Pour en savoir plus, contactez-nous à info@association.com</p>
-        </div>
-    </div>
+
+
+
+
+
      
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    var readMoreButtons = document.querySelectorAll('.read-more');
-    var readLessButtons = document.querySelectorAll('.read-less');
+    document.addEventListener('DOMContentLoaded', function() {
+        var readMoreButtons = document.querySelectorAll('.read-more');
+        var readLessButtons = document.querySelectorAll('.read-less');
 
-    readMoreButtons.forEach(function(button) {
-        button.addEventListener('click', function() {
-            var cardBody = button.closest('.card-body');
-            cardBody.querySelector('.short-text').classList.add('d-none');
-            cardBody.querySelector('.full-text').classList.remove('d-none');
-            button.classList.add('d-none');
-            cardBody.querySelector('.read-less').classList.remove('d-none');
-        });
-    });
-
-    readLessButtons.forEach(function(button) {
-        button.addEventListener('click', function() {
-            var cardBody = button.closest('.card-body');
-            cardBody.querySelector('.short-text').classList.remove('d-none');
-            cardBody.querySelector('.full-text').classList.add('d-none');
-            button.classList.add('d-none');
-            cardBody.querySelector('.read-more').classList.remove('d-none');
-        });
-    });
- 
-            var userAuthenticated = {{ 'true' if user_authenticated else 'false' }};
-            
-            document.querySelectorAll('form[id^="attendanceForm"]').forEach(function(form) {
-                form.addEventListener('submit', function(event) {
-                    if (!userAuthenticated) {
-                        event.preventDefault();
-                        var loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
-                        loginModal.show();
-                    }
-                });
+        readMoreButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                var cardBody = button.closest('.card-body');
+                cardBody.querySelector('.short-text').classList.add('d-none');
+                cardBody.querySelector('.full-text').classList.remove('d-none');
+                button.classList.add('d-none');
+                cardBody.querySelector('.read-less').classList.remove('d-none');
             });
         });
-    </script>
+
+        readLessButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                var cardBody = button.closest('.card-body');
+                cardBody.querySelector('.short-text').classList.remove('d-none');
+                cardBody.querySelector('.full-text').classList.add('d-none');
+                button.classList.add('d-none');
+                cardBody.querySelector('.read-more').classList.remove('d-none');
+            });
+        });
+
+        var userAuthenticated = {{ 'true' if user_authenticated else 'false' }};
+
+        document.querySelectorAll('form[id^="attendanceForm"]').forEach(function(form) {
+            form.addEventListener('submit', function(event) {
+                if (!userAuthenticated) {
+                    event.preventDefault();
+                    var loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+                    loginModal.show();
+                }
+            });
+        });
+    });
+</script>
 
 {% endblock %}
