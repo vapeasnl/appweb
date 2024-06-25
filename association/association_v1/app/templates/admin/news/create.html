@@ -1,0 +1,49 @@
+       <div id="news" class="content-section scrollable-section d-none">
+    <div class="card mb-3">
+        <div class="card-header">
+            <h2>Manage News <i class="fas fa-newspaper"></i></h2>
+        </div>
+        <div class="card-body">
+            <form id="news-form" method="post" action="{{ url_for('admin.create_news', section='news') }}">
+                <div class="mb-3">
+                    <label for="news_title" class="form-label">Title</label>
+                    <input type="text" class="form-control" id="news_title" name="news_title" required>
+                </div>
+                <div class="mb-3">
+                    <label for="news_content" class="form-label">Content</label>
+                    <textarea class="form-control" id="news_content" name="news_content" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Add News</button>
+            </form>
+            <div class="table-responsive mt-4">
+                <table id="news-table" class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Content</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for news in news_list.items %}
+                        <tr>
+                            <td>{{ news.title }}</td>
+                            <td>{{ news.content }}</td>
+                            <td>
+                                <!-- Update News Modal Trigger -->
+<button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#updateNewsModal{{ news.id }}">
+    Update
+</button>
+                                <!-- Delete News Form -->
+                                <form method="post" action="{{ url_for('admin.delete_news', news_id=news.id, section='news') }}" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+       </div>
+       
