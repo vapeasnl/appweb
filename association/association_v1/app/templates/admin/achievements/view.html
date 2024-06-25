@@ -1,0 +1,39 @@
+            <div class="table-responsive mt-4">
+                <table id="achievements-table" class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Activity Name</th>
+                            <th>Date (Start - End)</th>
+                            <th>Site</th>
+                            <th>Objectives</th>
+                            <th>Beneficiaries Kind</th>
+                            <th>Beneficiaries Number</th>
+                            <th>The Results Obtained</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for achievement in achievements.items %}
+                        <tr>
+                            <td>{{ achievement.name }}</td>
+                            <td>{{ achievement.start_date }} - {{ achievement.end_date }}</td>
+                            <td>{{ achievement.site }}</td>
+                            <td>{{ achievement.objectives }}</td>
+                            <td>{{ achievement.beneficiaries_kind }}</td>
+                            <td>{{ achievement.beneficiaries_number }}</td>
+                            <td>{{ achievement.results_obtained }}</td>
+                            <td>
+<!-- Update Achievement Modal Trigger -->
+<button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#updateAchievementModal{{ achievement.id }}">
+    Update
+</button>
+
+                                <!-- Delete Achievement Form -->
+                                <form method="post" action="{{ url_for('admin.delete_achievement', achievement_id=achievement.id, section='achievements') }}" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
