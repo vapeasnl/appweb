@@ -83,17 +83,18 @@
                     <ul class="dropdown-menu">
                           {% if current_user.is_admin %} 
                             <li>
-                              <a href="{{ url_for('admin.dashboard') }}" class="nav-link text-white">
+                              <a href="{{ url_for('admin.dashboard') }}" class="dropdown-item">
                                  Dashboard </a>
                             </li>  
+                            <li><hr class="dropdown-divider"></li>
                           {% endif %}  
-                          <li class="nav-item"> 
-                            <a href="{{ url_for('profile.profile') }}" class="nav-link text-white">
+                          <li> 
+                            <a href="{{ url_for('profile.profile') }}" class="dropdown-item">
                                 My profile
                             </a>
                           </li> 
-                          <li class="nav-item"> 
-                            <a href="{{ url_for('profile.manage_profile') }}" class="nav-link text-white">
+                          <li> 
+                            <a href="{{ url_for('profile.manage_profile') }}" class="dropdown-item">
                                 Manage profiles
                             </a>
                           </li> 
@@ -102,9 +103,8 @@
                   {% else %} 
                   <li class="nav-item">
                     <a href="{{ url_for('auth.login') }}" class="nav-link text-white">
-                      <svg class="bi d-block mx-auto mb-1" width="24" height="24">
-                        <use xlink:href="#login" />
-                      </svg> Login </a>
+                        Login 
+                    </a>
                   </li> 
                   {% endif %} 
                 </ul>
