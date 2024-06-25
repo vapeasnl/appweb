@@ -1,0 +1,27 @@
+<!-- Pagination for achievements -->
+        
+<div>
+  <div>
+     <div>
+            <nav>
+                <ul class="pagination">
+                    {% if achievements.has_prev %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('admin.dashboard', page_achievements=achievements.prev_num) }}" data-target="#pills-achievements">Previous</a>
+                    </li>
+                    {% endif %}
+                    {% for page_num in achievements.iter_pages() %}
+                    <li class="page-item {% if page_num == achievements.page %}active{% endif %}">
+                        <a class="page-link" href="{{ url_for('admin.dashboard', page_achievements=page_num) }}" data-target="#pills-achievements">{{ page_num }}</a>
+                    </li>
+                    {% endfor %}
+                    {% if achievements.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('admin.dashboard', page_achievements=achievements.next_num) }}" data-target="#pills-achievements">Next</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
