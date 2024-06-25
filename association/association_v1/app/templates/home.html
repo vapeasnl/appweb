@@ -74,7 +74,7 @@
                             <div class="card text-center">
                                 <img src="{{ item.image_url if item.image_url else url_for('static', filename='img/news.png') }}" class="card-img-top mt-2 m-auto" style="width:80px !important;" alt="{{ item.title }}">                    <div class="card-body">
                                     <h5 class="card-title">{{ item.title }}</h5>
-                                    <p class="card-text overflow-y-scroll" style="height:20px;">
+                                    <p class="card-text">
                                         <span class="short-text">{{ item.content[:50] }}...</span>
                                         <span class="full-text d-none">{{ item.content }}</span>
                                         <button class="btn btn-link p-0 read-more">Read more</button>
