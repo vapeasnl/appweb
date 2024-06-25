@@ -586,21 +586,7 @@ def add_news():
     return render_template('add_news.html')
 
 
-@news_bp.route('/news/edit/<int:id>', methods=['GET', 'POST'])
-@login_required
-def edit_news(id):
-    news = News.query.get_or_404(id)
-    section = request.args.get('section', 'news')
-    if request.method == 'POST':
-        news.title = request.form['title']
-        news.content = request.form['content']
-        news.image_url = request.form['image_url']
-        db.session.commit()
-        flash('News updated successfully.', 'success')
-        return redirect(url_for('news.view_news'))
 
-    # Pré-remplir les champs du formulaire avec les données actuelles de l'actualité
-    return render_template('edit_news.html', news=news)
 
 @admin_bp.route('/news/<int:news_id>/update', methods=['POST'])
 @login_required
@@ -768,7 +754,7 @@ def admin_attendance():
     return render_template('admin_attendance.html', events=events)
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = 'path/to/your/upload/folder'  # Set your upload folder path
+app.config['UPLOAD_FOLDER'] = 'static/img'  # Set your upload folder path
 app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif', 'pdf', 'mp4', 'mov'}
 
 @main_bp.route('/media', methods=['GET'])
