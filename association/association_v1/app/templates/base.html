@@ -63,31 +63,13 @@
                     <a href="{{ url_for('main.help') }}" class="nav-link text-white">
                         Help us
                     </a>
-                  </li>
-                  <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      Dropdown
-                    </a>
-                    <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="#">Action</a></li>
-                      <li><a class="dropdown-item" href="#">Another action</a></li>
-                      <li><hr class="dropdown-divider"></li>
-                      <li><a class="dropdown-item" href="#">Something else here</a></li>
-                    </ul>
-                  </li>
+                  </li> 
                   {% if current_user.is_authenticated %} 
                   <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-gear me-2"></i>BackOffice
+                        <i class="bi bi-gear me-2"></i> BackOffice
                     </a>
-                    <ul class="dropdown-menu">
-                          {% if current_user.is_admin %} 
-                            <li>
-                              <a href="{{ url_for('admin.dashboard') }}" class="dropdown-item">
-                                 Dashboard </a>
-                            </li>  
-                            <li><hr class="dropdown-divider"></li>
-                          {% endif %}  
+                    <ul class="dropdown-menu"> 
                           <li> 
                             <a href="{{ url_for('profile.profile') }}" class="dropdown-item">
                                 My profile
@@ -98,6 +80,14 @@
                                 Manage profiles
                             </a>
                           </li> 
+                          {% if current_user.is_admin %} 
+                            <li>
+                              <a href="{{ url_for('admin.dashboard') }}" class="dropdown-item">
+                                 Dashboard 
+                              </a>
+                            </li>  
+                            <li><hr class="dropdown-divider"></li>
+                          {% endif %}
                     </ul>
                   </li>
                   {% else %} 
@@ -111,7 +101,7 @@
                 {% if current_user.is_authenticated %} 
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     {% if current_user.is_admin %} 
-                    <li class="nav-item">
+                    <li class="nav-item me-3">
                         <a href="{{ url_for('main.admin_messages') }}" class="nav-link text-white position-relative">
                             Messages
                             {% if unread_count > 0 %} 
