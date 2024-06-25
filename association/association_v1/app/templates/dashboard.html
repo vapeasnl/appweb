@@ -593,10 +593,10 @@
                         <div class="accordion-item">
                           <h2 class="accordion-header">
                             <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                              Manage Achievements
+                              Add new achievements
                             </button>
                           </h2>
-                          <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                          <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                             <div class="accordion-body">
                               <form id="achievements-form" method="post" action="{{ url_for('admin.create_achievement', section='achievements') }}">
                                   <div class="mb-3">
@@ -637,6 +637,7 @@
                           </div>
                         </div> 
                       </div>
+                   <span class="mt-2"> List of achievements</span>
                     <div class="table-responsive mt-4">
                       <table id="achievements-table" class="table table-bordered">
                         <thead>
