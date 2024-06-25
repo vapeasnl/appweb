@@ -64,13 +64,24 @@
                         Help us
                     </a>
                   </li>
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Dropdown
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="#">Action</a></li>
+                      <li><a class="dropdown-item" href="#">Another action</a></li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                  </li>
                   {% if current_user.is_authenticated %} 
                   <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-gear me-2"></i>BackOffice
                     </a>
                     <ul class="dropdown-menu">
-                        {% if current_user.is_admin %} 
+                          {% if current_user.is_admin %} 
                             <li>
                               <a href="{{ url_for('admin.dashboard') }}" class="nav-link text-white">
                                  Dashboard </a>
@@ -89,7 +100,7 @@
                     </ul>
                   </li>
                   {% else %} 
-                  <li>
+                  <li class="nav-item">
                     <a href="{{ url_for('auth.login') }}" class="nav-link text-white">
                       <svg class="bi d-block mx-auto mb-1" width="24" height="24">
                         <use xlink:href="#login" />
@@ -114,16 +125,16 @@
                     {% endif %}
                     <li class="nav-item">
                       <a class="nav-link" href="#">
-                        <i class="bi bi-person"></i> Hello User
+                        <i class="bi bi-person"></i>
                       </a>
                     </li> 
                     <li>
                      <a href="{{ url_for('auth.logout') }}" class="nav-link text-white">
-                         Logout 
-                        </a>
-                      </li> 
-                  </ul>
-                  {% endif %} 
+                        <i class="bi bi-door-closed"></i>
+                      </a>
+                    </li> 
+                </ul>
+                {% endif %} 
               </div> 
             </div>
           </nav>
