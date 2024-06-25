@@ -68,11 +68,11 @@
         <div class="accordion-body">
             <div class="container mb-5">
                 <h2 class="mb-4">List of news</h2>
-                <div class="row overflow-y-scroll" style="height:250px !important;">
+                <div class="row overflow-y-scroll" style="height:350px !important;">
                     {% for item in news %}
                         <div class="col-md-4 mb-4">
                             <div class="card text-center">
-                                <img src="{{ item.image_url if item.image_url else url_for('static', filename='img/news.png') }}" class="card-img-top" style="width:100px !important;" alt="{{ item.title }}">                    <div class="card-body">
+                                <img src="{{ item.image_url if item.image_url else url_for('static', filename='img/news.png') }}" class="card-img-top mt-2 m-auto" style="width:100px !important;" alt="{{ item.title }}">                    <div class="card-body">
                                     <h5 class="card-title">{{ item.title }}</h5>
                                     <p class="card-text">
                                         <span class="short-text">{{ item.content[:50] }}...</span>
