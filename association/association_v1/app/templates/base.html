@@ -81,12 +81,13 @@
                             </a>
                           </li> 
                           {% if current_user.is_admin %} 
+                          <li><hr class="dropdown-divider"></li>
                             <li>
                               <a href="{{ url_for('admin.dashboard') }}" class="dropdown-item">
                                  Dashboard 
                               </a>
                             </li>  
-                            <li><hr class="dropdown-divider"></li>
+                            
                           {% endif %}
                     </ul>
                   </li>
