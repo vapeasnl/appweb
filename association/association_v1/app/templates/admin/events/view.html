@@ -1,0 +1,28 @@
+ <div class="table-responsive mt-4">
+                        <table id="events-table" class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for event in events.items %}
+                                <tr>
+                                    <td>{{ event.name }}</td>
+                                    <td>{{ event.date }}</td>
+                                    <td>
+                            <!-- Update Event Modal Trigger -->
+                                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#updateEventModal{{ event.id }}">
+                                      Update
+                                </button>
+                                        <!-- Delete Event Form -->
+                                        <form method="post" action="{{ url_for('admin.delete_event', event_id=event.id, section='events') }}" class="d-inline">
+                                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+ </div>
