@@ -1,0 +1,55 @@
+                        <!-- Update Achievement Modal -->
+                        <div class="modal fade" id="updateAchievementModal{{ achievement.id }}" tabindex="-1" aria-labelledby="updateAchievementModalLabel{{ achievement.id }}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="updateAchievementModalLabel{{ achievement.id }}">Update Achievement</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form method="post" action="{{ url_for('admin.update_achievement', achievement_id=achievement.id, section='achievements') }}">
+                                            <div class="mb-3">
+                                                <label for="name" class="form-label">Activity Name</label>
+                                                <input type="text" class="form-control" id="name" name="name" value="{{ achievement.name }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="start_date" class="form-label">Start Date</label>
+                                                <input type="date" class="form-control" id="start_date" name="start_date" value="{{ achievement.start_date }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="end_date" class="form-label">End Date</label>
+                                                <input type="date" class="form-control" id="end_date" name="end_date" value="{{ achievement.end_date }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="site" class="form-label">Site</label>
+                                                <input type="text" class="form-control" id="site" name="site" value="{{ achievement.site }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="objectives" class="form-label">Objectives</label>
+                                                <textarea class="form-control" id="objectives" name="objectives" required>{{ achievement.objectives }}</textarea>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="beneficiaries_kind" class="form-label">Beneficiaries Kind</label>
+                                                <input type="text" class="form-control" id="beneficiaries_kind" name="beneficiaries_kind" value="{{ achievement.beneficiaries_kind }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="beneficiaries_number" class="form-label">Beneficiaries Number</label>
+                                                <input type="number" class="form-control" id="beneficiaries_number" name="beneficiaries_number" value="{{ achievement.beneficiaries_number }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="results_obtained" class="form-label">The Results Obtained</label>
+                                                <textarea class="form-control" id="results_obtained" name="results_obtained" required>{{ achievement.results_obtained }}</textarea>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                <button type="submit" class="btn btn-primary">Update Achievement</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
