@@ -1,0 +1,21 @@
+      <!-- Section Events -->
+        <div id="events" class="content-section d-none">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h2>Manage Events <i class="fas fa-calendar-alt"></i></h2>
+                </div>
+                <div class="card-body">
+                    <form id="events-form" method="post" action="{{ url_for('admin.create_event', section='events') }}">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="date" class="form-label">Date</label>
+                            <input type="date" class="form-control" id="date" name="date" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Event</button>
+                    </form>
+                </div>
+            </div>
+        </div>
