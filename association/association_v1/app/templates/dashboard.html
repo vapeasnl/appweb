@@ -1202,131 +1202,128 @@
     </div>
 </div>
 <script>
- document.addEventListener('DOMContentLoaded', function () {
-        
+    // Define variables from Django template
+    const achievementNames = {{ achievement_names|tojson }};
+    const beneficiariesNumbers = {{ beneficiaries_numbers|tojson }};
+    const eventNames = {{ event_names|tojson }};
+    const attendanceCounts = {{ attendance_counts|tojson }};
 
-    // Premier graphique - Statistiques des réalisations
-    const ctx1 = document.getElementById('myChart').getContext('2d');
-    const myChart1 = new Chart(ctx1, {
-        type: 'bar',
-        data: {
-            labels: achievementNames,
-            datasets: [{
-                label: 'Nombre de bénéficiaires',
-                data: beneficiariesNumbers,
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                borderColor: 'rgba(54, 162, 235, 1)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
+    document.addEventListener('DOMContentLoaded', function () {
+        // Premier graphique - Statistiques des réalisations
+        const ctx1 = document.getElementById('myChart').getContext('2d');
+        const myChart1 = new Chart(ctx1, {
+            type: 'bar',
+            data: {
+                labels: achievementNames,
+                datasets: [{
+                    label: 'Nombre de bénéficiaires',
+                    data: beneficiariesNumbers,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
                 }
             }
-        }
-    });
+        });
 
-    // Deuxième graphique - Statistiques des événements
-    const ctx2 = document.getElementById('eventChart').getContext('2d');
-    const myChart2 = new Chart(ctx2, {
-        type: 'bar',
-        data: {
-            labels: eventNames,
-            datasets: [{
-                label: 'Participants par événement',
-                data: attendanceCounts,
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'rgba(255, 99, 132, 1)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
+        // Deuxième graphique - Statistiques des événements
+        const ctx2 = document.getElementById('eventChart').getContext('2d');
+        const myChart2 = new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: eventNames,
+                datasets: [{
+                    label: 'Participants par événement',
+                    data: attendanceCounts,
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
                 }
             }
-        }
-    });
+        });
 
-    // Retrieve data from Django template variables
-    const achievementNames = {{ achievement_names| tojson  }};
-    const beneficiariesNumbers = {{ beneficiaries_numbers| tojson }};
-    const eventNames = {{ event_names| tojson }};
-    const attendanceCounts = {{ attendance_counts| tojson }};
-    
-    // Vérifie s'il y a un état d'onglet actif stocké
-    var storedTab = localStorage.getItem('activeTab');
-    if (storedTab) {
-        var triggerEl = document.querySelector(`#pills-tab a[data-bs-target="${storedTab}"]`);
-        if (triggerEl) {
-            var tab = new bootstrap.Tab(triggerEl);
-            tab.show();
-            showSection(storedTab);
-        }
-    } else {
-        // Set default active tab if no storedTab
-        var defaultTab = '#loader';
-        var defaultTriggerEl = document.querySelector(`#pills-tab a[data-bs-target="${defaultTab}"]`);
-        if (defaultTriggerEl) {
-            var defaultTabInstance = new bootstrap.Tab(defaultTriggerEl);
-            defaultTabInstance.show();
-            showSection(defaultTab);
-        }
-    }
-
-    // Stocke l'état de l'onglet actif lors du changement d'onglet
-    var tabTriggerEls = document.querySelectorAll('#pills-tab a[data-bs-toggle="pill"]');
-    tabTriggerEls.forEach(function (tabTriggerEl) {
-        tabTriggerEl.addEventListener('show.bs.tab', function (event) {
-            var target = event.target.getAttribute('data-bs-target');
-            if (target === '#loader' && isFirstClick) {
-                isFirstClick = false; // Prevent further redirections
-                showLoaderAndSection(target);
-            } else {
-                localStorage.setItem('activeTab', target);
-                showLoaderAndSection(target);
+        // Handle Bootstrap Tab and localStorage logic
+        var storedTab = localStorage.getItem('activeTab');
+        if (storedTab) {
+            var triggerEl = document.querySelector(`#pills-tab a[data-bs-target="${storedTab}"]`);
+            if (triggerEl) {
+                var tab = new bootstrap.Tab(triggerEl);
+                tab.show();
+                showSection(storedTab);
             }
+        } else {
+            var defaultTab = '#loader';
+            var defaultTriggerEl = document.querySelector(`#pills-tab a[data-bs-target="${defaultTab}"]`);
+            if (defaultTriggerEl) {
+                var defaultTabInstance = new bootstrap.Tab(defaultTriggerEl);
+                defaultTabInstance.show();
+                showSection(defaultTab);
+            }
+        }
+
+        var tabTriggerEls = document.querySelectorAll('#pills-tab a[data-bs-toggle="pill"]');
+        tabTriggerEls.forEach(function (tabTriggerEl) {
+            tabTriggerEl.addEventListener('show.bs.tab', function (event) {
+                var target = event.target.getAttribute('data-bs-target');
+                if (target === '#loader' && isFirstClick) {
+                    isFirstClick = false; // Prevent further redirections
+                    showLoaderAndSection(target);
+                } else {
+                    localStorage.setItem('activeTab', target);
+                    showLoaderAndSection(target);
+                }
+            });
         });
+
+        function showSection(target) {
+            document.querySelectorAll('.content-section').forEach(function (section) {
+                section.classList.add('d-none');
+            });
+            document.querySelector(target).classList.remove('d-none');
+        }
+
+        function showLoaderAndSection(target) {
+            document.querySelector('#loader').classList.add('active');
+            setTimeout(function () {
+                document.querySelector('#loader').classList.remove('active');
+                showSection(target);
+            }, 185); // Simulate loading time
+        }
+
+        // Function for loading pagination data via Ajax
+        function loadPage(url) {
+            $.get(url, function (data) {
+                $('#events-table').html($(data).find('#events-table').html());
+                $('#achievements-table').html($(data).find('#achievements-table').html());
+                $('#users-table').html($(data).find('#users-table').html());
+                $('#news-table').html($(data).find('#news-table').html());
+                $('#reports-table').html($(data).find('#reports-table').html());
+                $('#media-table').html($(data).find('#media-table').html());
+            });
+        }
+
+        // Handle click on pagination links
+        $(document).on('click', '.pagination a.page-link', function (e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
+            loadPage(url);
+        });
+
     });
-
-    function showSection(target) {
-        document.querySelectorAll('.content-section').forEach(function (section) {
-            section.classList.add('d-none');
-        });
-        document.querySelector(target).classList.remove('d-none');
-    }
-
-    function showLoaderAndSection(target) {
-        document.querySelector('#loader').classList.add('active');
-        setTimeout(function () {
-            document.querySelector('#loader').classList.remove('active');
-            showSection(target);
-        }, 185); // Simulate loading time
-    }
-
-    // Fonction pour charger les données de pagination via Ajax
-    function loadPage(url) {
-        $.get(url, function (data) {
-            $('#events-table').html($(data).find('#events-table').html());
-            $('#achievements-table').html($(data).find('#achievements-table').html());
-            $('#users-table').html($(data).find('#users-table').html());
-            $('#news-table').html($(data).find('#news-table').html());
-            $('#reports-table').html($(data).find('#reports-table').html());
-            $('#media-table').html($(data).find('#media-table').html());
-        });
-    }
-
-    // Gestion du clic sur les liens de pagination
-    $(document).on('click', '.pagination a.page-link', function (e) {
-        e.preventDefault();
-        var url = $(this).attr('href');
-        loadPage(url);
-    });
-});
-
 </script>
+
 
 {% endblock %}
