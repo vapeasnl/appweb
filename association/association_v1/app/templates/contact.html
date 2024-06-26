@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Contact Us</h1>
+<h1 class="mt-2">Contact Us</h1>
 
 {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
@@ -12,8 +12,10 @@
         {% endfor %}
     {% endif %}
 {% endwith %}
-
-<form method="post" action="{{ url_for('main.contact') }}">
+<div class="container text-center"> 
+  <div class="row justify-content-center bg-secondary">
+    <div class="col-6">
+      <form method="post" action="{{ url_for('main.contact') }}">
     <div class="mb-3">
         <label for="name" class="form-label">Name</label>
         <input type="text" class="form-control" id="name" name="name" required>
@@ -32,4 +34,8 @@
     </div>
     <button type="submit" class="btn btn-primary">Send Message</button>
 </form>
+    </div> 
+  </div>
+ </div>
+
 {% endblock %}
