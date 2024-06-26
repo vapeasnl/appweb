@@ -258,25 +258,42 @@
                                     </h2>
                                 </div>
                                 <div class="card-body">
-                                    <form id="reports-form" method="post"
-                                        action="{{ url_for('admin.create_report', section='report') }}">
-                                        <div class="mb-3">
-                                            <label for="create-title" class="form-label">Title</label>
-                                            <input type="text" class="form-control" id="create-title" name="title"
-                                                required>
+                                <div class="card-body">
+                                    <div class="accordion mb-2" id="accordionExample">
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                                    data-bs-target="#collapseOne" aria-expanded="true"
+                                                    aria-controls="collapseOne">
+                                                    Add New Reports
+                                                </button>
+                                            </h2>
+                                            <div id="collapseOne" class="accordion-collapse collapse show"
+                                                data-bs-parent="#accordionExample">
+                                                <div class="accordion-body">
+													<form id="reports-form" method="post"
+														action="{{ url_for('admin.create_report', section='report') }}">
+														<div class="mb-3">
+															<label for="create-title" class="form-label">Title</label>
+															<input type="text" class="form-control" id="create-title" name="title"
+																required>
+														</div>
+														<div class="mb-3">
+															<label for="create-date" class="form-label">Date (YYYY-MM-DD)</label>
+															<input type="date" class="form-control" id="create-date" name="date"
+																required>
+														</div>
+														<div class="mb-3">
+															<label for="create-content" class="form-label">Content</label>
+															<textarea class="form-control" id="create-content" name="content"
+																required></textarea>
+														</div>
+														<button type="submit" class="btn btn-primary">Add Report</button>
+													</form>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="mb-3">
-                                            <label for="create-date" class="form-label">Date (YYYY-MM-DD)</label>
-                                            <input type="date" class="form-control" id="create-date" name="date"
-                                                required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="create-content" class="form-label">Content</label>
-                                            <textarea class="form-control" id="create-content" name="content"
-                                                required></textarea>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary">Add Report</button>
-                                    </form>
+                                    </div>
                                     <div class="table-responsive mt-4">
                                         <table id="reports-table" class="table table-bordered">
                                             <thead>
