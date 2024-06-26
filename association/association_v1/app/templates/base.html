@@ -41,8 +41,30 @@
       width: 1.5rem;
       height: 100vh;
         }
-</style>
-</head> 
+        /* Styles spécifiques pour les cartes */
+      .card {
+            transition: transform 0.2s ease-in-out;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-body {
+            padding: 1.25rem;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .card-text {
+            color: #6c757d;
+        }
+              
+</style></head> 
 <body>
     <header>
         <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
