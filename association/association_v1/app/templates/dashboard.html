@@ -258,7 +258,6 @@
                                     </h2>
                                 </div>
                                 <div class="card-body">
-                                <div class="card-body">
                                     <div class="accordion mb-2" id="accordionExample">
                                         <div class="accordion-item">
                                             <h2 class="accordion-header">
@@ -400,18 +399,34 @@
                                     </h2>
                                 </div>
                                 <div class="card-body">
-                                    <form id="events-form" method="post"
-                                        action="{{ url_for('admin.create_event', section='events') }}">
-                                        <div class="mb-3">
-                                            <label for="name" class="form-label">Name</label>
-                                            <input type="text" class="form-control" id="name" name="name" required>
+                                    <div class="accordion mb-2" id="accordionExample">
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                                    data-bs-target="#collapseOne" aria-expanded="true"
+                                                    aria-controls="collapseOne">
+                                                    Add New Events
+                                                </button>
+                                            </h2>
+                                            <div id="collapseOne" class="accordion-collapse collapse show"
+                                                data-bs-parent="#accordionExample">
+                                                <div class="accordion-body">
+                                                    <form id="events-form" method="post"
+                                                        action="{{ url_for('admin.create_event', section='events') }}">
+                                                        <div class="mb-3">
+                                                            <label for="name" class="form-label">Name</label>
+                                                            <input type="text" class="form-control" id="name" name="name" required>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="date" class="form-label">Date</label>
+                                                            <input type="date" class="form-control" id="date" name="date" required>
+                                                        </div>
+                                                        <button type="submit" class="btn btn-primary">Add Event</button>
+                                                    </form>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="mb-3">
-                                            <label for="date" class="form-label">Date</label>
-                                            <input type="date" class="form-control" id="date" name="date" required>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary">Add Event</button>
-                                    </form>
+                                    </div>
                                     <div class="table-responsive mt-4">
                                         <table id="events-table" class="table table-bordered">
                                             <thead>
@@ -512,31 +527,46 @@
                                     </h2>
                                 </div>
                                 <div class="card-body">
-                                    <!-- Form for creating a new user -->
-                                    <form id="users-form" method="post"
-                                        action="{{ url_for('admin.create_user', section='user') }}">
-                                        <div class="mb-3">
-                                            <label for="username" class="form-label">Username</label>
-                                            <input type="text" class="form-control" id="username" name="username"
-                                                required>
+                                    <div class="accordion mb-2" id="accordionExample">
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                                    data-bs-target="#collapseOne" aria-expanded="true"
+                                                    aria-controls="collapseOne">
+                                                    Add New User
+                                                </button>
+                                            </h2>
+                                            <div id="collapseOne" class="accordion-collapse collapse show"
+                                                data-bs-parent="#accordionExample">
+                                                <div class="accordion-body">
+                                                    <!-- Form for creating a new user -->
+                                                    <form id="users-form" method="post"
+                                                        action="{{ url_for('admin.create_user', section='user') }}">
+                                                        <div class="mb-3">
+                                                            <label for="username" class="form-label">Username</label>
+                                                            <input type="text" class="form-control" id="username" name="username"
+                                                                required>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="email" class="form-label">Email</label>
+                                                            <input type="email" class="form-control" id="email" name="email" required>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="password" class="form-label">Password</label>
+                                                            <input type="password" class="form-control" id="password" name="password"
+                                                                required>
+                                                        </div>
+                                                        <div class="mb-3 form-check">
+                                                            <input type="checkbox" class="form-check-input" id="is_admin"
+                                                                name="is_admin">
+                                                            <label class="form-check-label" for="is_admin">Admin</label>
+                                                        </div>
+                                                        <button type="submit" class="btn btn-primary">Add User</button>
+                                                    </form>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="mb-3">
-                                            <label for="email" class="form-label">Email</label>
-                                            <input type="email" class="form-control" id="email" name="email" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="password" class="form-label">Password</label>
-                                            <input type="password" class="form-control" id="password" name="password"
-                                                required>
-                                        </div>
-                                        <div class="mb-3 form-check">
-                                            <input type="checkbox" class="form-check-input" id="is_admin"
-                                                name="is_admin">
-                                            <label class="form-check-label" for="is_admin">Admin</label>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary">Add User</button>
-                                    </form>
-                                    <!-- Table for displaying users -->
+                                    </div>                                    <!-- Table for displaying users -->
                                     <div class="table-responsive mt-4">
                                         <table id="users-table" class="table table-bordered">
                                             <thead>
@@ -653,21 +683,36 @@
                                     </h2>
                                 </div>
                                 <div class="card-body">
-                                    <form id="news-form" method="post"
-                                        action="{{ url_for('admin.create_news', section='news') }}">
-                                        <div class="mb-3">
-                                            <label for="news_title" class="form-label">Title</label>
-                                            <input type="text" class="form-control" id="news_title" name="news_title"
-                                                required>
+                                    <div class="accordion mb-2" id="accordionExample">
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                                    data-bs-target="#collapseOne" aria-expanded="true"
+                                                    aria-controls="collapseOne">
+                                                    Add New News
+                                                </button>
+                                            </h2>
+                                            <div id="collapseOne" class="accordion-collapse collapse show"
+                                                data-bs-parent="#accordionExample">
+                                                <div class="accordion-body">
+													<form id="news-form" method="post"
+														action="{{ url_for('admin.create_news', section='news') }}">
+														<div class="mb-3">
+															<label for="news_title" class="form-label">Title</label>
+															<input type="text" class="form-control" id="news_title" name="news_title"
+																required>
+														</div>
+														<div class="mb-3">
+															<label for="news_content" class="form-label">Content</label>
+															<textarea class="form-control" id="news_content" name="news_content"
+																required></textarea>
+														</div>
+														<button type="submit" class="btn btn-primary">Add News</button>
+													</form>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="mb-3">
-                                            <label for="news_content" class="form-label">Content</label>
-                                            <textarea class="form-control" id="news_content" name="news_content"
-                                                required></textarea>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary">Add News</button>
-                                    </form>
-                                    <div class="table-responsive mt-4">
+                                    </div>                                    <div class="table-responsive mt-4">
                                         <table id="news-table" class="table table-bordered">
                                             <thead>
                                                 <tr>
@@ -1009,24 +1054,39 @@
                                     </h2>
                                 </div>
                                 <div class="card-body">
-                                    <form method="post" action="{{ url_for('admin.create_media', section='media') }}"
-                                        enctype="multipart/form-data">
-                                        <div class="mb-3">
-                                            <label for="title" class="form-label">Title</label>
-                                            <input type="text" class="form-control" id="title" name="title" required>
+                                    <div class="accordion mb-2" id="accordionExample">
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                                    data-bs-target="#collapseOne" aria-expanded="true"
+                                                    aria-controls="collapseOne">
+                                                    Add New Media
+                                                </button>
+                                            </h2>
+                                            <div id="collapseOne" class="accordion-collapse collapse show"
+                                                data-bs-parent="#accordionExample">
+                                                <div class="accordion-body">
+													<form method="post" action="{{ url_for('admin.create_media', section='media') }}"
+														enctype="multipart/form-data">
+														<div class="mb-3">
+															<label for="title" class="form-label">Title</label>
+															<input type="text" class="form-control" id="title" name="title" required>
+														</div>
+														<div class="mb-3">
+															<label for="description" class="form-label">Description</label>
+															<textarea class="form-control" id="description" name="description"
+																required></textarea>
+														</div>
+														<div class="mb-3">
+															<label for="file" class="form-label">Upload File</label>
+															<input type="file" class="form-control" id="file" name="file" required>
+														</div>
+														<button type="submit" class="btn btn-primary">Add Media</button>
+													</form>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="mb-3">
-                                            <label for="description" class="form-label">Description</label>
-                                            <textarea class="form-control" id="description" name="description"
-                                                required></textarea>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="file" class="form-label">Upload File</label>
-                                            <input type="file" class="form-control" id="file" name="file" required>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary">Add Media</button>
-                                    </form>
-                                    <!-- Display number of media to verify data passing -->
+                                    </div>                                    <!-- Display number of media to verify data passing -->
                                     <p>Number of media: {{ media_list.items|length }}</p>
                                     <!-- Media Table -->
                                     <div class="table-responsive mt-4">
