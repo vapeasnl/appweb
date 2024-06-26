@@ -1120,24 +1120,21 @@
                         <!-- section for statistiques -->
                         <div class="container-fluid scrollable-section">
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-12">
                                     <!-- Premier graphe - Statistiques des réalisations -->
                                     <div id="statistics" class="content-section scrollable-section">
                                         <h3>Statistiques des réalisations</h3>
                                         <canvas id="myChart" width="800" height="400"></canvas>
                                     </div>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-12">
                                     <!-- Deuxième graphe - Statistiques des événements -->
                                     <div id="eventStatistics" class="content-section scrollable-section">
                                         <h3>Statistiques des événements</h3>
                                         <canvas id="eventChart" width="800" height="400"></canvas>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row mt-4">
-                                
-                            </div>
+                            </div> 
                         </div>
                     </div>
                 </div>
@@ -1205,13 +1202,8 @@
     </div>
 </div>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Retrieve data from Django template variables
-        const achievementNames = {{ achievement_names| tojson
-    }};
-    const beneficiariesNumbers = {{ beneficiaries_numbers| tojson }};
-    const eventNames = {{ event_names| tojson }};
-    const attendanceCounts = {{ attendance_counts| tojson }};
+ document.addEventListener('DOMContentLoaded', function () {
+        
 
     // Premier graphique - Statistiques des réalisations
     const ctx1 = document.getElementById('myChart').getContext('2d');
@@ -1259,6 +1251,12 @@
         }
     });
 
+    // Retrieve data from Django template variables
+    const achievementNames = {{ achievement_names| tojson 
+    const beneficiariesNumbers = {{ beneficiaries_numbers| tojson }};
+    const eventNames = {{ event_names| tojson }};
+    const attendanceCounts = {{ attendance_counts| tojson }};
+    
     // Vérifie s'il y a un état d'onglet actif stocké
     var storedTab = localStorage.getItem('activeTab');
     if (storedTab) {
