@@ -1,157 +1,179 @@
 {% extends 'base.html' %}
 
-{% block content %} 
-
- <style>
-         .demo-wrap {
-  overflow: hidden;
+{% block content %}
+<div class="jumbotron jumbotron-fluid bg-primary text-white mb-0 border-top border-white"
+    style="background-image: url({{url_for('static', filename='img/banner.jpg')}});">
+    <div class="container text-center">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h1 class="display-4 mb-4">Bienvenue, {{ current_user.username }}</h1>
+                <p class="lead">Oisis association for sustainable development</p>
+                <p>Vous trouverez ici les événements à venir, les actualités et d'autres informations importantes.</p>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+  .demo-wrap {
   position: relative;
 }
 
-.demo-bg {
-  opacity: 0.6;
+.demo-wrap:before {
+  content: ' ';
+  display: block;
   position: absolute;
   left: 0;
   top: 0;
   width: 100%;
-  height: auto;
+  height: 100%;
+  opacity: 0.6;
+  background-image: url({{url_for('static', filename='img/banner.jpg')}});
+  background-repeat: no-repeat;
+  background-position: 50% 0;
+  background-size: cover;
 }
 
 .demo-content {
   position: relative;
 }
- </style>
- <div class="demo-wrap">
-  <img src="{{url_for('static', filename='img/banner.jpg')}}" class="" style="width:100% !important;" alt="Association HUB">   
-  <div class="demo-content">
-  <div class="container text-center">
-            <div class="row justify-content-center">
-                <div class="col-md-8">
+</style>
+<div class="demo-wrap"> 
+    <div class="demo-content">
+      
                     <h1 class="display-4 mb-4">Bienvenue, {{ current_user.username }}</h1>
                     <p class="lead">Oisis association for sustainable development</p>
-                    <p>Vous trouverez ici les événements à venir, les actualités et d'autres informations importantes.</p>
-                </div>
-            </div>
-        </div>
-  </div>
-</div>                           
-<div class="container-fluid mt-3 bg-light rounded">
-      <div class="row">
-        <div class="accordion" id="accordionExample">
-    <div class="accordion-item">
-      <h2 class="accordion-header">
-        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-         Upcoming Events
-        </button>
-      </h2>
-      <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
-        <div class="accordion-body">
-            <div class="container ">
-                <div class="row align-items-center">
-                    <table class="table table-hover ">
-                        <thead>
-                          <tr> 
-                            <th scope="col">Event Name</th>
-                            <th scope="col">Start Date</th>
-                            <th scope="col">Action</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {% for event in events %}
-                          <tr> 
-                            <td>{{ event.name }}</td>
-                            <td>{{ event.date }}</td>
-                            <td>
-                                {% if current_user.is_authenticated %}
-                                <form method="post" action="{{ url_for('main.attend_event', event_id=event.id) }}" class="d-inline">
-                                    <button type="submit" class="btn btn-primary btn-sm">Mark attendance</button>
-                                </form>
-                                {% else %}
-                                <a href="{{ url_for('auth.login') }}" class="btn btn-primary btn-sm" role="button" data-bs-toggle="modal" data-bs-target="#attendanceModal{{ event.id }}">
-                                    Login to Mark your attendance
-                                </a>
-                                {% endif %}
-                            </td>
-                          </tr>
-                          {% endfor %}
-                        </tbody>
-                      </table>
-                </div>
-            </div>
-        </div>
-      </div>
+                    <p>Vous trouverez ici les événements à venir, les actualités et d'autres informations importantes.
+                    </p> 
     </div>
-    <div class="accordion-item">
-      <h2 class="accordion-header">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-          Latest News
-        </button>
-      </h2>
-      <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-        <div class="accordion-body">
-            <div class="container mb-5">
-                <h2 class="mb-4">List of news</h2>
-                <div class="row overflow-y-scroll" style="height:350px !important;">
-                    {% for item in news %}
-                        <div class="col-md-4 mb-4">
-                            <div class="card text-center">
-                                <img src="{{ item.image_url if item.image_url else url_for('static', filename='img/news.png') }}" class="card-img-top mt-2 m-auto" style="width:80px !important;" alt="{{ item.title }}">                    <div class="card-body">
-                                    <h5 class="card-title">{{ item.title }}</h5>
-                                    <p class="card-text">
-                                        <span class="short-text">{{ item.content[:50] }}...</span>
-                                        <span class="full-text d-none">{{ item.content }}</span>
-                                        <button class="btn btn-link p-0 read-more">Read more</button>
-                                        <button class="btn btn-link p-0 read-less d-none">Read less</button>
-                                    </p>
-                                </div>
+</div>
+<div class="container-fluid mt-3 bg-light rounded">
+    <div class="row">
+        <div class="accordion" id="accordionExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Upcoming Events
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <div class="container ">
+                            <div class="row align-items-center">
+                                <table class="table table-hover ">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Event Name</th>
+                                            <th scope="col">Start Date</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for event in events %}
+                                        <tr>
+                                            <td>{{ event.name }}</td>
+                                            <td>{{ event.date }}</td>
+                                            <td>
+                                                {% if current_user.is_authenticated %}
+                                                <form method="post"
+                                                    action="{{ url_for('main.attend_event', event_id=event.id) }}"
+                                                    class="d-inline">
+                                                    <button type="submit" class="btn btn-primary btn-sm">Mark
+                                                        attendance</button>
+                                                </form>
+                                                {% else %}
+                                                <a href="{{ url_for('auth.login') }}" class="btn btn-primary btn-sm"
+                                                    role="button" data-bs-toggle="modal"
+                                                    data-bs-target="#attendanceModal{{ event.id }}">
+                                                    Login to Mark your attendance
+                                                </a>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-                    {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        Latest News
+                    </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <div class="container mb-5">
+                            <h2 class="mb-4">List of news</h2>
+                            <div class="row overflow-y-scroll" style="height:350px !important;">
+                                {% for item in news %}
+                                <div class="col-md-4 mb-4">
+                                    <div class="card text-center">
+                                        <img src="{{ item.image_url if item.image_url else url_for('static', filename='img/news.png') }}"
+                                            class="card-img-top mt-2 m-auto" style="width:80px !important;"
+                                            alt="{{ item.title }}">
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{ item.title }}</h5>
+                                            <p class="card-text">
+                                                <span class="short-text">{{ item.content[:50] }}...</span>
+                                                <span class="full-text d-none">{{ item.content }}</span>
+                                                <button class="btn btn-link p-0 read-more">Read more</button>
+                                                <button class="btn btn-link p-0 read-less d-none">Read less</button>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        Other Informations
+                    </button>
+                </h2>
+                <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <div class="container">
+                            <h2 class="mb-4">Autres informations</h2>
+                            <div class="alert alert-info" role="alert">
+                                <h4 class="alert-heading">A propos de nous</h4>
+                                <p>Informations sur notre association.</p>
+                                <hr>
+                                <p class="mb-0">Pour en savoir plus, contactez-nous à info@association.com</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-      </div>
     </div>
-    <div class="accordion-item">
-        <h2 class="accordion-header">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-            Other Informations
-          </button>
-        </h2>
-        <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-          <div class="accordion-body">
-            <div class="container">
-                <h2 class="mb-4">Autres informations</h2>
-                <div class="alert alert-info" role="alert">
-                    <h4 class="alert-heading">A propos de nous</h4>
-                    <p>Informations sur notre association.</p>
-                    <hr>
-                    <p class="mb-0">Pour en savoir plus, contactez-nous à info@association.com</p>
-                </div>
-            </div>
-          </div>
-        </div>
-    </div> 
-</div>
-     </div>  
 </div>
 
 
- 
 
 
 
 
 
 
-     
+
+
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         var readMoreButtons = document.querySelectorAll('.read-more');
         var readLessButtons = document.querySelectorAll('.read-less');
 
-        readMoreButtons.forEach(function(button) {
-            button.addEventListener('click', function() {
+        readMoreButtons.forEach(function (button) {
+            button.addEventListener('click', function () {
                 var cardBody = button.closest('.card-body');
                 cardBody.querySelector('.short-text').classList.add('d-none');
                 cardBody.querySelector('.full-text').classList.remove('d-none');
@@ -160,8 +182,8 @@
             });
         });
 
-        readLessButtons.forEach(function(button) {
-            button.addEventListener('click', function() {
+        readLessButtons.forEach(function (button) {
+            button.addEventListener('click', function () {
                 var cardBody = button.closest('.card-body');
                 cardBody.querySelector('.short-text').classList.remove('d-none');
                 cardBody.querySelector('.full-text').classList.add('d-none');
@@ -170,17 +192,18 @@
             });
         });
 
-        var userAuthenticated = {{ 'true' if user_authenticated else 'false' }};
+        var userAuthenticated = {{ 'true' if user_authenticated else 'false' }
+    };
 
-        document.querySelectorAll('form[id^="attendanceForm"]').forEach(function(form) {
-            form.addEventListener('submit', function(event) {
-                if (!userAuthenticated) {
-                    event.preventDefault();
-                    var loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
-                    loginModal.show();
-                }
-            });
+    document.querySelectorAll('form[id^="attendanceForm"]').forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+            if (!userAuthenticated) {
+                event.preventDefault();
+                var loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+                loginModal.show();
+            }
         });
+    });
     });
 </script>
 
