@@ -192,8 +192,7 @@
             });
         });
 
-        var userAuthenticated = {{ 'true' if user_authenticated else 'false' }
-    };
+        var userAuthenticated = {{ 'true' if user_authenticated else 'false' }};
 
     document.querySelectorAll('form[id^="attendanceForm"]').forEach(function (form) {
         form.addEventListener('submit', function (event) {
