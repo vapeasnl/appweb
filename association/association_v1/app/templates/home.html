@@ -1,8 +1,30 @@
 {% extends 'base.html' %}
 
 {% block content %} 
-<div class="jumbotron jumbotron-fluid bg-primary text-white mb-0 border-top border-white" style="background-image: url({{url_for('static', filename='img/banner.jpg')}});">
-        <div class="container text-center">
+
+ <style>
+         .demo-wrap {
+  overflow: hidden;
+  position: relative;
+}
+
+.demo-bg {
+  opacity: 0.6;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: auto;
+}
+
+.demo-content {
+  position: relative;
+}
+ </style>
+ <div class="demo-wrap">
+  <img src="{{url_for('static', filename='img/banner.jpg')}}" class="" style="width:100% !important;" alt="Association HUB">   
+  <div class="demo-content">
+  <div class="container text-center">
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <h1 class="display-4 mb-4">Bienvenue, {{ current_user.username }}</h1>
@@ -11,8 +33,8 @@
                 </div>
             </div>
         </div>
-</div>
-                             
+  </div>
+</div>                           
 <div class="container-fluid mt-3 bg-light rounded">
       <div class="row">
         <div class="accordion" id="accordionExample">
