@@ -1121,51 +1121,56 @@
                         <div class="container-fluid scrollable-section">
                             <div class="row">
                                 <div class="col-12">
-                                    <!-- Premier graphe - Statistiques des réalisations -->
-                                    <div id="statistics" class="content-section scrollable-section">
-                                        <h3>Statistiques des réalisations</h3>
-                                        <canvas id="myChart" width="800" height="400"></canvas>
-                                    </BR>
-                                        <h3>Statistiques des événements</h3>
-                                        <canvas id="eventChart" width="800" height="400"></canvas>
+                                    <div id="statistics" class="container-fluid content-section scrollable-section">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <h3>Statistiques des réalisations</h3>
+                                                <canvas id="myChart" width="800" height="400"></canvas>
+                                            </div>
+                                            <div class="col-6">
+                                                <h3>Statistiques des événements</h3>
+                                                <canvas id="eventChart" width="800" height="400"></canvas>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div> 
-                            </div> 
+                                </div>
+                            </div>
                         </div>
                     </div>
-
                 </div>
-                <div class="row">
-                    <div class="col-12">
-                        <!-- Section des présences aux événements -->
-                        <div id="attendance" class="content-section scrollable-section">
-                            <h3>Attendance Events</h3>
-                            <div class="table-responsive">
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>Event</th>
-                                            <th>Attendance Count</th>
-                                            <th>Details</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody> {% for event in events.items %} <tr>
-                                            <td>{{ event.name }}</td>
-                                            <td>{{ attendance_counts[loop.index0] }}</td>
-                                            <td>
-                                                <ul> {% for attendance in event.attendances %} <li>{{ attendance.name }}
-                                                        - {{ attendance.email }} - {{ attendance.phone }}</li> {% endfor
-                                                    %} </ul>
-                                            </td>
-                                        </tr> {% endfor %} </tbody>
-                                </table>
-                            </div>
+
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <!-- Section des présences aux événements -->
+                    <div id="attendance" class="content-section scrollable-section">
+                        <h3>Attendance Events</h3>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Event</th>
+                                        <th>Attendance Count</th>
+                                        <th>Details</th>
+                                    </tr>
+                                </thead>
+                                <tbody> {% for event in events.items %} <tr>
+                                        <td>{{ event.name }}</td>
+                                        <td>{{ attendance_counts[loop.index0] }}</td>
+                                        <td>
+                                            <ul> {% for attendance in event.attendances %} <li>{{ attendance.name }}
+                                                    - {{ attendance.email }} - {{ attendance.phone }}</li> {% endfor
+                                                %} </ul>
+                                        </td>
+                                    </tr> {% endfor %} </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </div>
 
 <!-- Styles for the loader -->
@@ -1200,10 +1205,10 @@
 </div>
 <script>
     // Define variables from Django template
-    const achievementNames = {{ achievement_names|tojson }};
-    const beneficiariesNumbers = {{ beneficiaries_numbers|tojson }};
-    const eventNames = {{ event_names|tojson }};
-    const attendanceCounts = {{ attendance_counts|tojson }};
+    const achievementNames = {{ achievement_names| tojson }};
+    const beneficiariesNumbers = {{ beneficiaries_numbers| tojson }};
+    const eventNames = {{ event_names| tojson }};
+    const attendanceCounts = {{ attendance_counts| tojson }};
 
     document.addEventListener('DOMContentLoaded', function () {
         // Premier graphique - Statistiques des réalisations
