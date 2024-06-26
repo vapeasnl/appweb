@@ -31,7 +31,7 @@
   background-image: url('{{url_for('static', filename='img/banner.jpg')}}');
   background-repeat: no-repeat;  
     background-position: center center;
-    background-size: contain;
+    background-size: cover;
 }
 
 .demo-content {
@@ -39,9 +39,9 @@
 }
 </style>
 <div class="demo-wrap"> 
-    <div class="demo-content">
+    <div class="demo-content ">
       
-                    <h1 class="display-4 mb-4">Bienvenue, {{ current_user.username }}</h1>
+                    <h1 class="display-4 mt-4 mb-4">Bienvenue, {{ current_user.username }}</h1>
                     <p class="lead">Oisis association for sustainable development</p>
                     <p>Vous trouverez ici les événements à venir, les actualités et d'autres informations importantes.
                     </p> 
