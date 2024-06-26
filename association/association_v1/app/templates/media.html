@@ -2,13 +2,21 @@
 
 {% block content %}
 <h1>Media Gallery</h1>
-
+<style>
+    .carousel-inner{
+    width : 50% !important;
+    }
+</style>
 <!-- Carousel -->
-<div id="mediaCarousel" class="carousel slide" data-bs-ride="carousel">
+<div class="container text-center">
+  <div class="row">
+    
+    <div class="col-6 align-self-center">
+      <div id="mediaCarousel" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">
         {% for media in media_list %}
             <div class="carousel-item {% if loop.first %}active{% endif %}">
-                <img src="{{ media.file_url }}" class="d-block w-50" alt="{{ media.title }}">
+                <img src="{{ media.file_url }}" class="d-block w-100" alt="{{ media.title }}">
                 <div class="carousel-caption d-none d-md-block">
                     <h5>{{ media.title }}</h5>
                     <p>{{ media.description }}</p>
@@ -25,6 +33,10 @@
         <span class="visually-hidden">Next</span>
     </a>
 </div>
+    </div> 
+  </div>
+</div>
+
 
 <!-- Media Gallery -->
 <div class="media-gallery">
